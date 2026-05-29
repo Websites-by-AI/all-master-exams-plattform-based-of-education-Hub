@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Plus, LogOut, LayoutDashboard, FileSpreadsheet, 
   Calendar, MessageSquare, LineChart, Users, BellRing, Sparkles, Layers, Shield, Target,
@@ -18,18 +18,28 @@ import TestTrapsView from "./components/TestTrapsView";
 import CustomQuizGenerator from "./components/CustomQuizGenerator";
 import { Brain } from "lucide-react";
 
+import { runFullSiteThemeCheck } from "./lib/themeValidator";
+
 export default function App() {
   const [student, setStudent] = useState<Student | null>(null);
   const [role, setRole] = useState<"student" | "parent" | "admin" | null>(null);
   const [view, setView] = useState<string>("dashboard");
   const [theme, setTheme] = useState<string>(() => {
-    return localStorage.getItem("chatre_app_theme") || "classic";
+    return localStorage.getItem("azmoonyar_app_theme") || "classic";
   });
   const [showThemeMenu, setShowThemeMenu] = useState(false);
 
+  // Run theme validation on mount
+  useEffect(() => {
+    const checkResults = runFullSiteThemeCheck();
+    if (checkResults.length > 0) {
+      console.warn("[Theme Validation Warning]: Found incompatible law terms in the application content:", checkResults);
+    }
+  }, []);
+
   const handleThemeChange = (newTheme: string) => {
     setTheme(newTheme);
-    localStorage.setItem("chatre_app_theme", newTheme);
+    localStorage.setItem("azmoonyar_app_theme", newTheme);
   };
 
   const getThemeCSS = (activeTheme: string) => {
@@ -121,7 +131,7 @@ export default function App() {
           <LoginView onLogin={handleLogin} />
         </main>
         <footer className="py-6 border-t border-slate-100 bg-white text-center text-xs text-slate-400">
-          <div>© میزان | سامانه هوشمند مانیتورینگ تراز و مربیگری آزمون‌های کارشناسی ارشد و دکتری کشور با هوش مصنوعی مرکزی</div>
+          <div>© آزمونیار | سامانه هوشمند مانیتورینگ تراز و مربیگری آزمون‌های کارشناسی ارشد و دکتری کشور با هوش مصنوعی مرکزی</div>
         </footer>
       </div>
     );
@@ -135,7 +145,7 @@ export default function App() {
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>سامانه ابری و مربیگری هوشمند میزان فعال است</span>
+            <span>سامانه ابری و مربیگری هوشمند آزمونیار فعال است</span>
           </span>
           <span className="hidden sm:inline text-slate-500">|</span>
           <span className="hidden sm:inline bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded border border-indigo-500/10">پروتکل امنیتی ادمین متصل است</span>
@@ -156,7 +166,7 @@ export default function App() {
                 <Layers size={22} className="text-amber-400" />
               </div>
               <div className="text-right">
-                <span className="font-black text-slate-850 text-base block leading-none text-blue-950">میزان</span>
+                <span className="font-black text-slate-850 text-base block leading-none text-blue-950">آزمونیار</span>
                 <span className="text-[10px] text-emerald-600 font-black block mt-1 flex items-center gap-0.5 justify-end">
                   <Sparkles size={8} />
                   <span>سامانه ارزیابی ارشد و دکتری تخصصی</span>
@@ -185,7 +195,7 @@ export default function App() {
                     id="btn-nav-manova-desktop-student"
                   >
                     <Sparkles size={14} className="text-amber-500 fill-amber-100" />
-                    <span className="text-blue-950 font-black">📊 ماتریس و داشبورد رفتار تحصیلی مانوا</span>
+                    <span className="text-blue-950 font-black">📊 ماتریس و داشبورد رفتار تحصیلی مانوا (آزمونیار)</span>
                   </button>
                   <button
                     onClick={() => setView("report")}
@@ -263,7 +273,7 @@ export default function App() {
                     id="btn-nav-manova-desktop-parent"
                   >
                     <Sparkles size={14} className="text-amber-500 fill-amber-100" />
-                    <span className="text-blue-950 font-black">📊 ماتریس و داشبورد مانوا میزان</span>
+                    <span className="text-blue-950 font-black">📊 ماتریس و داشبورد مانوا آزمونیار</span>
                   </button>
                   <button
                     onClick={() => setView("report")}
@@ -299,7 +309,7 @@ export default function App() {
                 <span className="text-[10px] text-slate-400 font-bold block text-right mt-0.5">
                   {role === "student" && "داوطلب آزمون‌های دکتری و ارشد دانشگاه‌های ایران"}
                   {role === "parent" && "سیستم نظارتی و پایش والدین و مشاوران"}
-                  {role === "admin" && "مدیر کل و معمار ارشد سیستم هوشمند میزان"}
+                  {role === "admin" && "مدیر کل و معمار ارشد سیستم هوشمند آزمونیار"}
                 </span>
               </div>
 
@@ -324,7 +334,7 @@ export default function App() {
                     <div className="space-y-1">
                       {[
                         { id: "classic", name: "سورمه‌ای اصیل تحصیلات تکمیلی", color: "bg-blue-900" },
-                        { id: "emerald", name: "زمرد کانون (سبز دانشگاهی)", color: "bg-emerald-800" },
+                        { id: "emerald", name: "زمرد آکادمیک (سبز مهندسی)", color: "bg-emerald-800" },
                         { id: "ruby", name: "درخشش یاقوت (زرشکی پژوهشی)", color: "bg-rose-900" },
                         { id: "amber", name: "کهربایی گرم (قدیمی علمی)", color: "bg-amber-850" },
                         { id: "obsidian", name: "فولاد دودی (کربنی خنثی)", color: "bg-slate-705" }
@@ -374,7 +384,7 @@ export default function App() {
                     view === "dashboard" ? "bg-blue-900 text-white" : "text-slate-500 bg-slate-50"
                   }`}
                 >
-                  پرتال داوطلب وکالت
+                  پرتال داوطلب ارشد برق
                 </button>
                 <button
                   onClick={() => setView("manova")}
@@ -407,7 +417,7 @@ export default function App() {
                     view === "counselor" ? "bg-blue-900 text-white" : "text-slate-500 bg-slate-50"
                   }`}
                 >
-                  مشاور هوشمند وکالت
+                  مشاور ارشد مهندسی برق
                 </button>
                 <button
                   onClick={() => setView("progress")}
@@ -453,7 +463,7 @@ export default function App() {
                   }`}
                   id="btn-nav-manova-mobile-parent"
                 >
-                  داشبورد مانوا میزان
+                  داشبورد مانوا آزمونیار
                 </button>
                 <button
                   onClick={() => setView("report")}
@@ -474,7 +484,7 @@ export default function App() {
                     view === "admin" ? "bg-blue-900 text-white" : "text-slate-500 bg-slate-50"
                   }`}
                 >
-                  مدیریت ارشد سامانه میزان (SaaS)
+                  مدیریت ارشد سامانه آزمونیار (SaaS)
                 </button>
               </>
             )}
@@ -514,7 +524,7 @@ export default function App() {
 
       {/* Persistent Footer */}
       <footer className="bg-white border-t border-slate-100 py-6 text-center text-xs text-slate-400 mt-10">
-        <div>پلتفرم هوشمند ارزیابی و مربیگری مقتدر میزان بر اساس ترازهای سراسری کایزن • کپی‌رایت ۱۴۰۵</div>
+        <div>پلتفرم هوشمند ارزیابی و مربیگری مقتدر آزمونیار بر اساس ترازهای سراسری کایزن • کپی‌رایت ۱۴۰۵</div>
       </footer>
     </div>
   );

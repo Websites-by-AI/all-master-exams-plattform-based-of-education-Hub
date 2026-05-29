@@ -6,13 +6,13 @@ import { DailyPlan } from "../types";
 export default function StudyPlanView() {
   const [loading, setLoading] = useState(false);
   const [plans, setPlans] = useState<DailyPlan[]>([
-    { day: "شنبه", morningPlan: "حقوق مدنی - مرور بحث کتبی عقود معین و تعهدات ثالث و شرایط صحت معامله", afternoonPlan: "حل و تحلیل ۴۵ تست شبیه‌ساز مدنی از آزمون‌های گذشته چتر دانش", totalQuestions: 45, completed: true },
-    { day: "یکشنبه", morningPlan: "آیین دادرسی مدنی - مرور صلاحیت مراجع و صلاحیت ذاتی و محلی دادگاه‌ها", afternoonPlan: "تحلیل تله‌های دادرسی مدنی و تطبیق با مواد قانون صریح (۴۰ تست)", totalQuestions: 40, completed: false },
-    { day: "دوشنبه", morningPlan: "حقوق تجارت - مطالعه اسناد تجاری با تاکید بر قوانین جدید سند چک و سفته", afternoonPlan: "تست‌زنی موضوعی تجارت و قوانین خاص تجاری (۲۵ تست)", totalQuestions: 25, completed: false },
-    { day: "سه‌شنبه", morningPlan: "اصول فقه - مرور تعاریف عام و خاص، مطلق و مقید و ادله اجتهادی", afternoonPlan: "انجام ۳۰ تست انطباق اصولی با پاسخ صریح مکتوب شرح چتر دانش", totalQuestions: 30, completed: false },
-    { day: "چهارشنبه", morningPlan: "حقوق جزا - مطالعه قواعد عمومی جرم، معاونت و مشارکت در جرایم تعزیری", afternoonPlan: "تست‌زنی قوانین خاص کیفری و تحلیل رویکردهای نوین قانون مجازات (۱۵ تست)", totalQuestions: 15, completed: true },
-    { day: "پنجشنبه", morningPlan: "آیین دادرسی کیفری - مرور تحقیقات مقدماتی، صلاحیت بازپرس و وظایف دادستان", afternoonPlan: "شبیه‌ساز آزمون آزمایشی دادرسی کیفری و ثبت نتایج در کارتابل داوطلب (۴۰ تست)", totalQuestions: 40, completed: false },
-    { day: "جمعه", morningPlan: "جلسه مشاوره کایزن و عارضه‌یابی هفتگی با مشاور ارشد چتر دانش", afternoonPlan: "کارنامه خوانی آزمون کانون و برنامه‌ریزی اصلاحی برای کاهش نمرات منفی", totalQuestions: 10, completed: false }
+    { day: "شنبه", morningPlan: "مدارهای الکتریکی ۱ - تحلیل مدارهای مرتبه اول و پاسخ کامل (سلف و خازن)", afternoonPlan: "حل و تحلیل ۴۵ تست شبیه‌ساز مدار از آزمون‌های ارشد سال‌های اخیر", totalQuestions: 45, completed: true },
+    { day: "یکشنبه", morningPlan: "سیگنال و سیستم - تجزیه و تحلیل سیگنال‌های زمان‌پیوسته و گسسته (فصل اول و دوم)", afternoonPlan: "تحلیل تله‌های سیگنال و سیستم و حل ۳۰ تست مبحث کانولوشن", totalQuestions: 30, completed: false },
+    { day: "دوشنبه", morningPlan: "ماشین‌های الکتریکی ۱ - بررسی مدارهای مغناطیسی و ترانسفورمرهای تک‌فاز", afternoonPlan: "تست‌زنی موضوعی ماشین‌های DC و پارامترهای موتور (۲۵ تست)", totalQuestions: 25, completed: false },
+    { day: "سه‌شنبه", morningPlan: "کنترل خطی - تحلیل پایداری سیستم‌ها با استفاده از روش روت-هرویتز", afternoonPlan: "انجام ۳۰ تست کنترل برای تعیین حاشیه فاز و بهره در دیاگرام بود", totalQuestions: 30, completed: false },
+    { day: "چهارشنبه", morningPlan: "ریاضی مهندسی - سری فوریه و انتگرال فوریه به همراه قضایای بسط", afternoonPlan: "تست‌زنی معادلات دیفرانسیل با مشتقات جزئی (۱۵ تست)", totalQuestions: 15, completed: true },
+    { day: "پنجشنبه", morningPlan: "الکترونیک ۱ - تحلیل مدارهای دیودی و بایاس ترانزیستورهای BJT", afternoonPlan: "شبیه‌ساز جامع آزمون ارشد برق و ثبت نتایج در کارتابل داوطلب (۴۰ تست)", totalQuestions: 40, completed: false },
+    { day: "جمعه", morningPlan: "جلسه مشاوره کایزن و عارضه‌یابی هفتگی با مشاور ارشد آزمونیار", afternoonPlan: "کارنامه خوانی آزمون آزمایشی ارشد برق و برنامه‌ریزی اصلاحی برای کاهش نمرات منفی", totalQuestions: 10, completed: false }
   ]);
 
   const handleToggleTask = (index: number) => {
@@ -25,17 +25,17 @@ export default function StudyPlanView() {
     setLoading(true);
     setTimeout(() => {
       const aiUpdates = [
-        { day: "شنبه", morningPlan: "حقوق مدنی - مطالعه مبحث شروط در ضمن عقد و ارث کاداستر", afternoonPlan: "انجام ۴۵ نمونه تست اصطکاک و تله تستی مدنی دپارتمان تالیف", totalQuestions: 45, completed: false },
-        { day: "یکشنبه", morningPlan: "آیین دادرسی مدنی - مبحث واخواهی و فرجام‌خواهی همراه آرای وحدت رویه", afternoonPlan: "پایش تله‌های ۳۵ ماده از آخرین وبینارهای تخصصی چتر دانش", totalQuestions: 35, completed: false },
-        { day: "دوشنبه", morningPlan: "حقوق اساسی و قوانین خاص ثبتی - مرور صلاحیت‌های دیوان عدالت اداری", afternoonPlan: "حل ۴۰ تست کشسانی در حضور ناظر آموزشی چتر دانش", totalQuestions: 40, completed: false },
-        { day: "سه‌شنبه", morningPlan: "اصول فقه - قیاس، امارات، اصول عملیه و واژگان تخصصی متلق و مقید", afternoonPlan: "اجرای ۳۰ نمونه تستی مفاهمه اصول بدون نمره منفی اضافی", totalQuestions: 30, completed: false },
-        { day: "چهارشنبه", morningPlan: "حقوق تجارت - مبحث ورشکستگی، تصفیه و وظایف مدیر تصفیه", afternoonPlan: "تست‌زنی تجارت با تاکید بر مواد صریح قانون تجارت و قوانین ملحقه و خاص", totalQuestions: 15, completed: false },
-        { day: "پنجشنبه", morningPlan: "آیین دادرسی کیفری - قرار بازداشت موقت، وثیقه و صلاحیت‌های دادگاه کیفری یک", afternoonPlan: "پایش آزمون شبیه‌ساز پیشرفته و خلاصه نویسی نکات در دفترچه طلایی", totalQuestions: 30, completed: false },
-        { day: "جمعه", morningPlan: "تحویل مکتوب آمار پایش کیفی به پنل مشاور ارشد چتر دانش جهت عارضه‌یابی", afternoonPlan: "بررسی تراز مانیتورینگ کارایی و تدوین توصیه‌های کایزن مطالعاتی", totalQuestions: 10, completed: false }
+        { day: "شنبه", morningPlan: "مدارهای الکتریکی - مطالعه مبحث تزویج و مدارهای مرتبه دوم در حوزه فرکانس", afternoonPlan: "انجام ۴۵ نمونه تست پاسخ فرکانسی و تله تستی فیلترهای بالاگذر", totalQuestions: 45, completed: false },
+        { day: "یکشنبه", morningPlan: "سیگنال و سیستم - مبحث تبدیل Z و خواص آن همراه وارون تبدیل Z", afternoonPlan: "پایش تله‌های محاسباتی در وبینارهای تخصصی مدلسازی سیستم (۳۵ تست)", totalQuestions: 35, completed: false },
+        { day: "دوشنبه", morningPlan: "الکترومغناطیس - مرور قوانین گاوس، آمپر و شرایط مرزی در دی‌الکتریک‌ها", afternoonPlan: "حل ۴۰ تست پتانسیل الکترواستاتیک در حضور ناظر آموزشی آزمونیار", totalQuestions: 40, completed: false },
+        { day: "سه‌شنبه", morningPlan: "کنترل خطی - مکان هندسی ریشه‌ها و جبران‌سازهای پس‌انداز و پیش‌انداز", afternoonPlan: "اجرای ۳۰ نمونه تستی مفاهمه پایداری نایکوئیست بدون نمره منفی اضافی", totalQuestions: 30, completed: false },
+        { day: "چهارشنبه", morningPlan: "الکترونیک - مبحث تقویت‌کننده‌های تفاضلی و Op-Ampهای ایده‌آل", afternoonPlan: "تست‌زنی ترکیبی با تاکید بر مفاهیم فرکانس قطع و پهنای باند (۱۵ تست)", totalQuestions: 15, completed: false },
+        { day: "پنجشنبه", morningPlan: "ریاضی مهندسی - معادلات موج و گرما در مختصات دکارتی و قطبی", afternoonPlan: "پایش آزمون شبیه‌ساز پیشرفته و خلاصه نویسی نکات در دفترچه محاسبات", totalQuestions: 30, completed: false },
+        { day: "جمعه", morningPlan: "تحویل مکتوب آمار پایش کیفی به پنل مشاور ارشد آزمونیار جهت عارضه‌یابی", afternoonPlan: "بررسی تراز مانیتورینگ کارایی و تدوین توصیه‌های کایزن مطالعاتی ارشد برق", totalQuestions: 10, completed: false }
       ];
       setPlans(aiUpdates);
       setLoading(false);
-      alert("✨ جدول برنامه‌ریزی و کایزن هفتگی داوطلب مجدداً توسط هوش مصنوعی چتر دانش بر اساس ضرایب سخت آزمون بهینه‌سازی شد!");
+      alert("✨ جدول برنامه‌ریزی و کایزن هفتگی داوطلب مجدداً توسط هوش مصنوعی آزمونیار بر اساس ضرایب سخت آزمون بهینه‌سازی شد!");
     }, 1500);
   };
 
@@ -65,9 +65,9 @@ export default function StudyPlanView() {
       {/* Top action header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm text-right">
         <div>
-          <h2 className="text-xl font-black text-slate-900">برنامه‌ریزی هوشمند کایزن درسی بر پایه ضرایب آزمون کانون (AI)</h2>
+          <h2 className="text-xl font-black text-slate-900">برنامه‌ریزی هوشمند کایزن درسی بر پایه ضرایب آزمون ارشد برق (AI)</h2>
           <p className="text-slate-500 text-xs mt-1 leading-relaxed">
-            برنامه درسی داوطلب به صورت هفتگی برای تخصیص بهینه زمان یادگیری مباحث صریح قانون در شیفت صبح و تست‌زنی در شیفت عصر منطبق بر عملکرد آزمون‌های آزمایشی کالیبره می‌شود.
+            برنامه درسی داوطلب به صورت هفتگی برای تخصیص بهینه زمان یادگیری مباحث تئوری و فرمول‌ها در شیفت صبح و تست‌زنی در شیفت عصر منطبق بر عملکرد آزمون‌های آزمایشی کالیبره می‌شود.
           </p>
         </div>
         <button
@@ -101,7 +101,7 @@ export default function StudyPlanView() {
         </div>
         <div className="flex justify-between items-center text-xs text-slate-400">
           <span>{completedCount} روز مطالعه و تست‌زنی با موفقیت تایید شده</span>
-          <span>آزمون آزمایشی بعدی چتر دانش: ۴ روز دیگر</span>
+          <span>آزمون آزمایشی بعدی ارشد برق: ۴ روز دیگر</span>
         </div>
       </div>
 
@@ -110,7 +110,7 @@ export default function StudyPlanView() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-slate-100 space-y-4">
             <div className="w-10 h-10 border-4 border-blue-950 border-t-amber-400 rounded-full animate-spin"></div>
-            <p className="font-bold text-slate-600">هوش کایزن چتر دانش در حال تجدید چیدمان مواد آزمونی کانون وکلا...</p>
+            <p className="font-bold text-slate-600">هوش کایزن آزمونیار در حال تجدید چیدمان مواد آزمونی ارشد مهندسی برق...</p>
           </div>
         ) : (
           plans.map((plan, idx) => (

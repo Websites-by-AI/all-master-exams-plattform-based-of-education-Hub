@@ -712,7 +712,7 @@ export default function GoalTracker({ student, currentTraz = 5575, currentPercen
         const milestonesData = [
           {
             step: "گام ۱ (آزمون آزمایشی ماه بعد)",
-            name: "سنجش جامع حقوق مدنی، جزا و آیین دادرسی",
+            name: "سنجش جامع مدارهای الکتریکی، الکترونیک و سیگنال",
             projectedTraz: lastTraz + activeVelocity,
             date: "۱۴۰۵/۰۳/۱۶",
             weeklyHours: velocityPreset === "slow" ? 36 : velocityPreset === "intensive" ? 54 : 45,
@@ -721,7 +721,7 @@ export default function GoalTracker({ student, currentTraz = 5575, currentPercen
           },
           {
             step: "گام ۲ (شبیه‌ساز پیشرفته)",
-            name: "آزمون تخصصی حقوق تجارت، ثبت و اصول فقه",
+            name: "آزمون تخصصی ماشین‌های الکتریکی، مغناطیس و کنترل",
             projectedTraz: lastTraz + (activeVelocity * 2),
             date: "۱۴۰۵/۰۳/۳۰",
             weeklyHours: velocityPreset === "slow" ? 40 : velocityPreset === "intensive" ? 58 : 48,

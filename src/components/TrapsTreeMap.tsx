@@ -20,9 +20,9 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedTrapDetail, setSelectedTrapDetail] = useState<TestTrap | null>(null);
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
-    "civil": true,
-    "commercial": true,
-    "criminal": true,
+    "circuits": true,
+    "signals": true,
+    "electronics": true,
     "other": false
   });
 
@@ -36,27 +36,27 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
   }, []);
 
   // Categorize traps
-  const civilTraps = traps.filter(t => {
+  const circuitsTraps = traps.filter(t => {
     const subj = t.subject.toLowerCase();
-    return subj.includes("مدنی") || subj.includes("اصول فقه") || subj.includes("اساسی");
+    return subj.includes("مدار") || subj.includes("ریاضی مهندسی") || subj.includes("برق");
   });
 
-  const commercialTraps = traps.filter(t => {
+  const signalsTraps = traps.filter(t => {
     const subj = t.subject.toLowerCase();
-    return subj.includes("تجارت") || subj.includes("شرکت");
+    return subj.includes("سیگنال") || subj.includes("کنترل");
   });
 
-  const criminalTraps = traps.filter(t => {
+  const electronicsTraps = traps.filter(t => {
     const subj = t.subject.toLowerCase();
-    return subj.includes("جزا") || subj.includes("کیفری") || subj.includes("جرم");
+    return subj.includes("الکترونیک") || subj.includes("ماشین") || subj.includes("مغناطیس");
   });
 
   const otherTraps = traps.filter(t => {
     const subj = t.subject.toLowerCase();
-    const isCivil = subj.includes("مدنی") || subj.includes("اصول فقه") || subj.includes("اساسی");
-    const isCommercial = subj.includes("تجارت") || subj.includes("شرکت");
-    const isCriminal = subj.includes("جزا") || subj.includes("کیفری") || subj.includes("جرم");
-    return !isCivil && !isCommercial && !isCriminal;
+    const isCircuits = subj.includes("مدار") || subj.includes("ریاضی مهندسی") || subj.includes("برق");
+    const isSignals = subj.includes("سیگنال") || subj.includes("کنترل");
+    const isElectronics = subj.includes("الکترونیک") || subj.includes("ماشین") || subj.includes("مغناطیس");
+    return !isCircuits && !isSignals && !isElectronics;
   });
 
   const toggleCategory = (cat: string) => {
@@ -67,40 +67,40 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
   };
 
   // Pre-populate mock traps if empty for a subject
-  const handleAddMockTrap = (subjectKey: 'civil' | 'commercial' | 'criminal') => {
+  const handleAddMockTrap = (subjectKey: 'circuits' | 'signals' | 'electronics') => {
     let mockData: Omit<TestTrap, "id" | "createdAt">;
 
-    if (subjectKey === 'civil') {
+    if (subjectKey === 'circuits') {
       mockData = {
-        questionTitle: "تشخیص بیع کالی به کالی و صحت تعلیق در انشا",
-        subject: "حقوق مدنی کانون وکلا",
-        category: "مفهومی",
-        trapType: "تله عدم تمایز اثر عقد از انشا",
-        correctAnswer: "تعلیق در انشا موجب بطلان عقد است ولی تعلیق در منشأ صحیح است.",
-        userMistake: "من فکر کردم تعلیق در اثر عقد (منشأ) باطل‌کننده است، در حالیکه بر اساس ماده ۱۹۰ قانون مدنی تعلیق در انشا (قصد) موجب بطلان است.",
-        legalNote: "ماده ۱۹۰ قانون مدنی: قصد و انشا اصل اراده هستند. تعلیق در انشا یعنی معلق کردن ایجاد اراده، که عقلانی نبوده و موجب بطلان عقود مدنی است.",
+        questionTitle: "تحلیل حالت گذرا و تشخیص ثابت زمانی در مدارهای مرتبه دوم",
+        subject: "مدار الکتریکی ۱ و ۲",
+        category: "فرمول‌محور",
+        trapType: "تله پلاریته خازن در لحظه کلیدزنی",
+        correctAnswer: "ولتاژ خازن در لحظه 0+ برابر ولتاژ آن در لحظه 0- است.",
+        userMistake: "من فکر کردم جریان خازن هم نمی‌تواند تغییر ناگهانی داشته باشد، در حالیکه بر اساس قوانین فیزیکی مدار فقط ولتاژ خازن پیوسته است.",
+        legalNote: "قاعده پیوستگی: ولتاژ خازن و جریان سلف نمی‌توانند تغییر ناگهانی داشته باشند (مگر در حضور ضربه). این کلید حل اکثر مسائل حالت گذرا در کنکور ارشد است.",
         importance: "high"
       };
-    } else if (subjectKey === 'commercial') {
+    } else if (subjectKey === 'signals') {
       mockData = {
-        questionTitle: "مسئولیت تضامنی ظهرنویسان در اسناد تجاری بلافرزند",
-        subject: "حقوق تجارت و شرکت‌ها",
+        questionTitle: "پایداری سیستم‌های LTI در حوزه زمان و فرکانس",
+        subject: "سیگنال‌ها و سیستم‌ها",
         category: "مفهومی",
-        trapType: "تله عدم اقدام به موقع واخواست",
-        correctAnswer: "مسئولیت ظهرنویسان منوط به واخواست عدم تادیه ظرف ۱۵ روز از سررسید است.",
-        userMistake: "سفته را واخواست نکرده مستقیماً به ظهرنویسان مراجعه کردم، در حالیکه عدم واخواست در موعد قانونی موجب سقوط حق مراجعه تضامنی به ظهرنویسان می‌شود.",
-        legalNote: "ماده ۲۸۶ قانون تجارت: عدم واخواست در موعد مقرر (۱۰ روز بر اساس اصلاحیه جدید)، به معنی سقوط حق تضامنی علیه تمام ظهرنویسان است.",
+        trapType: "تله سیستم‌های غیرعلی",
+        correctAnswer: "سیستم پایدار است اگر انتگرال قدرمطلق پاسخ ضربه آن محدود باشد.",
+        userMistake: "پایداری را فقط با محل قطب‌ها سنجیدم، در حالیکه برای سیستم‌های غیرعلی محل قطب‌ها به تنهایی پایداری را تضمین نمی‌کند.",
+        legalNote: "شرط پایداری BIBO: انتگرال‌پذیری مطلق پاسخ ضربه سیستم. در حوزه فرکانس، ناحیه همگرایی (ROC) باید شامل محور jw باشد.",
         importance: "high"
       };
     } else {
       mockData = {
-        questionTitle: "تعدد جرم مادی و معنوی در قانون مجازات اسلامی",
-        subject: "آیین دادرسی کیفری و جزا",
-        category: "اشتباه_محاسباتی",
-        trapType: "تله قاعده تجمیع مجازات‌ها",
-        correctAnswer: "در تعدد مادی جرایم تعزیری، فقط مجازات اشد اجرا می‌گردد و تجمیع نمی‌شوند.",
-        userMistake: "مجازات تک‌تک جرایم را با هم جمع کردم و به اشتباه پاسخ دادم.",
-        legalNote: "ماده ۱۳۴ قانون مجازات اسلامی: در تعدد جرایم تعزیری درجه پنج تا هشت، دادگاه می‌تواند مجازات‌ها را تجمیع یا اشد را اجرا کند. اما در درجه ۱ تا ۴ فقط اشد اجرا می‌شود.",
+        questionTitle: "نقطه کار ترانزیستور BJT در آرایش امیتر مشترک",
+        subject: "الکترونیک ۱ و ۲",
+        category: "فرمول‌محور",
+        trapType: "تله ناحیه اشباع",
+        correctAnswer: "اگر Vce کمتر از 0.2 ولت شود، ترانزیستور وارد ناحیه اشباع شده و Ic دیگر تابع Ib نیست.",
+        userMistake: "جریان کلکتور را بدون چک کردن ناحیه اشباع از رابطه بتا برابر جریان بیس حساب کردم.",
+        legalNote: "در مسائل الکترونیک همیشه ابتدا فرض فعال بودن را چک کنید. اگر Vce محاسبه شده کمتر از مقدار اشباع بود، باید محاسبات را در ناحیه اشباع تکرار کنید.",
         importance: "medium"
       };
     }
@@ -125,7 +125,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
               <span>درخت دانش و تفکیک موضوعی تله‌های تستی ذخیره شده</span>
               <Sparkles size={14} className="text-amber-500 fill-amber-100" />
             </h2>
-            <p className="text-xs text-slate-500 font-bold mt-1">ساختار سلسله‌مراتبی تله‌های شکارشده به موازات مباحث آزمون کانون وکلا</p>
+            <p className="text-xs text-slate-500 font-bold mt-1">ساختار سلسله‌مراتبی تله‌های شکارشده به موازات مباحث آزمون ارشد برق</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -148,7 +148,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                 <Target size={16} className="text-amber-400" />
               </div>
               <strong className="text-xs font-black tracking-wide">ریشه اصلی درخت دانش</strong>
-              <span className="text-[9px] text-indigo-300 mt-1 font-bold">تله‌های نجات‌بخش کانون وکلا</span>
+              <span className="text-[9px] text-indigo-300 mt-1 font-bold">تله‌های نجات‌بخش کنکور ارشد برق</span>
             </div>
             
             {/* Split connectors downward on desktop */}
@@ -169,15 +169,15 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
             {/* BRANCHES GRID */}
             <div className={`grid grid-cols-1 md:grid-cols-3 ${otherTraps.length > 0 ? 'lg:grid-cols-4' : ''} gap-6 w-full text-right`}>
               
-              {/* BRANCH 1: CIVIL */}
-              <div className={`flex flex-col items-center space-y-3 ${selectedSubject === 'civil' ? 'ring-2 ring-blue-500/20 p-2.5 rounded-2xl bg-white/50' : ''}`} id="branch-civil">
+              {/* BRANCH 1: CIRCUITS */}
+              <div className={`flex flex-col items-center space-y-3 ${selectedSubject === 'circuits' ? 'ring-2 ring-blue-500/20 p-2.5 rounded-2xl bg-white/50' : ''}`} id="branch-circuits">
                 <button
                   onClick={() => {
-                    setSelectedSubject(selectedSubject === 'civil' ? null : 'civil');
-                    toggleCategory('civil');
+                    setSelectedSubject(selectedSubject === 'circuits' ? null : 'circuits');
+                    toggleCategory('circuits');
                   }}
                   className={`w-full text-right p-4 rounded-2xl border transition-all cursor-pointer flex justify-between items-center ${
-                    civilTraps.length > 0 
+                    circuitsTraps.length > 0 
                       ? "bg-blue-50/70 hover:bg-blue-50/90 border-blue-200 shadow-sm" 
                       : "bg-white border-dashed border-slate-300 hover:border-slate-400"
                   }`}
@@ -187,23 +187,23 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                       <BookOpen size={16} />
                     </div>
                     <div>
-                      <strong className="text-xs font-black text-blue-950 block">مبحث حقوق مدنی</strong>
-                      <span className="text-[9px] text-blue-800 font-bold block mt-0.5">مواد و آیین دادرسی مدنی</span>
+                      <strong className="text-xs font-black text-blue-950 block">مباحث مدار و ریاضیات</strong>
+                      <span className="text-[9px] text-blue-800 font-bold block mt-0.5">مدار ۱ و ۲ و ریاضی مهندسی</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs font-black bg-blue-100 text-blue-900 px-2.5 py-0.5 rounded-lg border border-blue-200">
-                      {civilTraps.length}
+                      {circuitsTraps.length}
                     </span>
-                    {expandedCategories.civil ? <ChevronUp size={14} className="text-blue-500" /> : <ChevronDown size={14} className="text-blue-500" />}
+                    {expandedCategories.circuits ? <ChevronUp size={14} className="text-blue-500" /> : <ChevronDown size={14} className="text-blue-500" />}
                   </div>
                 </button>
 
                 {/* Sub-branch expansion containing actual traps */}
-                {expandedCategories.civil && (
+                {expandedCategories.circuits && (
                   <div className="w-full space-y-2 animate-fade-in">
-                    {civilTraps.length > 0 ? (
-                      civilTraps.map(trap => (
+                    {circuitsTraps.length > 0 ? (
+                      circuitsTraps.map(trap => (
                         <div 
                           key={trap.id}
                           onClick={() => setSelectedTrapDetail(trap)}
@@ -220,11 +220,11 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                       <div className="p-4 border border-dashed border-slate-200 rounded-xl bg-white text-center space-y-2">
                         <p className="text-[10px] text-slate-405 font-bold italic">تله‌ای در این مبحث ثبت نشده است</p>
                         <button
-                          onClick={() => handleAddMockTrap('civil')}
+                          onClick={() => handleAddMockTrap('circuits')}
                           className="inline-flex items-center gap-1 bg-blue-50 hover:bg-blue-100 text-blue-900 px-3 py-1.5 rounded-lg text-[9px] font-black transition-colors cursor-pointer"
                         >
                           <Plus size={10} />
-                          <span>تله آزمایشی مدنی</span>
+                          <span>تله آزمایشی مدار</span>
                         </button>
                       </div>
                     )}
@@ -232,15 +232,15 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                 )}
               </div>
 
-              {/* BRANCH 2: COMMERCIAL */}
-              <div className={`flex flex-col items-center space-y-3 ${selectedSubject === 'commercial' ? 'ring-2 ring-amber-500/20 p-2.5 rounded-2xl bg-white/50' : ''}`} id="branch-commercial">
+              {/* BRANCH 2: SIGNALS */}
+              <div className={`flex flex-col items-center space-y-3 ${selectedSubject === 'signals' ? 'ring-2 ring-amber-500/20 p-2.5 rounded-2xl bg-white/50' : ''}`} id="branch-signals">
                 <button
                   onClick={() => {
-                    setSelectedSubject(selectedSubject === 'commercial' ? null : 'commercial');
-                    toggleCategory('commercial');
+                    setSelectedSubject(selectedSubject === 'signals' ? null : 'signals');
+                    toggleCategory('signals');
                   }}
                   className={`w-full text-right p-4 rounded-2xl border transition-all cursor-pointer flex justify-between items-center ${
-                    commercialTraps.length > 0 
+                    signalsTraps.length > 0 
                       ? "bg-amber-50/70 hover:bg-amber-50/90 border-amber-200 shadow-sm" 
                       : "bg-white border-dashed border-slate-300 hover:border-slate-400"
                   }`}
@@ -250,23 +250,23 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                       <Scale size={16} />
                     </div>
                     <div>
-                      <strong className="text-xs font-black text-amber-950 block">مبحث حقوق تجارت</strong>
-                      <span className="text-[9px] text-amber-800 font-bold block mt-0.5">شرکت‌ها و اسناد تجاری</span>
+                      <strong className="text-xs font-black text-amber-950 block">مباحث سیگنال و کنترل</strong>
+                      <span className="text-[9px] text-amber-800 font-bold block mt-0.5">سیستم‌های LTI و پایداری</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-lg border border-amber-200">
-                      {commercialTraps.length}
+                      {signalsTraps.length}
                     </span>
-                    {expandedCategories.commercial ? <ChevronUp size={14} className="text-amber-500" /> : <ChevronDown size={14} className="text-amber-500" />}
+                    {expandedCategories.signals ? <ChevronUp size={14} className="text-amber-500" /> : <ChevronDown size={14} className="text-amber-500" />}
                   </div>
                 </button>
 
                 {/* Sub-branch expansion containing actual traps */}
-                {expandedCategories.commercial && (
+                {expandedCategories.signals && (
                   <div className="w-full space-y-2 animate-fade-in">
-                    {commercialTraps.length > 0 ? (
-                      commercialTraps.map(trap => (
+                    {signalsTraps.length > 0 ? (
+                      signalsTraps.map(trap => (
                         <div 
                           key={trap.id}
                           onClick={() => setSelectedTrapDetail(trap)}
@@ -283,11 +283,11 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                       <div className="p-4 border border-dashed border-slate-200 rounded-xl bg-white text-center space-y-2">
                         <p className="text-[10px] text-slate-405 font-bold italic">تله‌ای در این مبحث ثبت نشده است</p>
                         <button
-                          onClick={() => handleAddMockTrap('commercial')}
+                          onClick={() => handleAddMockTrap('signals')}
                           className="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-900 px-3 py-1.5 rounded-lg text-[9px] font-black transition-colors cursor-pointer"
                         >
                           <Plus size={10} />
-                          <span>تله آزمایشی تجارت</span>
+                          <span>تله آزمایشی سیگنال</span>
                         </button>
                       </div>
                     )}
@@ -295,15 +295,15 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                 )}
               </div>
 
-              {/* BRANCH 3: CRIMINAL */}
-              <div className={`flex flex-col items-center space-y-3 ${selectedSubject === 'criminal' ? 'ring-2 ring-red-500/20 p-2.5 rounded-2xl bg-white/50' : ''}`} id="branch-criminal">
+              {/* BRANCH 3: ELECTRONICS */}
+              <div className={`flex flex-col items-center space-y-3 ${selectedSubject === 'electronics' ? 'ring-2 ring-red-500/20 p-2.5 rounded-2xl bg-white/50' : ''}`} id="branch-electronics">
                 <button
                   onClick={() => {
-                    setSelectedSubject(selectedSubject === 'criminal' ? null : 'criminal');
-                    toggleCategory('criminal');
+                    setSelectedSubject(selectedSubject === 'electronics' ? null : 'electronics');
+                    toggleCategory('electronics');
                   }}
                   className={`w-full text-right p-4 rounded-2xl border transition-all cursor-pointer flex justify-between items-center ${
-                    criminalTraps.length > 0 
+                    electronicsTraps.length > 0 
                       ? "bg-red-50/70 hover:bg-red-50/90 border-red-200 shadow-sm" 
                       : "bg-white border-dashed border-slate-300 hover:border-slate-400"
                   }`}
@@ -313,23 +313,23 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                       <ShieldAlert size={16} />
                     </div>
                     <div>
-                      <strong className="text-xs font-black text-red-950 block">مبحث حقوق جزا</strong>
-                      <span className="text-[9px] text-red-800 font-bold block mt-0.5">قوانین کیفری و دادرسی</span>
+                      <strong className="text-xs font-black text-red-950 block">مباحث الکترونیک و ماشین</strong>
+                      <span className="text-[9px] text-red-800 font-bold block mt-0.5">مدارهای فعال و الکترومغناطیس</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs font-black bg-red-100 text-red-900 px-2.5 py-0.5 rounded-lg border border-red-200">
-                      {criminalTraps.length}
+                      {electronicsTraps.length}
                     </span>
-                    {expandedCategories.criminal ? <ChevronUp size={14} className="text-red-500" /> : <ChevronDown size={14} className="text-red-500" />}
+                    {expandedCategories.electronics ? <ChevronUp size={14} className="text-red-500" /> : <ChevronDown size={14} className="text-red-500" />}
                   </div>
                 </button>
 
                 {/* Sub-branch expansion containing actual traps */}
-                {expandedCategories.criminal && (
+                {expandedCategories.electronics && (
                   <div className="w-full space-y-2 animate-fade-in">
-                    {criminalTraps.length > 0 ? (
-                      criminalTraps.map(trap => (
+                    {electronicsTraps.length > 0 ? (
+                      electronicsTraps.map(trap => (
                         <div 
                           key={trap.id}
                           onClick={() => setSelectedTrapDetail(trap)}
@@ -346,11 +346,11 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                       <div className="p-4 border border-dashed border-slate-200 rounded-xl bg-white text-center space-y-2">
                         <p className="text-[10px] text-slate-405 font-bold italic">تله‌ای در این مبحث ثبت نشده است</p>
                         <button
-                          onClick={() => handleAddMockTrap('criminal')}
+                          onClick={() => handleAddMockTrap('electronics')}
                           className="inline-flex items-center gap-1 bg-red-50 hover:bg-red-100 text-red-900 px-3 py-1.5 rounded-lg text-[9px] font-black transition-colors cursor-pointer"
                         >
                           <Plus size={10} />
-                          <span>تله آزمایشی جزایی</span>
+                          <span>تله آزمایشی الکترونیک</span>
                         </button>
                       </div>
                     )}
@@ -483,7 +483,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                   <Info size={11} />
                   <span>درس: {selectedTrapDetail.subject} | دسته‌بندی علمی: {selectedTrapDetail.category}</span>
                 </span>
-                <span>ثبت شده در سامانه: {selectedTrapDetail.createdAt}</span>
+                <span>ثبت شده در سامانه میزان: {selectedTrapDetail.createdAt}</span>
               </div>
             </div>
           </motion.div>
@@ -492,7 +492,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
 
       {/* Guide text */}
       <p className="text-[11px] text-slate-400 leading-relaxed text-right font-semibold">
-        💡 <strong className="font-bold text-indigo-950">نکته آموزشی میزان:</strong> روی هر یک از کارت‌های تله تستی بالا کلیک کنید تا جزئیات سوال، تله طراحی شده، اشتباه شما و مستند قانونی صریح جهت حذف خطا در تراز آزمون وکالت در این باکس خلاصه نشان داده شود.
+        💡 <strong className="font-bold text-indigo-950">نکته آموزشی میزان:</strong> روی هر یک از کارت‌های تله تستی بالا کلیک کنید تا جزئیات سوال، تله طراحی شده، اشتباه شما و مستند علمی صریح جهت حذف خطا در تراز آزمون ارشد برق در این باکس خلاصه نشان داده شود.
       </p>
     </div>
   );

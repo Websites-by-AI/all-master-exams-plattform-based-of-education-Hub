@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { 
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  AreaChart, Area
+} from "recharts";
+import { 
   Sparkles, TrendingUp, Calendar, AlertCircle, ArrowUpRight, 
-  BarChart3, Star, Plus, Trash2, Sliders, Check, Award, Calculator, Info, RotateCcw
+  BarChart3, Star, Plus, Trash2, Sliders, Check, Award, Calculator, Info, RotateCcw,
+  Zap, Workflow, Cpu
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { addSystemLog } from "../lib/syslogs";
@@ -38,7 +43,7 @@ export default function ProgressView() {
 
   // Initialize data with local storage persistence or standard fallbacks
   useEffect(() => {
-    const saved = localStorage.getItem("chatre_custom_exams");
+    const saved = localStorage.getItem("ee_custom_exams");
     if (saved) {
       try {
         setHistoryData(JSON.parse(saved));
@@ -52,17 +57,17 @@ export default function ProgressView() {
 
   const loadDefaultExams = () => {
     const defaults: CustomExamPoint[] = [
-      { examName: "شبیه‌ساز ۱ - حقوق مدنی پایه", traz: 5120, percentage: 48, date: "۵ مهر" },
-      { examName: "شبیه‌ساز ۲ - عقود معین", traz: 5240, percentage: 51, date: "۱۹ مهر" },
-      { examName: "شبیه‌ساز ۳ - قوانین ثبتی خاص", traz: 5575, percentage: 59, date: "۱۵ آبان" },
-      { examName: "شبیه‌ساز ۴ - دادرسی مدنی مکرر", traz: 5720, percentage: 63, date: "۲۹ آذر" },
-      { examName: "شبیه‌ساز ۵ - اسناد تجاری فعال", traz: 5690, percentage: 61, date: "۱۲ دی" },
-      { examName: "شبیه‌ساز ۶ - تعارض ادله فقهی", traz: 5880, percentage: 65, date: "۲۶ دی" },
-      { examName: "شبیه‌ساز ۷ - قواعد عمومی جرم جزا", traz: 6010, percentage: 67, date: "۱۰ بهمن" },
-      { examName: "شبیه‌ساز ۸ - جامع وکالت پایلوت", traz: 6150, percentage: 70, date: "۲۴ بهمن" }
+      { examName: "شبیه‌ساز ۱ - مدارهای الکتریکی پایه", traz: 5120, percentage: 48, date: "۵ مهر" },
+      { examName: "شبیه‌ساز ۲ - تحلیل گذار و حوزه فرکانس", traz: 5240, percentage: 51, date: "۱۹ مهر" },
+      { examName: "شبیه‌ساز ۳ - الکترونیک و نیمه‌هادی‌ها", traz: 5575, percentage: 59, date: "۱۵ آبان" },
+      { examName: "شبیه‌ساز ۴ - سیگنال‌ها و سیستم‌های LTI", traz: 5720, percentage: 63, date: "۲۹ آذر" },
+      { examName: "شبیه‌ساز ۵ - ماشین‌های AC و DC", traz: 5690, percentage: 61, date: "۱۲ دی" },
+      { examName: "شبیه‌ساز ۶ - کنترل خطی و پایداری", traz: 5880, percentage: 65, date: "۲۶ دی" },
+      { examName: "شبیه‌ساز ۷ - الکترومغناطیس و معادلات ماکسول", traz: 6010, percentage: 67, date: "۱۰ بهمن" },
+      { examName: "شبیه‌ساز ۸ - جامع ارشد مهندسی برق کشور", traz: 6150, percentage: 70, date: "۲۴ بهمن" }
     ];
     setHistoryData(defaults);
-    localStorage.setItem("chatre_custom_exams", JSON.stringify(defaults));
+    localStorage.setItem("ee_custom_exams", JSON.stringify(defaults));
   };
 
   // Add custom exam
@@ -125,61 +130,71 @@ export default function ProgressView() {
 
   // Lessons Static detailed stats
   const lessonsStats = [
-    { name: "حقوق مدنی (عقود، تعهدات و ارث)", current: 55, previous: 25, progress: 30, count: 120 },
-    { name: "آیین دادرسی مدنی (صلاحیت و واخواهی)", current: 65, previous: 32, progress: 33, count: 145 },
-    { name: "حقوق تجارت (اسناد تجاری و ورشکستگی)", current: 72, previous: 41, progress: 31, count: 85 },
-    { name: "اصول فقه و متون فقه تخصصی", current: 85, previous: 72, progress: 13, count: 40 },
-    { name: "حقوق جزا و آیین دادرسی کیفری صریح", current: 92, previous: 80, progress: 12, count: 45 }
+    { name: "مدارهای الکتریکی ۱ و ۲ (تزویج و گراف)", current: 55, previous: 25, progress: 30, count: 120 },
+    { name: "الکترونیک ۱ و ۲ (ترانزیستور و Op-Amp)", current: 65, previous: 32, progress: 33, count: 145 },
+    { name: "سیگنال‌ها و سیستم‌ها (تبدیلات و فرکانس)", current: 72, previous: 41, progress: 31, count: 85 },
+    { name: "کنترل خطی (مکان هندسی و پایداری)", current: 85, previous: 72, progress: 13, count: 40 },
+    { name: "ماشین و مغناطیس (تلفات و پتانسیل)", current: 92, previous: 80, progress: 12, count: 45 }
+  ];
+
+  // Data for the new Recharts mastery chart
+  const masteryHistoryData = [
+    { name: "مهر", fourier: 30, control: 25, semiconductor: 15 },
+    { name: "آبان", fourier: 42, control: 35, semiconductor: 28 },
+    { name: "آذر", fourier: 55, control: 48, semiconductor: 40 },
+    { name: "دی", fourier: 68, control: 62, semiconductor: 55 },
+    { name: "بهمن", fourier: 82, control: 78, semiconductor: 72 },
+    { name: "اسفند", fourier: 90, control: 88, semiconductor: 85 }
   ];
 
   // Simulator Initial Sliders configuration & coefficients
   const [sliderScores, setSliderScores] = useState({
-    civil: 55,       // Civil Law - Weight 3
-    procedure: 65,   // Civil Procedure - Weight 3
-    commerce: 60,    // Commerce - Weight 2
-    figh: 75,        // Principles & Figh text - Weight 1
-    penal: 80,       // Public & Private Penal - Weight 2
-    criminalProc: 70, // Criminal Procedure - Weight 2
-    constitutional: 65 // Constitution - Weight 1
+    circuits: 55,    // Circuits - Weight 4
+    electronics: 65, // Electronics - Weight 3
+    signals: 60,     // Signals - Weight 3
+    math: 75,        // Engineering Math - Weight 3
+    control: 80,     // Control Systems - Weight 2
+    machines: 70,    // Electrical Machines - Weight 2
+    electro: 65      // Electromagnetics - Weight 2
   });
 
   // Calculate composite weighted percentage
-  const totalCoeff = 3 + 3 + 2 + 1 + 2 + 2 + 1; // 14
+  const totalCoeff = 4 + 3 + 3 + 3 + 2 + 2 + 2; // 19
   const weightedAvg = Math.round(
-    (sliderScores.civil * 3 +
-      sliderScores.procedure * 3 +
-      sliderScores.commerce * 2 +
-      sliderScores.figh * 1 +
-      sliderScores.penal * 2 +
-      sliderScores.criminalProc * 2 +
-      sliderScores.constitutional * 1) /
+    (sliderScores.circuits * 4 +
+      sliderScores.electronics * 3 +
+      sliderScores.signals * 3 +
+      sliderScores.math * 3 +
+      sliderScores.control * 2 +
+      sliderScores.machines * 2 +
+      sliderScores.electro * 2) /
       totalCoeff
   );
 
   // Standard Formula predicting final Traz dynamically based on weighted averages
   const simulatedTraz = Math.round(3000 + weightedAvg * 55);
 
-  // Predict bar exam passing probability based on simulated Traz
+  // Predict EE Master's passing probability based on simulated Traz
   let passProbability = 0;
   let passAlertColor = "text-rose-605 bg-rose-50 border-rose-100";
   let passAletStatus = "مردود احتمالی!";
-  let passAlertDesc = "متاسفانه تراز محاسباتی شما پاسخگوی حداقل رقابت کانون وکلای دادگستری مرکز نیست. تمرکز خود را روی حقوق مدنی و آیین دادرسی افزایش دهید.";
+  let passAlertDesc = "متاسفانه تراز محاسباتی شما پاسخگوی حداقل رقابت دانشگاه‌های تراز اول کشور نیست. تمرکز خود را روی مدارهای الکتریکی و سیگنالینگ افزایش دهید.";
 
   if (simulatedTraz >= 6500) {
     passProbability = 98;
     passAlertColor = "text-emerald-800 bg-emerald-50 border-emerald-150";
-    passAletStatus = "پذیرش ۱۰۰٪ تضمینی کشوری (رتبه تک‌رقمی یا دو‌رقمی کانون مرکز)";
-    passAlertDesc = "تراز علمی فوق‌العاده با ضریب پایداری چشمگیر؛ با این روند شانس قطعیت قبولی شما در کانون وکلای مرکز (تهران) بالاترین ارزش را دارد.";
+    passAletStatus = "پذیرش ۱۰۰٪ تضمینی کشوری (رتبه تک‌رقمی دانشگاه شریف یا تهران)";
+    passAlertDesc = "تراز علمی فوق‌العاده با ضریب پایداری چشمگیر؛ با این روند شانس قطعیت قبولی شما در گرایش‌های رقابتی (مثل مخابرات یا الکترونیکِ شریف) بسیار بالاست.";
   } else if (simulatedTraz >= 5900) {
     passProbability = 85;
     passAlertColor = "text-blue-800 bg-blue-50 border-blue-150";
-    passAletStatus = "قبولی قطعی در کانون مرکز";
+    passAletStatus = "قبولی قطعی در دانشگاه‌های ممتاز";
     passAlertDesc = "تراز عالی است. شما در کور علمی پذیرفته‌شدگان قطعی تهران قرار دارید. روی عارضه‌یابی اشتباهات با تله‌های تستی مداومت کنید.";
   } else if (simulatedTraz >= 5100) {
     passProbability = 48;
     passAlertColor = "text-amber-800 bg-amber-50 border-amber-150";
-    passAletStatus = "قبولی مرزی در کانون‌های تراز متوسط";
-    passAlertDesc = "آستانه لب مرز؛ احتمال قبولی کانون‌های با تراز معمولی وجود دارد اما برای تضمین کانون مرکز، تراز خود را با رفع خستگی مطالعاتی به بالای ۵۹۰۰ بکشانید.";
+    passAletStatus = "قبولی مرزی در دانشگاه‌های تراز متوسط";
+    passAlertDesc = "آستانه لب مرز؛ احتمال قبولی در نوبت شبانه یا دانشگاه‌های شهرستان وجود دارد اما برای تضمین رتبه برتر، تراز خود را به بالای ۵۹۰۰ بکشانید.";
   } else {
     passProbability = Math.min(25, Math.max(2, Math.round(weightedAvg * 0.3)));
   }
@@ -212,7 +227,7 @@ export default function ProgressView() {
             <h2 className="text-lg font-black text-slate-900 font-sans">پایش هوشمند تراز مکرر و شبیه‌ساز قبولی کایزن</h2>
           </div>
           <p className="text-slate-500 text-xs mt-0.5 leading-relaxed">
-            روند تغییر علمی، محاسبات درصد رسمی آزمون کانون وکلا و پیش‌بینی قبولی خود در مرکز مشاوران را مانیتور کنید.
+            روند تغییر علمی، محاسبات درصد رسمی آزمون ارشد مهندسی برق و پیش‌بینی قبولی خود در دانشگاه‌های ممتاز کشور را مانیتور کنید.
           </p>
         </div>
 
@@ -235,7 +250,7 @@ export default function ProgressView() {
             }`}
           >
             <Sliders size={13} />
-            <span className="text-indigo-950 font-black">پیش‌بینی ثبات کانون (شبیه‌ساز)</span>
+            <span className="text-indigo-950 font-black">پیش‌بینی ثبات قبولی (شبیه‌ساز)</span>
           </button>
 
           <button
@@ -245,7 +260,7 @@ export default function ProgressView() {
             }`}
           >
             <Star size={13} />
-            <span>سنجش دروس شالوده</span>
+            <span>تسلط بر زیرگرایش‌ها</span>
           </button>
         </div>
       </div>
@@ -260,7 +275,7 @@ export default function ProgressView() {
               <div className="text-right">
                 <span className="font-black text-slate-800 text-sm flex items-center gap-1.5">
                   <BarChart3 className="text-blue-900" size={18} />
-                  <span>آمار توزیع تراز در آزمون‌های شبیه‌ساز میزان (مبتنی بر آرشیو و کدهای ثبت شده)</span>
+                  <span>آمار توزیع تراز در آزمون‌های شبیه‌ساز آزمونیار (مبتنی بر آرشیو و کدهای ثبت شده)</span>
                 </span>
                 <p className="text-[10px] text-slate-400 mt-1">ترازهای شما بین {toPersianNum(minTraz + 300)} تا {toPersianNum(maxTraz - 300)} در نوسان است. نقاط را کلیک یا لمس کنید.</p>
               </div>
@@ -309,7 +324,7 @@ export default function ProgressView() {
                         type="text"
                         value={newExamName}
                         onChange={(e) => setNewExamName(e.target.value)}
-                        placeholder="مثال: جامع مدنی و تجارت"
+                        placeholder="مثال: جامع مدار و سیگنال"
                         className="w-full text-xs font-bold p-2.5 rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-900"
                       />
                     </div>
@@ -468,8 +483,71 @@ export default function ProgressView() {
               برآورد اهداف ارتقاء تراز: هدف {historyData.length > 0 ? toPersianNum(historyData[historyData.length - 1].traz + 250) : toPersianNum(6400)}
             </h3>
             <p className="text-xs text-blue-105 mt-2 leading-relaxed">
-              بررسی {toPersianNum(historyData.length)} دوره آزمونی نشان می‌دهد پسماند منفی تراز شما عمیقاً بهبود یافته است. با غلبه بر ۳ تله عمده در آیین دادرسی مدنی مکرر و مسئولیت تضامنی صادرکنندگان چک تفکیکی، تراز آزمون‌های جامع بعدی داوطلب با جهش ملموس پایا ارتقا پیدا خواهد کرد.
+              بررسی {toPersianNum(historyData.length)} دوره آزمونی نشان می‌دهد پسماند منفی تراز شما عمیقاً بهبود یافته است. با غلبه بر ۳ تله عمده در تحلیل حالت گذره و فیدبک منفی در کنترل خطی، تراز آزمون‌های جامع بعدی داوطلب با جهش ملموس پایا ارتقا پیدا خواهد کرد.
             </p>
+          </div>
+
+          {/* NEW RECHARTS CHART SECTION: Mastery of Sub-disciplines */}
+          <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-6" id="mastery-recharts-card">
+            <div className="border-b border-slate-50 pb-4 text-right">
+              <div className="flex items-center gap-2 mb-1">
+                <Zap className="text-amber-500" size={18} />
+                <h3 className="text-sm font-black text-slate-800">تحلیل زمانی تسلط بر زیرگرایش‌های تخصصی (Recharts)</h3>
+              </div>
+              <p className="text-[10px] text-slate-400">نمودار پیشرفت مفهومی در مباحث تبدیل فوریه، کنترل خطی و فیزیک نیمه‌هادی‌ها طی ۶ ماه اخیر</p>
+            </div>
+
+            <div className="h-80 w-full" dir="ltr">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={masteryHistoryData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fontSize: 10, fill: '#64748b', fontWeight: 700 }}
+                  />
+                  <YAxis 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fontSize: 10, fill: '#64748b', fontWeight: 700 }}
+                    domain={[0, 100]}
+                  />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontSize: '12px', fontWeight: 'bold' }}
+                    itemStyle={{ padding: '2px 0' }}
+                  />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: '11px', fontWeight: 'bold', paddingTop: '20px' }} />
+                  <Line 
+                    type="monotone" 
+                    dataKey="fourier" 
+                    name="تبدیل فوریه" 
+                    stroke="#1e3a8a" 
+                    strokeWidth={3} 
+                    dot={{ r: 4, fill: '#1e3a8a' }} 
+                    activeDot={{ r: 6 }} 
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="control" 
+                    name="تئوری کنترل" 
+                    stroke="#8b5cf6" 
+                    strokeWidth={3} 
+                    dot={{ r: 4, fill: '#8b5cf6' }} 
+                    activeDot={{ r: 6 }} 
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="semiconductor" 
+                    name="فیزیک نیمه‌هادی" 
+                    stroke="#f59e0b" 
+                    strokeWidth={3} 
+                    dot={{ r: 4, fill: '#f59e0b' }} 
+                    activeDot={{ r: 6 }} 
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       )}
@@ -482,10 +560,10 @@ export default function ProgressView() {
             <div className="border-b border-slate-100 pb-4">
               <h3 className="text-base font-black text-slate-850 flex items-center gap-2">
                 <Calculator className="text-indigo-800" size={18} />
-                <span>شبیه‌ساز هوشمند کایزنی درصد، تراز کانون مد نظر و شانس قبولی</span>
+                <span>شبیه‌ساز هوشمند کایزنی درصد، تراز پیش‌بینی شده و شانس قبولی</span>
               </h3>
               <p className="text-slate-400 text-xs mt-1 leading-relaxed">
-                درصد هر یک از سرفصل‌های آزمون وکالت را تغییر دهید تا تراز نهایی رسمی کانون و شانس قبولی شما در استان‌های کشور بلافاصله به‌روزرسانی شود. این تخمین بر پایه ضرایب وزنی رسمی است.
+                درصد هر یک از سرفصل‌های آزمون ارشد مهندسی برق را تغییر دهید تا تراز نهایی رسمی و شانس قبولی شما در برترین دانشگاه‌ها بلافاصله به‌روزرسانی شود. این تخمین بر پایه ضرایب وزنی رسمی سازمان سنجش است.
               </p>
             </div>
 
@@ -501,17 +579,17 @@ export default function ProgressView() {
                   </div>
 
                   <div className="text-center py-4 bg-white/5 rounded-2xl border border-indigo-500/10">
-                    <span className="text-[10px] text-indigo-300 font-bold uppercase tracking-widest block">تراز کل تخمینی کانون</span>
+                    <span className="text-[10px] text-indigo-300 font-bold uppercase tracking-widest block">تراز کل تخمینی ارشد برق</span>
                     <strong className="text-3xl font-black font-mono text-indigo-100 block mt-1 tracking-wider">
                       {toPersianNum(simulatedTraz)}
                     </strong>
-                    <span className="text-[9px] text-slate-400 block mt-0.5">ثبت علمی ضریب وکالت وکلای قوه قضاییه</span>
+                    <span className="text-[9px] text-slate-400 block mt-0.5">مطابق آخرین الگوهای ترازدهی سازمان سنجش</span>
                   </div>
 
                   {/* Probability Meter Arc */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-xs font-bold items-center">
-                      <span className="text-indigo-200">شانس قبولی کانون وکلا:</span>
+                      <span className="text-indigo-200">شانس قبولی در دانشگاه هدف:</span>
                       <span className="text-amber-300 font-mono font-black">{toPersianNum(passProbability)}٪</span>
                     </div>
                     <div className="w-full bg-indigo-900/40 h-3 rounded-full overflow-hidden border border-indigo-500/10">
@@ -536,16 +614,16 @@ export default function ProgressView() {
               {/* Sliders Input Column */}
               <div className="lg:col-span-2 space-y-5">
                 <div className="flex justify-between items-center text-xs pb-1 mb-2">
-                  <span className="font-extrabold text-slate-700">دورس امتحانی آزمون وکالت</span>
+                  <span className="font-extrabold text-slate-700">دروس امتحانی آزمون ارشد مهندسی برق</span>
                   <button 
                     onClick={() => setSliderScores({
-                      civil: 55,
-                      procedure: 65,
-                      commerce: 60,
-                      figh: 75,
-                      penal: 80,
-                      criminalProc: 70,
-                      constitutional: 65
+                      circuits: 55,
+                      electronics: 65,
+                      signals: 60,
+                      math: 75,
+                      control: 80,
+                      machines: 70,
+                      electro: 65
                     })}
                     className="cursor-pointer text-indigo-900 hover:font-black text-[10px] flex items-center gap-1"
                   >
@@ -556,13 +634,13 @@ export default function ProgressView() {
 
                 {/* Siders List mapping with official coefficients */}
                 {[
-                  { key: "civil", label: "حقوق مدنی", coeff: 3, color: "bg-blue-600" },
-                  { key: "procedure", label: "آیین دادرسی مدنی", coeff: 3, color: "bg-blue-700" },
-                  { key: "commerce", label: "حقوق تجارت", coeff: 2, color: "bg-indigo-600" },
-                  { key: "figh", label: "اصول فقه و متون فقه", coeff: 1, color: "bg-amber-600" },
-                  { key: "penal", label: "حقوق جزا (عمومی و اختصاصی)", coeff: 2, color: "bg-rose-600" },
-                  { key: "criminalProc", label: "آیین دادرسی کیفری", coeff: 2, color: "bg-red-600" },
-                  { key: "constitutional", label: "حقوق اساسی", coeff: 1, color: "bg-slate-700" }
+                  { key: "circuits", label: "مدارهای الکتریکی ۱ و ۲", coeff: 4, color: "bg-blue-600" },
+                  { key: "electronics", label: "الکترونیک ۱ و ۲", coeff: 3, color: "bg-blue-700" },
+                  { key: "signals", label: "سیگنال‌ها و سیستم‌ها", coeff: 3, color: "bg-indigo-600" },
+                  { key: "math", label: "ریاضیات مهندسی و معادلات", coeff: 3, color: "bg-amber-600" },
+                  { key: "control", label: "کنترل خطی", coeff: 2, color: "bg-rose-600" },
+                  { key: "machines", label: "ماشین‌های الکتریکی ۱ و ۲", coeff: 2, color: "bg-red-600" },
+                  { key: "electro", label: "الکترومغناطیس", coeff: 2, color: "bg-slate-700" }
                 ].map((item) => (
                   <div key={item.key} className="space-y-1.5 p-3 rounded-2xl border border-slate-50 hover:bg-slate-50/30 transition">
                     <div className="flex justify-between text-xs">
@@ -608,21 +686,21 @@ export default function ProgressView() {
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-right space-y-1">
-                <span className="text-[10px] text-slate-400 font-bold block">کانون وکلای مرکز (تهران)</span>
-                <span className="text-xs font-black text-slate-800 block">حداقل تراز قبولی: ۵,۹۰۰</span>
-                <p className="text-[9px] text-slate-400">نیازمند میانگین حداقل ۵۵ الی ۶۰ درصد در دروس ضریب ۳.</p>
+                <span className="text-[10px] text-slate-400 font-bold block">دانشگاه صنعتی شریف (گرایش مخابرات)</span>
+                <span className="text-xs font-black text-slate-800 block">حداقل تراز قبولی: ۶,۸۵۰</span>
+                <p className="text-[9px] text-slate-400">نیازمند میانگین حداقل ۶۰ الی ۷۰ درصد در دروس ضریب ۴ و ریاضیات.</p>
               </div>
 
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-right space-y-1">
-                <span className="text-[10px] text-slate-400 font-bold block">سایر کانون‌های درجه ۱ (اصفهان / خراسان)</span>
-                <span className="text-xs font-black text-slate-800 block">حداقل تراز قبولی: ۵,۳۰۰</span>
-                <p className="text-[9px] text-slate-400">نیازمند میانگین حداقل ۵۰ درصد در دروس ضریب ۳ و جزا.</p>
+                <span className="text-[10px] text-slate-400 font-bold block">دانشگاه تهران (گرایش سیستم‌های قدرت)</span>
+                <span className="text-xs font-black text-slate-800 block">حداقل تراز قبولی: ۶,۲۰۰</span>
+                <p className="text-[9px] text-slate-400">نیازمند میانگین حداقل ۵۰ درصد در دروس ماشین و مدارهای الکتریکی.</p>
               </div>
 
               <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 text-right space-y-1">
-                <span className="text-[10px] text-slate-400 font-bold block">امتحان تشکیلات سردفتری اسناد</span>
-                <span className="text-xs font-black text-slate-800 block">حداقل تراز قبولی: ۵,۱۰۰</span>
-                <p className="text-[9px] text-slate-400">نیازمند ثبات تراز کلی و کسب نمرات خوب در حقوق ثبت.</p>
+                <span className="text-[10px] text-slate-400 font-bold block">دانشگاه علم و صنعت (سایر گرایش‌ها)</span>
+                <span className="text-xs font-black text-slate-800 block">حداقل تراز قبولی: ۵,۴۰۰</span>
+                <p className="text-[9px] text-slate-400">نیازمند ثبات تراز کلی و کسب نمرات خوب در ریاضی مهندسی.</p>
               </div>
             </div>
           </div>
@@ -636,7 +714,7 @@ export default function ProgressView() {
           <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
             <span className="font-bold text-slate-800 text-sm flex items-center gap-1.5 pb-2 border-b border-slate-50 justify-start">
               <Star className="text-amber-500" size={18} />
-              <span>پیشرفت عینی به تفکیک دروس تخصصی وکالت کانون مرکزی</span>
+              <span>پیشرفت عینی به تفکیک دروس تخصصی مهندسی برق کشور</span>
             </span>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-right">
@@ -669,7 +747,7 @@ export default function ProgressView() {
           <div className="space-y-3">
             <div className="space-y-1">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-slate-600">قبولی کانون وکلای مرکز (تهران)</span>
+                <span className="font-semibold text-slate-600">قبولی در دانشگاه‌های دولتی تهران</span>
                 <span className="font-bold text-blue-950 font-mono">تراز مطلوب: ۵,۹۰۰</span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
@@ -679,8 +757,8 @@ export default function ProgressView() {
 
             <div className="space-y-1">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-semibold text-slate-600">کسب ردیف تراز ممتاز و نخبگان علمی کشوری</span>
-                <span className="font-bold text-blue-950 font-mono">تراز مطلوب: ۶,۵۰۰</span>
+                <span className="font-semibold text-slate-600">کسب ردیف تراز نخبگان (شریف / تهران)</span>
+                <span className="font-bold text-blue-950 font-mono">تراز مطلوب: ۶,۸۵۰</span>
               </div>
               <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                 <div className="bg-amber-500 h-full rounded-full w-[75%] font-sans"></div>
@@ -692,11 +770,11 @@ export default function ProgressView() {
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between text-right">
           <span className="text-slate-850 font-black text-xs block">توصیه نهایی مشاوران ارشد</span>
           <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-            روند کایزنی شما نشان می‌دهد در دروس با ضریب فرعی عملکرد یکنواختی دارید اما مزیت رقابتی اصلی شما باید در دروس حقوق مدنی و آیین دادرسی مدنی رقم بخورد. هر نیم درصدی بهبود در این دو درس، ترویج‌دهنده جهش بزرگتری در تراز کلی شما بر اساس ماتریس وزنی کانون است.
+            روند کایزنی شما نشان می‌دهد در دروس با ضریب فرعی عملکرد یکنواختی دارید اما مزیت رقابتی اصلی شما باید در مدارهای الکتریکی و ریاضیات مهندسی رقم بخورد. هر نیم درصدی بهبود در این دو درس، ترویج‌دهنده جهش بزرگتری در تراز کلی شما بر اساس ماتریس وزنی سازمان سنجش است.
           </p>
           <div className="text-[10px] font-black text-emerald-700 mt-2 bg-emerald-50 border border-emerald-100 rounded-lg p-2 flex items-center gap-1 justify-start">
             <Check size={12} />
-            <span>سیستم مانیتورینگ متصل به کارتابل مشاور هوشمند (آماده ارسال گزارش)</span>
+            <span>سیستم مانیتورینگ متصل به کارتابل مشاور هوشمند آزمونیار (آماده ارسال گزارش)</span>
           </div>
         </div>
       </div>
