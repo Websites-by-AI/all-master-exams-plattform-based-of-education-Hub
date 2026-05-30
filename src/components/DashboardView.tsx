@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { 
   Sparkles, Calendar, TrendingUp, AlertTriangle, CheckSquare, Target, 
   Quote, ChevronLeft, Zap, Smile, HeartPulse, Brain, Compass, BookOpen, Clock, Check, Layers, Users, ShieldAlert,
-  RefreshCw, X
+  RefreshCw, X, Flame
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Student, Weakness, DailyPlan, TestTrap } from "../types";
@@ -98,10 +98,10 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
     setShowCelebration(false);
 
     const logs = [
-      "بخش فنی: تحلیل تله‌های تستی تکراری و بهینه‌سازی بودجه‌بندی دروس مهندسی...",
       "بخش علمی: بررسی و تنظیم تعادل مطالعاتی مدارهای الکتریکی و سیگنال و سیستم...",
       "بخش پایش: مانیتورینگ آنلاین ساعت حضور فیزیکی کاندید و ثبات تمرکز ذهنی...",
       "بخش مربیگری: استقرار توصیه‌های کایزن علمی اساتید برتر برق در پرونده داوطلب...",
+      "بخش تخصصی: تحلیل تله‌های تستی تکراری و بهینه‌سازی بودجه‌بندی دروس مهندسی...",
       "کارنامه نهایی: بارگذاری تمام پارامترها و همگام‌سازی شاخص تراز نهایی آزمونها..."
     ];
 
@@ -331,6 +331,12 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
         </div>
         
         <div className="relative z-10 font-mono text-left bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-100 rounded-xl mr-2">
+            <Flame size={16} className={`${streakDays > 0 ? "text-orange-500 fill-orange-500/20 animate-pulse" : "text-slate-300"}`} />
+            <span className={`text-xs font-black sm:inline hidden ${streakDays > 0 ? "text-orange-700" : "text-slate-400"}`}>
+              {toPersianNum(streakDays)} روز متمادی
+            </span>
+          </div>
           <div className="text-right">
             <span className="text-[10px] text-slate-400 block font-sans font-bold">شماره داوطلبی</span>
             <span className="text-xs font-black text-indigo-950">{toPersianNum(student.code)}</span>
@@ -379,6 +385,32 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
 
       {/* Visual pulsing warning indicator for qeiValue < 5200 */}
       <AnimatePresence>
+        {streakDays === 0 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+            className="p-4 bg-orange-50 border-2 border-orange-200 text-orange-950 rounded-3xl flex items-center justify-between gap-4 mb-4 text-right"
+            id="streak-broken-warning-banner"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center animate-pulse">
+                <Flame size={20} className="text-orange-600" />
+              </div>
+              <div>
+                <strong className="text-sm font-black block">اوه! استریک مطالعه شما متوقف شده است...</strong>
+                <p className="text-[10px] font-bold">اشکالی ندارد، قهرمان‌ها هم گاهی نیاز به استراحت دارند. همین امروز یک تست بزنید تا دوباره شعله مطالعه‌تان روشن شود! 🔥</p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setStreakDays(1)}
+              className="px-4 py-2 bg-orange-600 text-white rounded-xl text-[10px] font-black hover:bg-orange-700 transition cursor-pointer shrink-0"
+            >
+              شروع مجدد استریک
+            </button>
+          </motion.div>
+        )}
+
         {qeiValue < 5200 && (() => {
           const isSevere = qeiValue < 5000;
           return (
@@ -897,7 +929,7 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
                 </h4>
               </div>
               <p className="text-xs leading-relaxed text-emerald-800 font-semibold">
-                با پایش پیوسته ساعات مطالعه و بودجه‌بندی دروس تستی و با کاهش پاسخ‌های غلط آزمون‌ها به صفر، تراز کارنامه به شکل ایده‌آلی موازنه گردید. تراز آزمایشی طلایی ۶,۸۵۰ در پرونده داوطلبی آزمونیار ثبت گردید و پیش‌بینی قبولی کانون وکلا به سطح سبز ممتاز رسید.
+                با پایش پیوسته ساعات مطالعه و بودجه‌بندی دروس تستی و با کاهش پاسخ‌های غلط آزمون‌ها به صفر، تراز کارنامه به شکل ایده‌آلی موازنه گردید. تراز آزمایشی طلایی ۶,۸۵۰ در پرونده داوطلبی آزمونیار ثبت گردید و پیش‌بینی قبولی کارشناسی ارشد برق به سطح سبز ممتاز رسید.
               </p>
             </div>
 
@@ -918,21 +950,21 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
         {!isOptimizing && !showCelebration && (
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-150 grid grid-cols-1 md:grid-cols-3 gap-4 text-right">
             <div className="space-y-1">
-              <span className="text-slate-700 text-xs font-extrabold block">۱. کورتکس و حل تله‌های تستی کانون</span>
+              <span className="text-slate-700 text-xs font-extrabold block">۱. حل تله‌های تستی مدار و سیگنال</span>
               <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
                 به دلیل عدم تثبیت مفاهیم حوزه فرکانس و تبدیل فوریه، بیشترین نمره منفی در آزمون شبیه‌ساز ثبت شده که مطالعه تطبیقی این مبحث با منابع آزمونیار آن را برطرف می‌کند.
               </p>
             </div>
             <div className="space-y-1">
-              <span className="text-slate-700 text-xs font-extrabold block">۲. مبانی تعهدات و عقود معین کاتوزیان</span>
+              <span className="text-slate-700 text-xs font-extrabold block">۲. تحلیل سیستم‌های کنترل و پایداری</span>
               <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
-                برای درک بهتر مواد عقد مضاربه، حتماً مواد آن را با مثال‌های تشریحی و آراف ثبت وکالت بازخوانی نمایید.
+                برای درک بهتر مکان هندسی ریشه‌ها، حتماً مباحث آن را با مثال‌های تشریحی و منابع ارشد برق بازخوانی نمایید.
               </p>
             </div>
             <div className="space-y-1">
-              <span className="text-slate-700 text-xs font-extrabold block">۳. قوانین خاص حقوق ثبت اسناد</span>
+              <span className="text-slate-700 text-xs font-extrabold block">۳. ریاضیات مهندسی و محاسبات عددی</span>
               <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">
-                تسلط تندخوانی بر مواد ۲۲، ۴۶، ۴۷ و ۴۸ ثبت جهت موفقیت قطعی در آزمون طاقت‌فرسای سردفتری.
+                تسلط تندخوانی بر نگاشت‌ها و سری فوریه جهت موفقیت قطعی در کنکور ارشد برق.
               </p>
             </div>
           </div>
@@ -962,7 +994,7 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
                     ? "text-amber-700" 
                     : "text-slate-400"
               }`}>
-                تراز و موقعیت رقبای کانون
+                تراز و موقعیت رقبای کنکور
               </span>
               <p className="text-xs font-black">تراز تجمعی آزمون کل (QEI)</p>
             </div>
@@ -1025,7 +1057,7 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
         <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between h-[124px]" id="metric-percentage">
           <div className="flex items-start justify-between">
             <div className="space-y-1">
-              <span className="text-[10px] font-bold text-slate-400 block pb-0.5">درصد پاسخگویی و کالباره کانون</span>
+              <span className="text-[10px] font-bold text-slate-400 block pb-0.5">درصد پاسخگویی و کالیبره مهندسی</span>
               <p className="text-xs font-black text-slate-600">نرخ پاسخگویی صحیح (سالم)</p>
             </div>
             <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center transition-transform group-hover:scale-110">
@@ -1038,7 +1070,7 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
               <span className="text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100">سقف مطلوب: ۸۵٪</span>
             </div>
             <span className="text-[9px] text-slate-400 text-left">
-              {successRate >= 85 ? "پیش‌بینی رتبه ۲ رقمی کانون" : `فاصله ${toPersianNum(85 - successRate)} پله‌ای`}
+              {successRate >= 85 ? "پیش‌بینی رتبه برتر ارشد برق" : `فاصله ${toPersianNum(85 - successRate)} پله‌ای`}
             </span>
           </div>
         </div>
@@ -1057,7 +1089,7 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
           <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-50">
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-black text-red-600 font-mono">{toPersianNum(bottleneckCount)}</span>
-              <span className="text-[10px] text-slate-500 font-bold">مبحث قانونی ضعیف</span>
+              <span className="text-[10px] text-slate-500 font-bold">مبحث مهندسی ضعیف</span>
             </div>
             <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-bold border ${
               bottleneckCount > 0 ? "bg-red-50 text-red-600 border-red-100" : "bg-emerald-50 text-emerald-600 border-emerald-100"
@@ -1074,16 +1106,22 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
               <span className="text-[10px] font-bold text-slate-400 block pb-0.5">پیوستگی مطالعه روزانه داوطلب</span>
               <p className="text-xs font-black text-slate-600">پیوستگی مطالعه (روز)</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center transition-transform group-hover:scale-110">
-              <Zap size={20} className="text-emerald-600 fill-emerald-100" />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${streakDays > 0 ? "bg-orange-50 text-orange-700" : "bg-slate-50 text-slate-400"}`}>
+              <Flame size={20} className={`${streakDays > 0 ? "fill-orange-100 animate-bounce" : ""}`} />
             </div>
           </div>
           <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-50">
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-black text-emerald-800 font-mono">{toPersianNum(streakDays)} روز</span>
-              <span className="text-[9px] font-black px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-100">انگیزه مطالعاتی پایدار 🔥</span>
+              <span className={`text-2xl font-black font-mono ${streakDays > 0 ? "text-orange-800" : "text-slate-400"}`}>{toPersianNum(streakDays)} روز</span>
+              {streakDays > 0 ? (
+                <span className="text-[9px] font-black px-1.5 py-0.5 bg-orange-50 text-orange-700 rounded-md border border-orange-100">انگیزه مطالعاتی پایدار 🔥</span>
+              ) : (
+                <span className="text-[9px] font-black px-1.5 py-0.5 bg-red-50 text-red-600 rounded-md border border-red-100 animate-pulse">استریک شما شکسته شد! ❄️</span>
+              )}
             </div>
-            <span className="text-[9px] text-slate-400 font-bold">بدون خلاء برنامه‌ریزی</span>
+            <span className="text-[9px] text-slate-400 font-bold">
+              {streakDays > 0 ? "بدون خلاء برنامه‌ریزی" : "همین حالا شروع کنید!"}
+            </span>
           </div>
         </div>
       </div>
@@ -1213,7 +1251,7 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
                 <strong className="text-xs font-black">شبیه‌ساز هوشمند نقاط ضعف (Trap Quiz)</strong>
               </div>
               <p className="text-[10px] text-slate-500 font-bold leading-relaxed">
-                بر اساس تحلیل ممتد مربی، شما بیشترین تله‌های تستی را در مباحث حقوق مدنی، حقوق تجارت و جزا داشته‌اید. می‌توانید فوراً یک شبیه‌ساز فرضی فوق‌سخت با پاسخ‌های تفصیلی را آغاز کنید:
+                بر اساس تحلیل ممتد مربی، شما بیشترین تله‌های تستی را در مباحث مدارهای الکتریکی، سیگنال‌ها و کنترل خطی داشته‌اید. می‌توانید فوراً یک شبیه‌ساز فرضی فوق‌سخت با پاسخ‌های تفصیلی را آغاز کنید:
               </p>
               <button
                 onClick={() => onNavigate("quiz")}
@@ -1369,9 +1407,9 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
 
         <div className="flex gap-3.5 items-start justify-end">
           <div className="space-y-1 text-right flex-1">
-            <h4 className="text-xs font-black text-slate-800">کتابچه قوانین خاص حقوقی کانون</h4>
+            <h4 className="text-xs font-black text-slate-800">بانک سوالات تخصصی ارشد برق</h4>
             <p className="text-[10px] text-slate-500 leading-relaxed">
-              تطابق مطلق کارهای کلاسی با قوانین روابط موجر و مستأجر سال ۵۶ و ۷۶ جهت تثبیت حداکثر تراز تستی.
+              تطابق مطلق کارهای کلاسی با توابع تبدیل و پاسخ‌های ضربه جهت تثبیت حداکثر تراز تستی.
             </p>
           </div>
           <div className="p-3 bg-white text-amber-600 rounded-2xl shadow-sm border border-slate-100 flex-shrink-0">
@@ -1383,7 +1421,7 @@ export default function DashboardView({ student, onNavigate }: DashboardViewProp
           <div className="space-y-1 text-right flex-1">
             <h4 className="text-xs font-black text-slate-800">تکنیک تندخوانی و زمان‌بندی تستی</h4>
             <p className="text-[10px] text-slate-500 leading-relaxed">
-              برای پیشگیری از کمبود زمان در جلسه آزمون حقوق تجارت کانون، تکرار دوره مکرر تست‌های سنوات را در اولویت عصر بگذارید.
+              برای پیشگیری از کمبود زمان در جلسه کنکور ماشین و کنترل، تکرار دوره مکرر تست‌های سنوات را در اولویت عصر بگذارید.
             </p>
           </div>
           <div className="p-3 bg-white text-emerald-600 rounded-2xl shadow-sm border border-slate-100 flex-shrink-0">

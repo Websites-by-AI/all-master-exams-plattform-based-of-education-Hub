@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
-import { Table, Brain, Smile, CalendarCheck, ShieldCheck, Download, Sparkles, AlertCircle, Share2, ClipboardList, Clock, Activity, Zap, Plus } from "lucide-react";
+import { Table, Brain, Smile, CalendarCheck, ShieldCheck, Download, Sparkles, AlertCircle, Share2, ClipboardList, Clock, Activity, Zap, Plus, Target, FileText, Mic, Lightbulb } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from "recharts";
 import { Student, Exam, Weakness, PsychologicalAnalysis, DailyPlan } from "../types";
 import { getTestTraps, saveTestTrap } from "../lib/traps";
 import { addSystemLog } from "../lib/syslogs";
 import ReportCardPrintModal from "./ReportCardPrintModal";
+import RadarChart from "./RadarChart";
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -177,7 +178,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
         {
           id: "2",
           date: "۱۵ اردیبهشت ۱۴۰۵",
-          title: "شبیه‌ساز جامع ۲ کارشناسی ارشد مهندسی کامپیوتر - هوش مصنوعی میزان",
+          title: "شبیه‌ساز جامع ۲ کارشناسی ارشد مهندسی کامپیوتر - هوش مصنوعی آزمونیار",
           traz: 5575,
           rank: 1845,
           overallPercentage: 59,
@@ -226,6 +227,9 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
           traz: 5240,
           rank: 450,
           overallPercentage: 51,
+          resumeScore: 65,
+          interviewScore: 58,
+          researchPotential: 60,
           lessons: [
             { lessonName: "ریاضیات مهندسی پیشرفته", percentage: 20, correct: 8, wrong: 18, empty: 14 },
             { lessonName: "نظریه سیستم‌های کنترل خطی", percentage: 25, correct: 10, wrong: 20, empty: 10 },
@@ -236,10 +240,13 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
         {
           id: "2",
           date: "۱۵ اردیبهشت ۱۴۰۵",
-          title: "شبیه‌ساز دکتری تخصصی (Ph.D) مهندسی برق شماره ۲ - میزان",
+          title: "شبیه‌ساز دکتری تخصصی (Ph.D) مهندسی برق شماره ۲ - آزمونیار",
           traz: 5575,
           rank: 345,
           overallPercentage: 59,
+          resumeScore: 68,
+          interviewScore: 62,
+          researchPotential: 65,
           lessons: [
             { lessonName: "ریاضیات مهندسی پیشرفته", percentage: 25, correct: 10, wrong: 15, empty: 15 },
             { lessonName: "نظریه سیستم‌های کنترل خطی", percentage: 32, correct: 12, wrong: 18, empty: 10 },
@@ -254,6 +261,9 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
           traz: 5720,
           rank: 210,
           overallPercentage: 63,
+          resumeScore: 72,
+          interviewScore: 70,
+          researchPotential: 75,
           lessons: [
             { lessonName: "ریاضیات مهندسی پیشرفته", percentage: 35, correct: 14, wrong: 12, empty: 14 },
             { lessonName: "نظریه سیستم‌های کنترل خطی", percentage: 45, correct: 18, wrong: 12, empty: 10 },
@@ -268,6 +278,9 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
           traz: 6580,
           rank: 24,
           overallPercentage: 78,
+          resumeScore: 85,
+          interviewScore: 82,
+          researchPotential: 88,
           lessons: [
             { lessonName: "ریاضیات مهندسی پیشرفته", percentage: 65, correct: 26, wrong: 6, empty: 8 },
             { lessonName: "نظریه سیستم‌های کنترل خطی", percentage: 72, correct: 29, wrong: 5, empty: 6 },
@@ -281,7 +294,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
         {
           id: "1",
           date: "۱۵ فروردین ۱۴۰۵",
-          title: "آزمون شبیه‌ساز ۱ کارشناسی ارشد مهندسی برق - کانون میزان",
+          title: "آزمون شبیه‌ساز ۱ کارشناسی ارشد مهندسی برق - کانون آزمونیار",
           traz: 5240,
           rank: 2450,
           overallPercentage: 51,
@@ -295,7 +308,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
         {
           id: "2",
           date: "۱۵ اردیبهشت ۱۴۰۵",
-          title: "آزمون شبیه‌ساز ۲ کارشناسی ارشد مهندسی برق - دپارتما‌ن ارشد میزان",
+          title: "آزمون شبیه‌ساز ۲ کارشناسی ارشد مهندسی برق - دپارتما‌ن ارشد آزمونیار",
           traz: 5575,
           rank: 1845,
           overallPercentage: 59,
@@ -367,7 +380,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
         {
           id: "3",
           date: "۲۹ اردیبهشت ۱۴۰۵",
-          title: "آزمون کایزن مربیگری ارشد مدیریت MBA میزان",
+          title: "آزمون کایزن مربیگری ارشد مدیریت MBA آزمونیار",
           traz: 5720,
           rank: 1410,
           overallPercentage: 63,
@@ -448,7 +461,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
       setRemedialPlan(data.remedialPlan || []);
       setEstimatedTraz(data.estimatedNextTraz || 0);
     } catch (err) {
-      console.warn("AI Analysis request failed, loading fallback local metrics for law candidates...", err);
+      console.warn("AI Analysis request failed, loading fallback local metrics for engineering candidates...", err);
       
       const subjects = examToAnalyze.lessons || [];
       const weakSubjects = [...subjects].sort((a, b) => (a.percentage || 0) - (b.percentage || 0)).slice(0, 3);
@@ -459,13 +472,13 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
       let simulatedTechnicalDetail = "";
       if (computedStressLevel > 70) {
         simulatedStressLabel = "بحرانی";
-        simulatedTechnicalDetail = "به دلیل موازنه ناکافی میان ساعات کاری مطالعاتی و استراحت، میزان فرسودگی ذهنی بالا گزارش شده و تله‌های آیین دادرسی حاد بوده است.";
+        simulatedTechnicalDetail = "به دلیل موازنه ناکافی میان ساعات کاری مطالعاتی و استراحت، میزان فرسودگی ذهنی بالا گزارش شده و تله‌های تحلیل مداری حاد بوده است.";
       } else if (computedStressLevel > 45) {
         simulatedStressLabel = "متوسط";
-        simulatedTechnicalDetail = "تست‌زنی سرعتی در دقایق پایانی آزمون آزمایشی سبب افت ملموس تراز در بخش حقوق تجارت گردیده است.";
+        simulatedTechnicalDetail = "تست‌زنی سرعتی در دقایق پایانی آزمون آزمایشی سبب افت ملموس تراز در بخش کنترل خطی گردیده است.";
       } else if (computedStressLevel > 25) {
         simulatedStressLabel = "خفیف";
-        simulatedTechnicalDetail = "تمرکز داوطلب در پاسخ‌گویی به سوالات اصول فقه کاملا مطلوب است، اما در مبحث شروط عقود مدنی نیاز به تمرکز پومودورو دارد.";
+        simulatedTechnicalDetail = "تمرکز داوطلب در پاسخ‌گویی به سوالات ریاضیات مهندسی کاملا مطلوب است، اما در مبحث تبدیل فوریه نیاز به تمرکز پومودورو دارد.";
       } else {
         simulatedStressLabel = "سالم";
         simulatedTechnicalDetail = "عملکرد ذهنی عالی بدون بروز تردید تستی عمیق؛ تمرکز داوطلب در بالاترین سطح ارزیابی شد.";
@@ -483,11 +496,11 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
 
       setPsychological({
         pattern: computedStressLevel > 60 ? "خستگی ذهنی حاد پومودورو (آفلاین)" : "تطابق تمرکزی عالی در آزمون‌های تستی (آفلاین)",
-        description: `کاندیدای گرامی؛ سنجش‌ها نشان می‌دهد نوسانات راندمان پاسخ‌دهی به علت کمبود استراحت بین شیفت‌های مطالعاتی بروز کرده و خستگی ذهنی معادل ${computedStressLevel}٪ ثبت شده است که عمیقا سرعت پردازش گزینه‌ها را در حقوق تجارت پایین می‌برد.`,
+        description: `مهندس گرامی؛ سنجش‌ها نشان می‌دهد نوسانات راندمان پاسخ‌دهی به علت کمبود استراحت بین شیفت‌های مطالعاتی بروز کرده و خستگی ذهنی معادل ${computedStressLevel}٪ ثبت شده است که عمیقا سرعت پردازش گزینه‌ها را در مدارهای الکتریکی پایین می‌برد.`,
         correctToWrongRate: Math.max(12, Math.round(wrongRatio * 100)),
         suggestion: computedStressLevel > 60 
           ? "کاهش پارت‌های مطالعاتی پیوسته به فرکانس‌های ۲۵ دقیقه‌ای پومودورو و تخصیص ۵ دقیقه استراحت پویا بدون گوشی تلفن همراه." 
-          : "ادامه همان فرآیند مطالعه خلاصه مواد قانونی از روی شرح اصولی میزان به همراه مرور در روزهای پنجشنبه.",
+          : "ادامه همان فرآیند مطالعه حل تشریحی از روی شرح مفهومی آزمونیار به همراه مرور در روزهای پنجشنبه.",
         cardColor: computedStressLevel > 70 ? "red" : computedStressLevel > 45 ? "orange" : computedStressLevel > 25 ? "amber" : "blue",
         stressLevel: computedStressLevel,
         stressAnalysis: {
@@ -501,33 +514,33 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
 
       const localWeaknesses = weakSubjects.map((sub) => {
         let topic = "مباحث تحلیلی آزمون";
-        let rec = "مرور درسنامه‌های تخصصی میزان و حل تست‌های طبقه‌بندی شده سالیان گذشته.";
+        let rec = "مرور درسنامه‌های تخصصی آزمونیار و حل تست‌های طبقه‌بندی شده سالیان گذشته.";
         let questions = 30;
         let severity: "critical" | "warning" | "mild" = "warning";
 
-        if (sub.lessonName.includes("زیست‌شناسی")) {
-          topic = "ژنوم، میتوز و میوز از ژنتیک پایه";
-          rec = "پیشنهاد می‌شود ابتدا درسنامه طلایی میزان مبحث یاخته را مطالعه نموده و سپس تست‌های سراسری سال‌های ۹۸ تا ۱۴۰۴ را تحلیل کنید.";
+        if (sub.lessonName.includes("مدارهای الکتریکی")) {
+          topic = "تحلیل گذرا در سیستم‌های مرتبه دوم";
+          rec = "پیشنهاد می‌شود ابتدا درسنامه طلایی آزمونیار مبحث مدارهای مرتبه دوم را مطالعه نموده و سپس تست‌های سراسری سال‌های ۹۸ تا ۱۴۰۴ را تحلیل کنید.";
           questions = 45;
           severity = sub.percentage < 35 ? "critical" : "warning";
-        } else if (sub.lessonName.includes("شیمی")) {
-          topic = "موازنه واکنش‌ها و سینتیک شیمیایی";
-          rec = "تمرکز مجدد روی فرمول سرعت متوسط واکنش؛ تحلیل ۳۰ تست طبقه‌بندی مکرر میزان.";
+        } else if (sub.lessonName.includes("سیگنال")) {
+          topic = "تبدیل فوریه و خواص کانولوشن";
+          rec = "تمرکز مجدد روی فرمول‌های پایه سری فوریه؛ تحلیل ۳۰ تست طبقه‌بندی مکرر آزمونیار.";
           questions = 40;
           severity = sub.percentage < 45 ? "critical" : "warning";
-        } else if (sub.lessonName.includes("فیزیک")) {
-          topic = "دینامیک و حرکت بر خط مستقیم";
-          rec = "یادداشت نکات طلایی شتاب و نیرو؛ حل و تحلیل ۲۰ تست تشریحی کایزن.";
+        } else if (sub.lessonName.includes("ماشین")) {
+          topic = "مدار معادل و راندمان ترانسفورمر";
+          rec = "یادداشت نکات طلایی دیاگرام فیزوری؛ حل و تحلیل ۲۰ تست تشریحی کایزن.";
           questions = 35;
           severity = sub.percentage < 40 ? "critical" : "warning";
-        } else if (sub.lessonName.includes("ریاضیات") || sub.lessonName.includes("حسابان")) {
-          topic = "مشتق‌گیری و حد و پیوستگی توابع";
-          rec = "مرور مکرر قضایای هم‌ارزی حد؛ تحلیل ۳۵ تست زمان‌دار آزمون‌های آزمایشی.";
+        } else if (sub.lessonName.includes("کنترل")) {
+          topic = "پایداری نایکوئیست و حاشیه فاز";
+          rec = "مرور مکرر قضایای پایداری؛ تحلیل ۳۵ تست زمان‌دار آزمون‌های آزمایشی.";
           questions = 35;
           severity = sub.percentage < 40 ? "critical" : "warning";
-        } else if (sub.lessonName.includes("جامعه") || sub.lessonName.includes("جزا") || sub.lessonName.includes("حقوق")) {
-          topic = "قواعد عمومی جرم و مسئولیت کیفری و عقود معین";
-          rec = "تمرکز روی موانع مسئولیت کیفری، تعلیق انشا و سقوط تعهدات؛ بررسی ۴۰ تست کنکوری کایزن.";
+        } else if (sub.lessonName.includes("مغناطیس")) {
+          topic = "قانون بیو-ساوار و پتانسیل مغناطیسی";
+          rec = "تمرکز روی قضایای مرزی و میدان‌های القایی؛ بررسی ۴۰ تست کنکوری کایزن.";
           questions = 40;
           severity = sub.percentage < 40 ? "critical" : "warning";
         }
@@ -559,31 +572,31 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
   const QUESTIONS_POOL: BuiltQuestion[] = [
     {
       id: "Q-1",
-      subject: "زیست‌شناسی",
-      text: "در فرآیند رونویسی رنای پیام‌رسان در یک یاخته یوکاریوتی، کدام عبارت درباره طناب رنای اولیه نادرست است؟",
+      subject: "مدارهای الکتریکی",
+      text: "در یک مدار مرتبه اول RL، ثابت زمانی (tau) چگونه محاسبه می‌شود؟",
       options: [
-        "۱. با متیل‌دار شدن نوکلئوتید گوانین‌دار در انتهای پنج‌پریم کلاهک ایجاد می‌گردد.",
-        "۲. در انتهای سه پریم آن توالی نوکلئوتیدی آدنین‌دار قرار می‌گیرد.",
-        "۳. در ساختار پیوندهای فسفودی‌استر آن قند داکسی‌ریبوز دیده می‌شود.",
-        "۴. مستقیماً در هسته با فعالیت آنزیم رناسپاراز تولید می‌شود."
+        "۱. L * R",
+        "۲. L / R",
+        "۳. R / L",
+        "۴. 1 / (L * R)"
       ],
-      correctIdx: 2,
-      explanation: "طناب رنا دارای قند ریبوز است. طراح کنکور عمداً با استفاده از لفظ 'داکسی‌ریبوز' که مخصوص دنا است، تله تستی فوق‌العاده ظریفی ایجاد می‌کند که داوطلب زیر فشار وقت متوجه آن نشود.",
-      trapCategory: "تله اصطلاحات ظریف (ریبوز در برابر داکسی‌ریبوز)"
+      correctIdx: 1,
+      explanation: "ثابت زمانی در مدار RL برابر با نسبت اندوکتانس به مقاومت معادل تونی دیده‌شده از دو سر سلف است.",
+      trapCategory: "تله فرمول پایه ثابت زمانی"
     },
     {
       id: "Q-2",
-      subject: "شیمی",
-      text: "در واکنش موازنه شده سوختن کامل یک مول گاز پروپان (C3H8)، ضریب استوکیومتری اکسیژن مصرفی و موازنه شمار مول‌های فرآورده‌ها و واکنش‌دهنده‌ها به ترتیب کدام است؟",
+      subject: "سیگنال‌ها و سیستم‌ها",
+      text: "تبدیل فوریه سیگنال پالس واحد (Rect) در حوزه فرکانس به چه صورتی است؟",
       options: [
-        "۱. ضریب اکسیژن ۵ / تفاضل مول‌ها معادل ۱",
-        "۲. ضریب اکسیژن ۴ / تفاضل مول‌ها معادل ۲",
-        "۳. ضریب اکسیژن ۵ / تفاضل مول‌ها معادل ۲",
-        "۴. ضریب اکسیژن ۳ / تفاضل مول‌ها معادل ۱"
+        "۱. تابع Sinc",
+        "۲. تابع ضربه",
+        "۳. پله واحد",
+        "۴. مثلثی"
       ],
       correctIdx: 0,
-      explanation: "موازنه درست واکنش: C3H8 + 5 O2 -> 3 CO2 + 4 H2O است. مول‌های واکنش دهنده ۶ و فرآورده ۷ مول است (تفاضل = ۱ مول). در آزمون‌ها، داوطلببین پروپان یا حالات فیزیکی فرآورده را به غلط لحاظ می‌کنند.",
-      trapCategory: "تله محاسباتی در شمارش تفاضل مول‌ها"
+      explanation: "تبدیل فوریه یک پنجره مستطیلی در زمان، یک تابع Sinc در فرکانس است.",
+      trapCategory: "تله زوج تبدیل‌های معروف"
     },
     {
       id: "Q-3",
@@ -601,157 +614,185 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
     },
     {
       id: "Q-4",
-      subject: "ریاضیات تجربی",
-      text: "اگر تابع f(x) در نقطه x=2 حد داشته ولی ناپیوسته باشد، کدام گزینه همواره برقرار است؟",
+      subject: "ریاضیات مهندسی",
+      text: "در بسط سری فوریه یک تابع زوج، کدام یک از ضرایب همواره صفر است؟",
       options: [
-        "۱. حد چپ و راست تابع برابر نبوده و مقدار تعریف نشده است.",
-        "۲. حد چپ و راست برابر است اما با مقدار حاصل از f(2) مغایرت دارد.",
-        "۳. مشتق اول تابع در این نقطه موجود و برابر صفر است.",
-        "۴. مخرج تابع حتماً ریشه مکرر از مرتبه زوج دارد."
-      ],
-      correctIdx: 1,
-      explanation: "شرط ناپیوستگی با وجود داشتن حد این است که حد وجود داشته باشد ولی با مقدار f(2) نابرابر باشد.",
-      trapCategory: "تله تعاریف صریح پیوستگی و حد"
-    },
-    {
-      id: "Q-5",
-      subject: "حسابان و ریاضیات",
-      text: "اگر تابع f(x) در نقطه x=2 حد داشته ولی ناپیوسته باشد، کدام گزینه همواره برقرار است؟",
-      options: [
-        "۱. حد چپ و راست تابع برابر نبوده و مقدار تعریف نشده است.",
-        "۲. حد چپ و راست برابر است اما با مقدار حاصل از f(2) مغایرت دارد.",
-        "۳. مشتق اول تابع در این نقطه موجود و برابر صفر است.",
-        "۴. مخرج تابع حتماً ریشه مکرر از مرتبه زوج دارد."
-      ],
-      correctIdx: 1,
-      explanation: "شرط ناپیوستگی با وجود داشتن حد این است که حد وجود داشته باشد (حد راست = حد چپ) ولی با مقدار f(2) نابرابر باشد.",
-      trapCategory: "تله تعاریف صریح پیوستگی و حد"
-    },
-    {
-      id: "Q-12",
-      subject: "هندسه و گسسته",
-      text: "در گراف ساده مرتبه ۵ که بیشترین درجه رأس آن ۳ است، حداکثر تعداد یال‌ها چقدر می‌تواند باشد؟",
-      options: [
-        "۱. ۶ یال",
-        "۲. ۷ یال",
-        "۳. ۸ یال",
-        "۴. ۱۰ یال"
-      ],
-      correctIdx: 1,
-      explanation: "طبق قضیه دست دادن، مجموع درجات رئوس برابر ۲ برابر تعداد یال‌ها است. مجموع حداکثر می‌تواند ۱۵ باشد. چون این حاصل‌ضرب زوج است حداکثر درجات ۱۴ و تعداد یال‌ها حداکثر ۷ است.",
-      trapCategory: "دست‌کم گرفتن گزاره گراف ساده و فرمول درجه"
-    },
-    {
-      id: "Q-6",
-      subject: "جامعه‌شناسی",
-      text: "کدام عامل در نظریه‌های هویت و فرهنگ جامعه‌شناسان، عامل اصلی عبور جامعه از جهان فرهنگی توحیدی به جهان مادی‌گرای دنیوی قلمداد می‌شود؟",
-      options: [
-        "۱. غلبه عقل ابزاری، فراموشی حقیقت متعالی و رواج فردگرایی مادی",
-        "۲. تکثر طبقاتی و تغییر نظام‌های مبادلاتی بازار",
-        "۳. مهاجرت‌های گسترده اقوامی و فروپاشی نظام عشیره‌ای",
-        "۴. ورود صنایع سنگین و بروز انقلاب‌های صنعتی بومی"
-      ],
-      correctIdx: 0,
-      explanation: "جهان‌های مادی بر مدار غلبه عقل ابزاری و نادیده گرفتن حقیقت قدسی و متعالی می‌چرخند.",
-      trapCategory: "تله شباهت گزینه‌های ابزاری با تحولات هویتی"
-    },
-    {
-      id: "Q-7",
-      subject: "ادبیات فارسی تخصصی",
-      text: "آرایه‌های موجود در بیت «موج ز خود رفته‌ای، تیز خرامید و گفت / این همه دریاست پس قطره کجای کار ماست» کدام است؟",
-      options: [
-        "۱. تشخیص، جناس، تلمیح، استعاره مکنیه",
-        "۲. تشخیص، کنایه، تقابل پارادوکسیکال تمثیلی, حسن تعلیل",
-        "۳. استعاره مکنیه، تشخیص، کنایه، تقابل ادبی مکرر",
-        "۴. مجاز، تشبیه بلیغ، تشخیص، کنایه"
+        "۱. ضرایب کوسینوسی (a_n)",
+        "۲. مقادیر ثابت (a_0)",
+        "۳. ضرایب سینوسی (b_n)",
+        "۴. هیچکدام"
       ],
       correctIdx: 2,
-      explanation: "موج سخن می‌گوید (تشخیص)، ز خود رفته (کنایه از شیفتگی)، تقابل دریا و قطره در این بیت مشهود است.",
-      trapCategory: "تله تشخیص آرایه‌های تبارشناسی و تقابل"
-    },
-    {
-      id: "Q-8",
-      subject: "عربی تخصصی",
-      text: "عین الخطأ فی الترجمة لـ «مَن جَدَّ وَ جَدَ وَ مَن زَرَعَ حَصَدَ»:",
-      options: [
-        "۱. هر کس تلاش کند می‌یابد و هر کس بکارد درو می‌کند.",
-        "۲. آن‌که جدی بود پیدا کرد و آن‌که کشت کرد برداشت نمود.",
-        "۳. کسی که تلاش مستمری داشته باشد قطعاً برداشت خواهد کرد.",
-        "۴. تلاش و برداشت، قانون همیشگی حیات بشری برای کاشتن است."
-      ],
-      correctIdx: 3,
-      explanation: "عبارت گزینه‌ ۴ فاقد فعل شرط و جواب شرط اصولی مَن است و صرفاً مفهومی بی‌ربط از لغات مجزا ارایه داده است.",
-      trapCategory: "تله ترجمه فعل شرط و جواب شرط"
-    },
-    {
-      id: "Q-9",
-      subject: "فلسفه و منطق",
-      text: "در کدام نوع از براهین اثبات وجود خدا، از مفهوم کمال مطلق مستقیماً به ضرورت وجود عینی آن استدلال می‌شود؟",
-      options: [
-        "۱. برهان علّی و معلولی (صدیقین)",
-        "۲. برهان نظم و غایتمندی جهان مادی",
-        "۳. برهان وجودی (آنطولوژیک)",
-        "۴. برهان حدوث و امکان جهان جوهری"
-      ],
-      correctIdx: 2,
-      explanation: "برهان وجودی یا آنطولوژیک که توسط دکارت و آنسلم تبیین شده، از تعریف مفهوم خدا به عنوان کامل‌ترین موجود، ضرورت وجود عینی او را استنتاج می‌کند.",
-      trapCategory: "تله تفکیک راهبردهای برهان وجودی از علّی"
-    },
-    {
-      id: "Q-10",
-      subject: "روان‌شناسی",
-      text: "بر اساس نظریه پیاژه، کودک در کدام یک از مراحل رشد شناختی قادر به فهم فرآیند بازگشت‌پذیری ذهنی و نگهداری ذهنی مقادیر است؟",
-      options: [
-        "۱. مرحله حسی - حرکتی",
-        "۲. مرحله پیش‌عملیاتی",
-        "۳. مرحله عملیات عینی",
-        "۴. مرحله عملیات صوری"
-      ],
-      correctIdx: 2,
-      explanation: "در مرحله عملیات عینی (۷ تا ۱۱ سالگی)، کودک به توانایی تفکر منطقی در مورد اشیای عینی دست می‌یابد و نگهداری ذهنی مایعات و بازگشت‌پذیری را درک می‌کند.",
-      trapCategory: "تله فرآیند نگهداری ذهنی پیاژه در مراحل میانی رشد"
+      explanation: "توابع زوج دارای بسط سری فوریه کوسینوسی هستند، بنابراین تمام ضرایب سینوسی (b_n) برای آن‌ها صفر است.",
+      trapCategory: "تله تفکیک خواص تابع زوج و فرد در سری فوریه"
     },
     {
       id: "Q-11",
-      subject: "حقوق مدنی",
-      text: "چنانچه در عقد بیع غیرمنقول، شرط شود که خریدار حق انتقال مبیع را به غیر تحت هیچ عنوانی ندارد، وضعیت شرط مذکور و عقد بیع مربوطه چیست؟",
+      subject: "مدارهای الکتریکی",
+      text: "در یک مدار مرتبه دوم که دارای پاسخ ضربه h(t) = e^-2t sin(3t) u(t) است، فرکانس نوسانات آزاد میرا (Damped Natural Frequency) چقدر است؟",
       options: [
-        "۱. عقد صحیح و شرط باطل است، اما خریدار حق فسخ معامله را به علت بطلان شرط دارد.",
-        "۲. هم عقد و هم شرط باطل هستند، زیرا سلب حق انتقال به طور مطلق مغایر با مقتضای ذات عقد بیع است.",
-        "۳. عقد باطل ولی شرط صحیح است، زیرا طرفین در تراضی نسبت به شروط غیرمقدور آزاد هستند.",
-        "۴. عقد صحیح و شرط نیز صحیح است، زیرا سلب حق انتقال به صورت حق عینی موقت بوده و مقتضای ذات را مخدوش نمی‌کند."
+        "۱. ۲ رادیان بر ثانیه",
+        "۲. ۳ رادیان بر ثانیه",
+        "۳. ۵ رادیان بر ثانیه",
+        "۴. √۱۳ رادیان بر ثانیه"
       ],
-      correctIdx: 3,
-      explanation: "سلب حق انتقال مبیع به نحو شرط فعل یا شرط نتیجه به طور موقت یا محدود صحیح است و با مقتضای ذات عقد بیع (که ایجاد مالکیت است) تضادی ندارد، اما سلب حق انتقال به طور دائم باطل است.",
-      trapCategory: "تله تشخیص مقتضای ذات عقد در برابر مقتضای اطلاق عقد"
+      correctIdx: 1,
+      explanation: "در فرم عمومی پاسخ میرای نوسانی e^-at sin(wt)، ضریب w نشان‌دهنده فرکانس نوسانات آزاد میرا است. در اینجا w=3 می‌باشد.",
+      trapCategory: "تله تشخیص فرکانس نوسانی از ضریب میرایی"
+    },
+    {
+      id: "Q-12",
+      subject: "الکترونیک",
+      text: "در یک تقویت‌کننده امیتر مشترک با مقاومت در شاخه امیتر (بدون خازن بای‌پس)، فیدبک اعمال شده از چه نوعی است؟",
+      options: [
+        "۱. ولتاژ - سری",
+        "۲. جریان - سری",
+        "۳. ولتاژ - موازی",
+        "۴. جریان - موازی"
+      ],
+      correctIdx: 1,
+      explanation: "مقاومت شاخه امیتر جریانی متناسب با جریان خروجی نمونه‌گیری کرده و به صورت سری در ورودی قرار می‌دهد، لذا فیدبک جریان-سری است.",
+      trapCategory: "تله تشخیص نوع فیدبک در تقویت‌کننده‌ها"
     },
     {
       id: "Q-13",
-      subject: "حقوق تجارت",
-      text: "در صورتی که یکی از شرکا در شرکت با مسئولیت محدود، سهم‌الشرکه خود را به موجب سند عادی به دیگری انتقال دهد، این انتقال در قبال شرکت و اشخاص ثالث چه وضعیتی دارد؟",
+      subject: "سیگنال‌ها و سیستم‌ها",
+      text: "تبدیل فوریه سیگنال x(t) = sinc^2(t) در فرکانس صفر (w=0) چه مقداری دارد؟ (با فرض تعریف استاندارد sinc(t) = sin(pi*t)/(pi*t))",
       options: [
-        "۱. انتقال کاملاً صحیح و معتبر است و از تاریخ امضای سند عادی در مقابل ثالث قابل استناد می‌باشد.",
-        "۲. انتقال از اساس باطل است، زیرا انتقال سهم‌الشرکه در این شرکت‌ها الزاماً باید با موافقت کتبی تمام شرکا صورت پذیرد.",
-        "۳. انتقال بلااثر و غیرقابل استناد در مقابل شرکت و ثالث است، مگر اینکه با سند رسمی صورت گرفته باشد.",
-        "۴. انتقال غیرنافذ است و صرفاً با تنفیذ بعدی بقیه شرکایی که دارنده حداقل نصف سرمایه هستند معتبر می‌شود."
+        "۱. صفر",
+        "۲. یک",
+        "۳. دو",
+        "۴. نصف"
       ],
-      correctIdx: 2,
-      explanation: "نص صریح ماده ۱۰۳ قانون تجارت مقرر می‌دارد که انتقال سهم‌الشرکه در شرکت با مسئولیت محدود باید به موجب سند رسمی باشد، در غیر این‌صورت انتقال عادی در قبال شرکت و ثالث بلااثر است.",
-      trapCategory: "تله تشریفات رسمی انتقال سهم‌الشرکه در شرکت با مسئولیت محدود"
+      correctIdx: 1,
+      explanation: "طبق قضیه مساحت، مقدار تبدیل فوریه در فرکانس صفر برابر است با انتگرال سیگنال در حوزه زمان. انتگرال sinc^2(t) از منفی بی‌نهایت تا مثبت بی‌نهایت برابر ۱ است.",
+      trapCategory: "تله قضیه مساحت در تبدیل فوریه"
     },
     {
       id: "Q-14",
-      subject: "حقوق جزا",
-      text: "چنانچه مرتکب با اعتقاد به مهدورالدم بودن مجنی‌علیه اقدام به قتل وی نماید، در صورتی که در دادگاه عدم مهدورالدم بودن مقتول اثبات شود، مسئولیت کیفری مرتکب چیست؟",
+      subject: "کنترل خطی",
+      text: "یک سیستم حلقه‌بسته با فیدبک واحد دارای تابع تبدیل حلقه‌باز G(s) = K / (s(s+2)(s+4)) است. به ازای چه مقدار K سیستم در آستانه ناپایداری قرار می‌گیرد؟",
       options: [
-        "۱. مرتکب محکوم به قصاص نفس می‌شود، زیرا اعتقاد ذهنی وی تاتیری در مجازات قانونی جرم ارتکابی ندارد.",
-        "۲. قتل شبه‌عمد محسوب شده و مرتکب علاوه بر پرداخت دیه، به مجازات تعزیری مقرر محکوم می‌گردد.",
-        "۳. قتل در حکم شبه‌عمد خواهد بود که مرتکب را تنها ملزم به پرداخت دیه به اولیای دم می‌کند و مجازات تعزیری ندارد.",
-        "۴. مرتکب از مجازات قصاص و دیه کلاً معاف می‌گردد، زیرا عنصر معنوی جرم به علت شبهه موضوعیه کاملاً مخدوش شده است."
+        "۱. K = 8",
+        "۲. K = 24",
+        "۳. K = 48",
+        "۴. K = 12"
+      ],
+      correctIdx: 2,
+      explanation: "با استفاده از جدول راث-هرویتز برای معادله مشخصه s^3 + 6s^2 + 8s + K = 0، شرط پایداری 6*8 > K است، بنابراین K=48 مقدار بحرانی است.",
+      trapCategory: "تله محاسباتی در پایداری راث-هرویتز"
+    },
+    {
+      id: "Q-6",
+      subject: "ماشین‌های الکتریکی",
+      text: "در یک ماشین جریان مستقیم (DC)، کموتاسیون به چه معناست؟",
+      options: [
+        "۱. تبدیل جریان متناوب القا شده در آرمیچر به جریان مستقیم در خروجی",
+        "۲. تنظیم سرعت گردش موتور با تغییر ولتاژ آرمیچر",
+        "۳. جلوگیری از اشباع مغناطیسی در قطب‌های اصلی",
+        "۴. کاهش تلفات هیسترزیس در هسته استاتور"
+      ],
+      correctIdx: 0,
+      explanation: "کموتاسیون فرآیند معکوس کردن جریان در سیم‌پیچ‌های آرمیچر هنگام عبور از ناحیه خنثی است تا خروجی مستقیم حاصل شود.",
+      trapCategory: "تله مفاهیم پایه ماشین‌های DC"
+    },
+    {
+      id: "Q-7",
+      subject: "بررسی سیستم‌های قدرت",
+      text: "استفاده از باندل (Bundle) در خطوط انتقال فشار قوی عمدتاً به چه منظوری انجام می‌شود؟",
+      options: [
+        "۱. افزایش مقاومت اهمی خط برای کاهش جریان خطا",
+        "۲. کاهش تلفات کرونا و اندوکتانس سری خط",
+        "۳. افزایش ولتاژ شکست عایقی مقره‌ها",
+        "۴. کاهش ظرفیت خازنی خط نسبت به زمین"
       ],
       correctIdx: 1,
-      explanation: "بر اساس ماده ۳۰۲ و تبصره‌های قانون مجازات اسلامی، چنانچه کسی با اعتقاد به مهدورالدم بودن مقتول مبادرت به قتل کند و خلاف آن ثابت شود، جنایت شبه‌عمد محسوب شده و جانی علاوه بر دیه به مجازات تعزیری حبس محکوم می‌گردد.",
-      trapCategory: "تله اعتقاد به مهدورالدم بودن و مجازات تعزیری آن"
+      explanation: "باندل کردن باعث افزایش شعاع متوسط هندسی (GMR) شده که منجر به کاهش شدت میدان الکتریکی در سطح هادی (کاهش کرونا) و کاهش اندوکتانس می‌شود.",
+      trapCategory: "تله مزایای هادی‌های دسته‌ای در سیستم قدرت"
+    },
+    {
+      id: "Q-8",
+      subject: "الکترومغناطیس",
+      text: "طبق قانون لنز، جهت جریان القایی در یک حلقه رسانا به گونه‌ای است که ...",
+      options: [
+        "۱. با عامل به وجود آورنده خود (تغییر شار) مخالفت کند.",
+        "۲. باعث افزایش شار مغناطیسی عبوری از حلقه شود.",
+        "۳. همواره در جهت گردش عقربه‌های ساعت باشد.",
+        "۴. پتانسیل الکتریکی را در تمام نقاط حلقه یکسان نگه دارد."
+      ],
+      correctIdx: 0,
+      explanation: "قانون لنز بیانگر بقای انرژی در القای الکترومغناطیسی است؛ جریان القایی میدانی ایجاد می‌کند که با تغییر شار مخالف است.",
+      trapCategory: "تله درک فیزیکی قانون لنز"
+    },
+    {
+      id: "Q-9",
+      subject: "مدارهای منطقی",
+      text: "یک مالتی‌پلکسر ۸ به ۱ دارای چند خط انتخابی (Select Lines) است؟",
+      options: [
+        "۱. ۲ خط",
+        "۲. ۳ خط",
+        "۳. ۴ خط",
+        "۴. ۸ خط"
+      ],
+      correctIdx: 1,
+      explanation: "برای انتخاب بین N ورودی، به log2(N) خط انتخابی نیاز است. برای ۸ ورودی، ۳ خط لازم است (2^3 = 8).",
+      trapCategory: "تله تعداد خطوط کنترلی در مدارهای ترکیبی"
+    },
+    {
+      id: "Q-10",
+      subject: "سیگنال‌ها و سیستم‌ها",
+      text: "کدام یک از توابع زیر یک سیستم خطی و تغییرناپذیر با زمان (LTI) را توصیف می‌کند؟",
+      options: [
+        "۱. y(t) = x(t) * sin(t)",
+        "۲. y(t) = x(t-2)",
+        "۳. y(t) = x^2(t)",
+        "۴. y(t) = x(-t)"
+      ],
+      correctIdx: 1,
+      explanation: "سیستم y(t)=x(t-2) یک تاخیر ساده است که هم خطی است و هم با جابجایی زمان تغییر نمی‌کند. گزینه‌های دیگر یا غیرخطی هستند یا تغییرپذیر با زمان.",
+      trapCategory: "تله تشخیص خواص سیستم‌های LTI"
+    },
+    {
+      id: "Q-11",
+      subject: "الکترونیک ۱ و ۲",
+      text: "در یک تقویت‌کننده امیتر مشترک با مقاومت در شاخه امیتر (بدون خازن بای‌پس)، اثر مقاومت امیتر بر بهره ولتاژ و پایداری نقطه کار چیست؟",
+      options: [
+        "۱. بهره ولتاژ افزایش یافته و پایداری نقطه کار کاهش می‌یابد.",
+        "۲. بهره ولتاژ کاهش یافته و پایداری نقطه کار نیز کاهش می‌یابد.",
+        "۳. بهره ولتاژ افزایش یافته و پایداری نقطه کار بهبود می‌یابد.",
+        "۴. بهره ولتاژ کاهش یافته و پایداری نقطه کار بهبود می‌یابد (فیدبک منفی موضعی)."
+      ],
+      correctIdx: 3,
+      explanation: "مقاومت در شاخه امیتر یک فیدبک منفی سری-جریان ایجاد می‌کند که باعث کاهش بهره ولتاژ (Re/(Rc+Re)) شده اما پایداری نقطه کار را در برابر تغییرات بتا و دما به شدت بهبود می‌بخشد.",
+      trapCategory: "تله تشخیص اثر فیدبک بر بهره و پایداری تقویت‌کننده"
+    },
+    {
+      id: "Q-13",
+      subject: "ماشین‌های الکتریکی",
+      text: "در یک ترانسفورماتور تک‌فاز، دلیل استفاده از هسته‌های ورقه ورقه (Laminated) در استاتور چیست؟",
+      options: [
+        "۱. کاهش تلفات فوکو (جریان‌های گردابی) در هسته مغناطیسی.",
+        "۲. کاهش تلفات هیسترزیس ناشی از تغییر جهت شار.",
+        "۳. افزایش ضریب خودالقایی سیم‌پیچ‌های اولیه و ثانویه.",
+        "۴. بهبود خنک‌کاری و کاهش دمای سیم‌پیچ‌ها حین بارگذاری."
+      ],
+      correctIdx: 0,
+      explanation: "ورقه ورقه کردن هسته مسیر جریان‌های گردابی (Eddy Currents) را محدود کرده و مقاومت مسیر آن‌ها را افزایش می‌دهد که منجر به کاهش چشمگیر تلفات فوکو می‌شود.",
+      trapCategory: "تله تفکیک تلفات هسته در ماشین‌های الکتریکی"
+    },
+    {
+      id: "Q-14",
+      subject: "بررسی سیستم‌های قدرت",
+      text: "در تحلیل خطوط انتقال، استفاده از روش باندل (Bundle) در هر فاز خطوط فشار قوی عمدتاً به چه دلیلی انجام می‌شود؟",
+      options: [
+        "۱. افزایش مقاومت اهمی خط جهت محدود کردن جریان اتصال کوتاه.",
+        "۲. کاهش پدیده کرونا با افزایش شعاع متوسط هندسی (GMR) هادی فاز.",
+        "۳. افزایش ولتاژ نامی مقره‌های خط انتقال در برج‌های کششی.",
+        "۴. کاهش ظرفیت خازنی خط نسبت به زمین و بهبود پایداری ولتاژ."
+      ],
+      correctIdx: 1,
+      explanation: "باندل کردن هادی‌ها باعث افزایش شعاع موثر هادی فاز شده که منجر به کاهش شدت میدان الکتریکی در سطح هادی و در نتیجه کاهش تلفات کرونا و نویزهای رادیویی می‌شود.",
+      trapCategory: "تله مزایای فنی هادی‌های باندل در خط انتقال"
     }
   ];
 
@@ -784,7 +825,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
 
     if (filtered.length === 0) {
       // Fallback
-      filtered = QUESTIONS_POOL.filter(q => q.subject === "جامعه‌شناسی" || q.subject === "ادبیات فارسی تخصصی" || q.subject === "عربی تخصصی");
+      filtered = QUESTIONS_POOL.filter(q => q.subject === "مدارهای الکتریکی" || q.subject === "سیگنال‌ها و سیستم‌ها" || q.subject === "کنترل خطی");
     }
 
     // Sort or slice up to 5 items to ensure conceptual and difficult questions
@@ -817,8 +858,8 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
     // Filter questions that match selectedCustomSubjects or closely related
     let filtered = QUESTIONS_POOL.filter(q => {
       return selectedCustomSubjects.includes(q.subject) || 
-             (selectedCustomSubjects.some(s => s.includes("حقوق") || s.includes("جزا") || s.includes("مدنی") || s.includes("تجارت")) && 
-              (q.subject.includes("حقوق") || q.subject.includes("جزا") || q.subject.includes("مدنی") || q.subject.includes("تجارت")));
+             (selectedCustomSubjects.some(s => s.includes("مدار") || s.includes("سیگنال") || s.includes("کنترل") || s.includes("ماشین")) && 
+              (q.subject.includes("مدار") || q.subject.includes("سیگنال") || q.subject.includes("کنترل") || q.subject.includes("ماشین")));
     });
 
     if (filtered.length === 0) {
@@ -913,7 +954,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
       {/* Top Selector and Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm text-right">
         <div>
-          <h2 className="text-xl font-black text-slate-900">سامانه کارنامه‌های مانیتورینگ آزمون‌های تخصصی میزان</h2>
+          <h2 className="text-xl font-black text-slate-900">سامانه کارنامه‌های مانیتورینگ آزمون‌های تخصصی آزمونیار</h2>
           <p className="text-slate-500 text-xs mt-1">کارنامه علمی و آزمون‌های شبیه‌ساز را جهت عارضه‌یابی و مهار تله‌های تستی کنکور سراسری انتخاب نمایید.</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
@@ -963,6 +1004,53 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
           <div className="text-3xl font-black mt-1 font-mono">{loading ? "پیگیری..." : `${estimatedTraz}`}</div>
         </div>
       </div>
+      
+      {/* PhD Specific Academic Portfolio Assessment Row */}
+      {student.field === "elec_phd" && currentExam.resumeScore !== undefined && (
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4" 
+          id="phd-portfolio-stats"
+        >
+          <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm text-right flex items-center justify-between group hover:border-indigo-100 transition-colors">
+             <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                <FileText size={24} />
+             </div>
+             <div className="flex-1 pr-4">
+                <p className="text-slate-500 text-[10px] font-black tracking-wider">سوابق علمی و پژوهشی (ارزیابی رزومه)</p>
+                <div className="flex items-end justify-end gap-2 mt-1">
+                   <span className="text-[10px] text-indigo-600 font-bold mb-1 underline decoration-2 decoration-indigo-200">تطبیق پذیرش</span>
+                   <span className="text-2xl font-black font-mono text-slate-800">{currentExam.resumeScore}٪</span>
+                </div>
+             </div>
+          </div>
+          <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm text-right flex items-center justify-between group hover:border-emerald-100 transition-colors">
+             <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                <Mic size={24} />
+             </div>
+             <div className="flex-1 pr-4">
+                <p className="text-slate-500 text-[10px] font-black tracking-wider">عملکرد مصاحبه (Meeting Exams)</p>
+                <div className="flex items-end justify-end gap-2 mt-1">
+                   <span className="text-[10px] text-emerald-600 font-bold mb-1 underline decoration-2 decoration-emerald-200">دفاع تئاتری</span>
+                   <span className="text-2xl font-black font-mono text-slate-800">{currentExam.interviewScore}٪</span>
+                </div>
+             </div>
+          </div>
+          <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm text-right flex items-center justify-between group hover:border-rose-100 transition-colors">
+             <div className="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-all">
+                <Lightbulb size={24} />
+             </div>
+             <div className="flex-1 pr-4">
+                <p className="text-slate-500 text-[10px] font-black tracking-wider">پتانسیل پژوهشی و نوآوری</p>
+                <div className="flex items-end justify-end gap-2 mt-1">
+                   <span className="text-[10px] text-rose-600 font-bold mb-1 underline decoration-2 decoration-rose-200">هوش مولد علمی</span>
+                   <span className="text-2xl font-black font-mono text-slate-800">{currentExam.researchPotential}٪</span>
+                </div>
+             </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Primary Tab Switching System */}
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden text-right" id="report-view-panels">
@@ -1030,7 +1118,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
               >
                 <div className="w-12 h-12 border-4 border-blue-950 border-t-amber-400 rounded-full animate-spin"></div>
                 <div className="text-center space-y-1">
-                  <p className="font-bold text-slate-800">هوش کایزن میزان در حال پایش و سنجش کارنامه‌ علمی شما...</p>
+                  <p className="font-bold text-slate-800">هوش کایزن آزمونیار در حال پایش و سنجش کارنامه‌ علمی شما...</p>
                   <p className="text-xs text-slate-400">شناسایی تله‌های تستی کنکور، محاسبات سرعت انتقال، تخمین تراز و رسم روند پویای پیشرفت</p>
                 </div>
               </motion.div>
@@ -1049,7 +1137,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                       <table className="w-full text-right border-collapse text-xs" dir="rtl">
                         <thead>
                           <tr className="bg-slate-50 border-b border-slate-100 text-slate-600 font-bold">
-                            <th className="py-4 px-6 text-right">موضوع درسی حقوقی</th>
+                            <th className="py-4 px-6 text-right">موضوع درسی تخصصی برق</th>
                             <th className="py-4 px-6 text-right">درصد انطباق علمی</th>
                             <th className="py-4 px-6 text-emerald-700 text-right">تعداد پاسخ‌های صحیح</th>
                             <th className="py-4 px-6 text-rose-600 text-right">تعداد پاسخ‌های غلط (تله)</th>
@@ -1107,6 +1195,178 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                         </tbody>
                       </table>
                     </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4 flex flex-col justify-center min-h-[350px]">
+                        <div className="text-right">
+                          <h3 className="text-sm font-black text-slate-800 flex items-center gap-2 justify-end">
+                            <span>نمودار راداری تسلط سرفصلی</span>
+                            <Brain size={16} className="text-indigo-600" />
+                          </h3>
+                          <p className="text-[10px] text-slate-500 mt-1 font-bold">توازن دانش داوطلب در دروس تخصصی بر اساس ضریب انطباق علمی</p>
+                        </div>
+                        <div className="flex-1 flex justify-center items-center py-4">
+                          <RadarChart 
+                            data={currentExam.lessons.map(l => ({ 
+                              axis: l.lessonName.length > 20 ? l.lessonName.substring(0, 18) + "..." : l.lessonName, 
+                              value: l.percentage 
+                            }))} 
+                            width={320}
+                            height={320}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-5 text-right flex flex-col">
+                        <div>
+                          <h3 className="text-sm font-black text-slate-800 flex items-center gap-2 justify-end">
+                            <span>تحلیل توازن سرفصلی</span>
+                            <Target size={16} className="text-emerald-600" />
+                          </h3>
+                        </div>
+                        <div className="space-y-4 flex-1 overflow-y-auto">
+                          {[...currentExam.lessons].sort((a, b) => b.percentage - a.percentage).map((lesson, idx) => (
+                            <div key={idx} className="space-y-1.5 pt-2 border-t border-slate-50 first:border-0 first:pt-0">
+                              <div className="flex justify-between items-center h-4">
+                                <span className="text-[10px] font-mono font-black text-slate-400">{toPersianNum(lesson.percentage)}٪</span>
+                                <span className="text-[11px] font-black text-slate-700">{lesson.lessonName}</span>
+                              </div>
+                              <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${lesson.percentage}%` }}
+                                  className={`h-full rounded-full ${
+                                    lesson.percentage > 70 ? "bg-emerald-500" : lesson.percentage > 40 ? "bg-indigo-500" : "bg-rose-500"
+                                  }`}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="p-3 bg-indigo-50/50 rounded-2xl border border-indigo-100 mt-auto">
+                          <p className="text-[10px] text-indigo-900 leading-relaxed font-bold">
+                            💡 <span className="font-black">تحلیل هوشمند آزمونیار:</span> 
+                            {currentExam.lessons.some(l => l.percentage < 30) 
+                              ? " با توجه به نوسان شدید در برخی دروس، توازنی علمی شما در وضعیت بحرانی است. تمرکز بر دروس ضعیف‌تر در اولویت کایزن قرار دارد."
+                              : " توازن نسبی در اکثر دروس برقرار است. حفظ این پایداری با تست‌های زمان‌دار در مباحث قوت توصیه می‌شود."}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* PhD Portfolio Detail Analysis Card */}
+                    {student.field === "elec_phd" && currentExam.resumeScore !== undefined && (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-slate-900 text-white p-8 rounded-[2.5rem] border border-slate-800 shadow-2xl relative overflow-hidden mt-6"
+                      >
+                        {/* Decorative background Elements */}
+                        <div className="absolute -right-20 -top-20 w-40 h-40 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+                        <div className="absolute -left-20 -bottom-20 w-40 h-40 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
+                        
+                        <div className="relative z-10 space-y-8">
+                          <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-white/5 pb-6">
+                            <div className="text-right">
+                              <h3 className="text-lg font-black flex items-center gap-2 justify-end text-indigo-400">
+                                <span>پورتفولیو آکادمیک و ارزیابی جامع دکتری تخصصی</span>
+                                <ShieldCheck size={24} />
+                              </h3>
+                              <p className="text-xs text-slate-400 font-bold mt-1">ترکیب سوابق علمی، مصاحبه حضوری (Meeting Exam) و پتانسیل تولید علم</p>
+                            </div>
+                            <div className="p-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] text-slate-300 font-bold max-w-xs leading-relaxed text-right">
+                              این بخش مختص داوطلبان مقطع دکتری است که علاوه بر پاسخ‌دهی به تست‌های ۴ گزینه‌ای، بر اساس فاکتورهای نرم و متغیرهای پژوهشی مورد سنجش قرار می‌گیرند.
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Resume Details List */}
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                                  <div className="flex items-center gap-3">
+                                     <div className="w-10 h-10 bg-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center">
+                                        <FileText size={20} />
+                                     </div>
+                                     <div className="text-right">
+                                        <p className="text-[10px] text-slate-400 font-black tracking-tight">امتیاز سوابق پژوهشی</p>
+                                        <p className="text-sm font-black text-indigo-300">مقالات ISI و کنفرانس‌های معتبر</p>
+                                     </div>
+                                  </div>
+                                  <span className="text-2xl font-black text-white font-mono">{currentExam.resumeScore}٪</span>
+                                </div>
+                                <div className="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                                  <div className="flex items-center gap-3">
+                                     <div className="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center">
+                                        <Mic size={20} />
+                                     </div>
+                                     <div className="text-right">
+                                        <p className="text-[10px] text-slate-400 font-black tracking-tight">عملکرد مصاحبه حضوری</p>
+                                        <p className="text-sm font-black text-emerald-300">قدرت انتقال و تسلط بر تز</p>
+                                     </div>
+                                  </div>
+                                  <span className="text-2xl font-black text-white font-mono">{currentExam.interviewScore}٪</span>
+                                </div>
+                                <div className="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                                  <div className="flex items-center gap-3">
+                                     <div className="w-10 h-10 bg-rose-500/20 text-rose-400 rounded-xl flex items-center justify-center">
+                                        <Lightbulb size={20} />
+                                     </div>
+                                     <div className="text-right">
+                                        <p className="text-[10px] text-slate-400 font-black tracking-tight">نوآوری و تولید علم</p>
+                                        <p className="text-sm font-black text-rose-300">خلاقیت در حل مسائل مهندسی</p>
+                                     </div>
+                                  </div>
+                                  <span className="text-2xl font-black text-white font-mono">{currentExam.researchPotential}٪</span>
+                                </div>
+                            </div>
+
+                            {/* Comparative Analytics Mini-Dashboard */}
+                            <div className="bg-white/5 p-6 rounded-3xl border border-white/5 flex flex-col justify-between">
+                               <div className="space-y-5 text-right">
+                                  <h4 className="text-sm font-black text-slate-200 border-r-2 border-indigo-500 pr-2">تحلیل سیستمی پذیرش نهایی دکتری</h4>
+                                  <div className="space-y-4">
+                                     <div className="space-y-1">
+                                        <div className="flex justify-between items-center text-[10px] font-bold">
+                                           <span className="text-indigo-400">{currentExam.resumeScore}%</span>
+                                           <span className="text-slate-300">ارزیابی رزومه علمی</span>
+                                        </div>
+                                        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                                          <motion.div initial={{ width: 0 }} animate={{ width: `${currentExam.resumeScore}%` }} className="h-full bg-indigo-500" />
+                                        </div>
+                                     </div>
+                                     <div className="space-y-1">
+                                        <div className="flex justify-between items-center text-[10px] font-bold">
+                                           <span className="text-emerald-400">{currentExam.interviewScore}%</span>
+                                           <span className="text-slate-300">آمادگی مربیگری (Interviews)</span>
+                                        </div>
+                                        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                                          <motion.div initial={{ width: 0 }} animate={{ width: `${currentExam.interviewScore}%` }} className="h-full bg-emerald-500" />
+                                        </div>
+                                     </div>
+                                     <div className="space-y-1">
+                                        <div className="flex justify-between items-center text-[10px] font-bold">
+                                           <span className="text-rose-400">{currentExam.researchPotential}%</span>
+                                           <span className="text-slate-300">ظرفیت مقالات و پژوهش</span>
+                                        </div>
+                                        <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                                          <motion.div initial={{ width: 0 }} animate={{ width: `${currentExam.researchPotential}%` }} className="h-full bg-rose-500" />
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               <div className="mt-6 p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-right">
+                                  <p className="text-[10px] text-indigo-100 leading-relaxed font-bold">
+                                    💡 <span className="text-white font-black">تحلیل مربی دکتری آزمونیار:</span>
+                                    { (currentExam.resumeScore || 0) < (currentExam.interviewScore || 0) 
+                                      ? " تسلط شما در متینگ‌های علمی بسیار عالی است، اما جهت قبولی در دانشگاه‌های تراز اول، تقویت رزومه با تالیف مقالات جدید توصیه می‌شود."
+                                      : " رزومه فعلی شما برای فاز اول پذیرش دکتری بسیار مطلوب است. تمرکز دائم بر شبیه‌سازی مصاحبه‌های شفاهی جهت بهبود نمره Meeting Exam الزامی است."}
+                                  </p>
+                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
                   </div>
                 )}
 
@@ -1118,7 +1378,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                         <span className="p-2 bg-purple-700 text-white rounded-xl"><Sparkles size={18} /></span>
                         <div>
                           <p className="text-purple-950 font-bold text-sm">بروشور طلایی عارضه‌یابی و مهار گلوگاه‌های آزمون صادر گردید!</p>
-                          <p className="text-purple-700 text-xs mt-0.5">شامل تحلیل شروط عقود و فرآیندهای نوین دادرسی کیفری میزان به عنوان مربی هوشمند علمی در جیب شما.</p>
+                          <p className="text-purple-700 text-xs mt-0.5">شامل تحلیل شروط عقود و فرآیندهای نوین دادرسی کیفری آزمونیار به عنوان مربی هوشمند علمی در جیب شما.</p>
                         </div>
                       </div>
                       <button 
@@ -1169,7 +1429,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                     {isAlertVisible && (
                       <div className="p-4 bg-blue-50 text-blue-800 rounded-xl border border-blue-200 text-xs flex items-center gap-2">
                         <AlertCircle className="animate-spin" size={16} />
-                        <span>در پیشبرد تقاضای به خدمت‌گیری هوش مصنوعی میزان جهت دانلود اسناد...</span>
+                        <span>در پیشبرد تقاضای به خدمت‌گیری هوش مصنوعی آزمونیار جهت دانلود اسناد...</span>
                       </div>
                     )}
                   </div>
@@ -1447,7 +1707,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                           <ClipboardList size={16} />
                           <span>سند کایزن درسی و برنامه جبرانی رفع تله‌های تستی کنکور سراسری</span>
                         </h3>
-                        <p className="text-xs text-indigo-700 font-semibold">مبتنی بر تله‌های علمی فرسودگی و درسی ممیزی‌ شده در کانون علمی میزان شما</p>
+                        <p className="text-xs text-indigo-700 font-semibold">مبتنی بر تله‌های علمی فرسودگی و درسی ممیزی‌ شده در کانون علمی آزمونیار شما</p>
                       </div>
                       <span className="px-3.5 py-1.5 bg-blue-950 text-white rounded-2xl text-[10px] font-black border border-indigo-900 animate-pulse">
                         چرخه هفتگی کایزن فعال است ⏱️
@@ -1503,7 +1763,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                             <h3 className="text-base font-black text-slate-900">طراح و شبیه‌ساز آزمون تکمیلی شخصی‌سازی شده سراسری</h3>
                           </div>
                           <p className="text-xs text-slate-500 leading-relaxed">
-                            بر پایه هوش کایزن میزان، با توجه به نقاط ضعف درصدی گزارش شده شما، مباحث و تعداد سوالات آزمون خود را بسازید تا تحت زمان‌بندی مرجع کنکور مورد آزمون آنلاین پیوسته قرار بگیرید.
+                            بر پایه هوش کایزن آزمونیار، با توجه به نقاط ضعف درصدی گزارش شده شما، مباحث و تعداد سوالات آزمون خود را بسازید تا تحت زمان‌بندی مرجع کنکور مورد آزمون آنلاین پیوسته قرار بگیرید.
                           </p>
                         </div>
 
@@ -1853,11 +2113,11 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                                       saveTestTrap({
                                         questionTitle: q.text,
                                         subject: q.subject,
-                                        category: (q.subject === "ریاضیات تجربی" || q.subject === "حسابان و ریاضیات" || q.subject === "شیمی" || q.subject === "فیزیک") ? "اشتباه_محاسباتی" : "مفهومی",
+                                        category: (q.subject === "مدارهای الکتریکی" || q.subject === "سیگنال‌ها و سیستم‌ها" || q.subject === "الکترونیک" || q.subject === "کنترل خطی") ? "اشتباه_محاسباتی" : "مفهومی",
                                         trapType: q.trapCategory,
                                         correctAnswer: q.options[q.correctIdx],
                                         userMistake: selectedIdx !== undefined ? `انتخاب نادرست گزینه شماره ${toPersianNum(selectedIdx + 1)}` : "سوال را سفید باقی گذاشتم",
-                                        legalNote: q.explanation,
+                                        technicalNote: q.explanation,
                                         importance: "high"
                                       });
 
@@ -1872,7 +2132,7 @@ export default function ReportCardView({ student, onNavigate }: ReportCardViewPr
                                         `ذخیره خودکار تله ${q.trapCategory} در درس ${q.subject}`
                                       );
 
-                                      alert("✓ این خطای تستی علمی با موفقیت در کیف تله‌های ذهنی ذخیره شد و در چرخه جبرانی هوشمند میزان قرار گرفت.");
+                                      alert("✓ این خطای تستی علمی با موفقیت در کیف تله‌های ذهنی ذخیره شد و در چرخه جبرانی هوشمند آزمونیار قرار گرفت.");
                                     }}
                                     className={`py-1.5 px-3 rounded-xl border text-[10px] font-black transition cursor-pointer flex items-center gap-1 ${
                                       isSavedMap 

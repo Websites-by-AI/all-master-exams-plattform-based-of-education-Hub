@@ -78,7 +78,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
         trapType: "تله پلاریته خازن در لحظه کلیدزنی",
         correctAnswer: "ولتاژ خازن در لحظه 0+ برابر ولتاژ آن در لحظه 0- است.",
         userMistake: "من فکر کردم جریان خازن هم نمی‌تواند تغییر ناگهانی داشته باشد، در حالیکه بر اساس قوانین فیزیکی مدار فقط ولتاژ خازن پیوسته است.",
-        legalNote: "قاعده پیوستگی: ولتاژ خازن و جریان سلف نمی‌توانند تغییر ناگهانی داشته باشند (مگر در حضور ضربه). این کلید حل اکثر مسائل حالت گذرا در کنکور ارشد است.",
+        technicalNote: "قاعده پیوستگی: ولتاژ خازن و جریان سلف نمی‌توانند تغییر ناگهانی داشته باشند (مگر در حضور ضربه). این کلید حل اکثر مسائل حالت گذرا در کنکور ارشد است.",
         importance: "high"
       };
     } else if (subjectKey === 'signals') {
@@ -89,7 +89,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
         trapType: "تله سیستم‌های غیرعلی",
         correctAnswer: "سیستم پایدار است اگر انتگرال قدرمطلق پاسخ ضربه آن محدود باشد.",
         userMistake: "پایداری را فقط با محل قطب‌ها سنجیدم، در حالیکه برای سیستم‌های غیرعلی محل قطب‌ها به تنهایی پایداری را تضمین نمی‌کند.",
-        legalNote: "شرط پایداری BIBO: انتگرال‌پذیری مطلق پاسخ ضربه سیستم. در حوزه فرکانس، ناحیه همگرایی (ROC) باید شامل محور jw باشد.",
+        technicalNote: "شرط پایداری BIBO: انتگرال‌پذیری مطلق پاسخ ضربه سیستم. در حوزه فرکانس، ناحیه همگرایی (ROC) باید شامل محور jw باشد.",
         importance: "high"
       };
     } else {
@@ -100,7 +100,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
         trapType: "تله ناحیه اشباع",
         correctAnswer: "اگر Vce کمتر از 0.2 ولت شود، ترانزیستور وارد ناحیه اشباع شده و Ic دیگر تابع Ib نیست.",
         userMistake: "جریان کلکتور را بدون چک کردن ناحیه اشباع از رابطه بتا برابر جریان بیس حساب کردم.",
-        legalNote: "در مسائل الکترونیک همیشه ابتدا فرض فعال بودن را چک کنید. اگر Vce محاسبه شده کمتر از مقدار اشباع بود، باید محاسبات را در ناحیه اشباع تکرار کنید.",
+        technicalNote: "در مسائل الکترونیک همیشه ابتدا فرض فعال بودن را چک کنید. اگر Vce محاسبه شده کمتر از مقدار اشباع بود، باید محاسبات را در ناحیه اشباع تکرار کنید.",
         importance: "medium"
       };
     }
@@ -473,7 +473,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                 <div className="space-y-0.5">
                   <span className="text-[9px] text-indigo-200 font-black block">رهنمود طلایی شب آزمون (Cheat Sheet):</span>
                   <p className="text-xs font-bold text-indigo-50 leading-relaxed">
-                    {selectedTrapDetail.legalNote}
+                    {selectedTrapDetail.technicalNote}
                   </p>
                 </div>
               </div>
@@ -483,7 +483,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
                   <Info size={11} />
                   <span>درس: {selectedTrapDetail.subject} | دسته‌بندی علمی: {selectedTrapDetail.category}</span>
                 </span>
-                <span>ثبت شده در سامانه میزان: {selectedTrapDetail.createdAt}</span>
+                <span>ثبت شده در سامانه آزمونیار: {selectedTrapDetail.createdAt}</span>
               </div>
             </div>
           </motion.div>
@@ -492,7 +492,7 @@ export default function TrapsTreeMap({ studentId, studentName, onRefreshStats }:
 
       {/* Guide text */}
       <p className="text-[11px] text-slate-400 leading-relaxed text-right font-semibold">
-        💡 <strong className="font-bold text-indigo-950">نکته آموزشی میزان:</strong> روی هر یک از کارت‌های تله تستی بالا کلیک کنید تا جزئیات سوال، تله طراحی شده، اشتباه شما و مستند علمی صریح جهت حذف خطا در تراز آزمون ارشد برق در این باکس خلاصه نشان داده شود.
+        💡 <strong className="font-bold text-indigo-950">نکته آموزشی آزمونیار:</strong> روی هر یک از کارت‌های تله تستی بالا کلیک کنید تا جزئیات سوال، تله طراحی شده، اشتباه شما و مستند علمی صریح جهت حذف خطا در تراز آزمون ارشد برق در این باکس خلاصه نشان داده شود.
       </p>
     </div>
   );

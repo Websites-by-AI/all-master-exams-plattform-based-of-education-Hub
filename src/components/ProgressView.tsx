@@ -477,7 +477,7 @@ export default function ProgressView() {
             </div>
             <span className="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center gap-1.5 justify-start">
               <Sparkles size={14} className="animate-spin-slow" />
-              <span>تخمین و پیش‌بینی هوش مصنوعی میزان</span>
+              <span>تخمین و پیش‌بینی هوش مصنوعی آزمونیار</span>
             </span>
             <h3 className="text-base font-black mt-2 font-sans">
               برآورد اهداف ارتقاء تراز: هدف {historyData.length > 0 ? toPersianNum(historyData[historyData.length - 1].traz + 250) : toPersianNum(6400)}

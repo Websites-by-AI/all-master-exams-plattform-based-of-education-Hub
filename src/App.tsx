@@ -20,6 +20,8 @@ import { Brain } from "lucide-react";
 
 import { runFullSiteThemeCheck } from "./lib/themeValidator";
 
+import { getAppName } from "./lib/appConfig";
+
 export default function App() {
   const [student, setStudent] = useState<Student | null>(null);
   const [role, setRole] = useState<"student" | "parent" | "admin" | null>(null);
@@ -28,6 +30,13 @@ export default function App() {
     return localStorage.getItem("azmoonyar_app_theme") || "classic";
   });
   const [showThemeMenu, setShowThemeMenu] = useState(false);
+  const [appName, setAppNameState] = useState(getAppName());
+
+  useEffect(() => {
+    const handleNameChange = () => setAppNameState(getAppName());
+    window.addEventListener("app_name_changed", handleNameChange);
+    return () => window.removeEventListener("app_name_changed", handleNameChange);
+  }, []);
 
   // Run theme validation on mount
   useEffect(() => {
@@ -131,7 +140,7 @@ export default function App() {
           <LoginView onLogin={handleLogin} />
         </main>
         <footer className="py-6 border-t border-slate-100 bg-white text-center text-xs text-slate-400">
-          <div>© آزمونیار | سامانه هوشمند مانیتورینگ تراز و مربیگری آزمون‌های کارشناسی ارشد و دکتری کشور با هوش مصنوعی مرکزی</div>
+          <div>© {appName} | سامانه هوشمند ارزیابی و مربیگری {appName}</div>
         </footer>
       </div>
     );

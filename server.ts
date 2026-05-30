@@ -360,7 +360,7 @@ app.post("/api/goal-insight", async (req, res) => {
     return res.json(resultJson);
 
   } catch (error: any) {
-    console.warn("Error generating Mizan goal insights with Gemini (Using offline fallback):", error);
+    console.warn("Error generating Azmonyar goal insights with Gemini (Using offline fallback):", error);
     return res.json(getOfflineGoalInsight(student, currentTraz, currentPercentage, targetTraz, targetGrowth, latestQuizScore));
   }
 });
@@ -385,7 +385,7 @@ ${JSON.stringify(lessons, null, 2)}
       "topic": "نام مبحث درسی آسیب‌دیده با جزئیات کامل (مثلاً مسائل استوکیومتری، گیاهی سال یازدهم، مشتق و کاربرد آن)",
       "subject": "نام درس تخصصی آسیب‌دیده مربوطه",
       "percentage": 30, // درصد پاسخگویی درس
-      "recommendation": "پیشنهادی جامع و دلسوزانه برای رفع تله تستی، منبع مطالعاتی از کتاب درسی و درسنامه‌های طلایی میزان",
+      "recommendation": "پیشنهادی جامع و دلسوزانه برای رفع تله تستی، منبع مطالعاتی از کتاب درسی و درسنامه‌های طلایی آزمونیار",
       "questionsCount": 40, // تعداد تست تمرینی شناسنامه‌دار پیشنهادی برای غلبه بر این چالش تستی ترجیحاً بین ۳۰ تا ۷۰ عدد,
       "severity": "warning" // "critical" | "warning" | "mild"
     }

@@ -21,12 +21,12 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
   // New trap form state
   const [newTrap, setNewTrap] = useState<Omit<TestTrap, "id" | "createdAt">>({
     questionTitle: "",
-    subject: "حقوق مدنی",
-    category: "قانون‌محور",
+    subject: "مدارهای الکتریکی",
+    category: "مفهومی",
     trapType: "",
     correctAnswer: "",
     userMistake: "",
-    legalNote: "",
+    technicalNote: "",
     importance: "medium"
   });
 
@@ -45,12 +45,12 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
     setIsAddingMode(false);
     setNewTrap({
       questionTitle: "",
-      subject: "حقوق مدنی",
-      category: "قانون‌محور",
+      subject: "مدارهای الکتریکی",
+      category: "مفهومی",
       trapType: "",
       correctAnswer: "",
       userMistake: "",
-      legalNote: "",
+      technicalNote: "",
       importance: "medium"
     });
   };
@@ -69,7 +69,7 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
 
   const filteredTraps = traps.filter(t => {
     const matchesSearch = t.questionTitle.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         t.legalNote.toLowerCase().includes(searchTerm.toLowerCase());
+                         t.technicalNote.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "all" || t.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -84,7 +84,7 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
           </div>
           <div>
             <h2 className="text-xl font-black text-slate-900 italic">بانک تله‌های تستی شخصی (Traps Vault)</h2>
-            <p className="text-xs text-slate-500 font-bold">مدیریت اشتباهات پرتکرار و نکات طلایی شب آزمون کانون وکلا</p>
+            <p className="text-xs text-slate-500 font-bold">مدیریت اشتباهات پرتکرار و نکات طلایی شب کنکور ارشد برق</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -141,7 +141,7 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
                 className="w-full bg-slate-50 border border-slate-100 rounded-xl py-2 px-3 text-xs font-black text-slate-700 outline-none"
               >
                 <option value="all">همه تله‌ها</option>
-                <option value="قانون‌محور">قانون‌محور</option>
+                <option value="فرمول‌محور">فرمول‌محور</option>
                 <option value="مفهومی">مفهومی</option>
                 <option value="زمان‌بر">زمان‌بر</option>
                 <option value="اشتباه_محاسباتی">اشتباه محاسباتی</option>
@@ -194,7 +194,7 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
                         type="text" 
                         value={newTrap.questionTitle}
                         onChange={(e) => setNewTrap({...newTrap, questionTitle: e.target.value})}
-                        placeholder="مثلاً: بطلان بیع کالی به کالی"
+                        placeholder="مثلاً: پایداری نایکوئیست و حاشیه فاز"
                         className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-2.5 text-xs font-bold focus:bg-white transition-all outline-none"
                       />
                     </div>
@@ -206,13 +206,13 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
                           onChange={(e) => setNewTrap({...newTrap, subject: e.target.value})}
                           className="w-full bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5 text-xs font-black text-slate-700 outline-none"
                         >
-                          <option>حقوق مدنی</option>
-                          <option>آیین دادرسی مدنی</option>
-                          <option>حقوق تجارت</option>
-                          <option>حقوق جزا</option>
-                          <option>آیین دادرسی کیفری</option>
-                          <option>اصول فقه</option>
-                          <option>قانون اساسی</option>
+                          <option>مدارهای الکتریکی</option>
+                          <option>سیگنال و سیستم</option>
+                          <option>کنترل خطی</option>
+                          <option>الکترونیک</option>
+                          <option>ماشین‌های الکتریکی</option>
+                          <option>ریاضیات مهندسی</option>
+                          <option>الکترومغناطیس</option>
                         </select>
                       </div>
                       <div className="space-y-1.5">
@@ -251,23 +251,23 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] text-emerald-600 font-black block">پاسخ صحیح و مستند قانونی:</label>
+                      <label className="text-[10px] text-emerald-600 font-black block">پاسخ صحیح و اثبات علمی:</label>
                       <textarea 
                         value={newTrap.correctAnswer}
                         onChange={(e) => setNewTrap({...newTrap, correctAnswer: e.target.value})}
                         className="w-full bg-emerald-50/30 border border-emerald-100 rounded-xl px-4 py-2.5 text-xs font-bold min-h-[80px] outline-none"
-                        placeholder="ماده قانونی مربوطه..."
+                        placeholder="فرمول یا مرجع علمی مربوطه..."
                       />
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] text-indigo-600 font-black block">نکته طلایی برای شب آزمون (Cheat Sheet):</label>
+                  <label className="text-[10px] text-indigo-600 font-black block">نکته طلایی برای شب کنکور (Cheat Sheet):</label>
                   <input 
                     type="text" 
-                    value={newTrap.legalNote}
-                    onChange={(e) => setNewTrap({...newTrap, legalNote: e.target.value})}
+                    value={newTrap.technicalNote}
+                    onChange={(e) => setNewTrap({...newTrap, technicalNote: e.target.value})}
                     placeholder="یک خط طلایی که همیشه یادت بماند..."
                     className="w-full bg-indigo-50/30 border border-indigo-100 rounded-2xl px-4 py-3 text-xs font-black text-indigo-900 outline-none"
                   />
@@ -339,7 +339,7 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
                         <div className="bg-indigo-900 p-3 rounded-2xl flex items-center gap-2 group/tip shadow-inner">
                            <BookOpen size={14} className="text-amber-400 flex-shrink-0" />
                            <p className="text-[10px] text-indigo-50 font-black overflow-hidden text-ellipsis whitespace-nowrap">
-                             {trap.legalNote}
+                             {trap.technicalNote}
                            </p>
                         </div>
 
@@ -367,9 +367,9 @@ export default function TestTrapsView({ student }: TestTrapsViewProps) {
       {/* Print Only Footer */}
       <div className="hidden print:block mt-20 pt-10 border-t border-slate-200 text-center">
         <p className="text-[10px] font-black text-slate-400 italic">
-          این گزارش توسط سامانه هوشمند «میزان» تهیه شده است. برای کسب موفقیت در آزمون، مرور هفتگی این تله‌ها اکیداً توصیه می‌شود.
+          این گزارش توسط سامانه هوشمند «آزمونیار» تهیه شده است. برای کسب موفقیت در آزمون، مرور هفتگی این تله‌ها اکیداً توصیه می‌شود.
         </p>
-        <p className="text-[8px] text-slate-300 mt-2">Mizan AI - Traps Vault Report Engine</p>
+        <p className="text-[8px] text-slate-300 mt-2">Azmonyar AI - Traps Vault Report Engine</p>
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
 
   const quickQuestions = [
     "در تله‌های تستی تحلیل مدار و مبحث معادلات دیفرانسیل مشکل دارم، راهکار چیست؟",
-    "آهنگ پیش‌روی برنامه‌ وبینارهای الکترومغناطیس میزان خیلی سریع است.",
+    "آهنگ پیش‌روی برنامه‌ وبینارهای الکترومغناطیس آزمونیار خیلی سریع است.",
     "چگونه تراز مانیتورینگ خود را در آزمون‌های شبیه‌ساز بعدی بالاتر ببرم؟",
     "بودجه‌بندی و تکنیک‌های موازنه تراز در مبحث کنترل خطی چیست؟"
   ];
@@ -63,10 +63,10 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
         title: "تحلیل موشکافانه تله‌های تستی مدار ۲ و الکترونیک ۱",
         date: "۱۴۰۵/۰۲/۱۵",
         counselorName: "دکترین میرعشقی",
-        notes: "بررسی فرکانس پاسخ‌های منفی نشان می‌دهد به علت تست‌زنی سرعتی بدون تحلیل مراجع اصلی (جبه‌دار)، داوطلب در مبحث فیدبک و تقویت‌کننده‌ها با افت تراز مواجه شده است. مقرر شد ساعت مطالعه الکترونیک به ۶ ساعت در هفته با تاکید بر کتب میزان افزایش یابد.",
+        notes: "بررسی فرکانس پاسخ‌های منفی نشان می‌دهد به علت تست‌زنی سرعتی بدون تحلیل مراجع اصلی (جبه‌دار)، داوطلب در مبحث فیدبک و تقویت‌کننده‌ها با افت تراز مواجه شده است. مقرر شد ساعت مطالعه الکترونیک به ۶ ساعت در هفته با تاکید بر کتب آزمونیار افزایش یابد.",
         actionSteps: [
           { text: "تحلیل و خلاصه نویسی مبحث فیدبک از روی شرح جبه‌دار", completed: true },
-          { text: "تست‌زنی جامع از آزمون‌های سال گذشته میزان بدون مانیتورینگ وقت", completed: false }
+          { text: "تست‌زنی جامع از آزمون‌های سال گذشته آزمونیار بدون مانیتورینگ وقت", completed: false }
         ],
         recommendedStudyHours: 48
       },
@@ -161,11 +161,11 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
       }
     } catch (err) {
       console.error("Gemini AI API failed, loading local simulated logic", err);
-      let replyText = `موضوع مطالعاتی شما یعنی '${textToSend}' توسط مشاور ارشد میزان بررسی شد. توصیه می‌کنیم در مباحث تحلیل مدار تله‌های مربوط به حالت گذرا را ابتدا از مقالات آموزشی استخراج کرده و سپس به تست‌زنی بپردازید.`;
+      let replyText = `موضوع مطالعاتی شما یعنی '${textToSend}' توسط مشاور ارشد آزمونیار بررسی شد. توصیه می‌کنیم در مباحث تحلیل مدار تله‌های مربوط به حالت گذرا را ابتدا از مقالات آموزشی استخراج کرده و سپس به تست‌زنی بپردازید.`;
       if (textToSend.includes("تله") || textToSend.includes("فرمول")) {
         replyText = "تحلیل اشتباهات تستی نشان می‌دهد ریشه مشکلات داوطلب عدم دقت در ساده‌سازی مدارهای معادل است. لطفاً روزانه ۲۰ دقیقه به حل تمرین‌های پایه از کتاب مدار جبه‌دار اختصاص داده و روابط خاص را مجزا کنید.";
       } else if (textToSend.includes("تراز") || textToSend.includes("آزمون")) {
-        replyText = "افزایش تراز علمی شبیه‌سازها در میزان به این وابسته است که پاسخ‌های غلط خود را در دفترچه عارضه‌یابی یادداشت کنید و آخر هر هفته مباحث با نمره زیر ۳۰٪ را مجدداً مرور نمایید.";
+        replyText = "افزایش تراز علمی شبیه‌سازها در آزمونیار به این وابسته است که پاسخ‌های غلط خود را در دفترچه عارضه‌یابی یادداشت کنید و آخر هر هفته مباحث با نمره زیر ۳۰٪ را مجدداً مرور نمایید.";
       }
       
       setMessages((prev) => [...prev, {
@@ -199,7 +199,7 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
     setTimeout(() => {
       if (newType === "academic") {
         setNewTitle("برنامه مطالعه فشرده و رفع تله‌های ریاضی مهندسی و توابع مختلط");
-        setNewNotes("توصیه مشاور علمی میزان: مقرر گردید داوطلب ابتدا به بخش جزوات طلایی میزان مراجعه کرده و کتب شرح آزمونی انتگرال‌های مختلط را به مدت ۴ ساعت پیاپی پومودورو مرور کند، سپس ۲۵ تست شبیه‌ساز را تحلیل نماید.");
+        setNewNotes("توصیه مشاور علمی آزمونیار: مقرر گردید داوطلب ابتدا به بخش جزوات طلایی آزمونیار مراجعه کرده و کتب شرح آزمونی انتگرال‌های مختلط را به مدت ۴ ساعت پیاپی پومودورو مرور کند، سپس ۲۵ تست شبیه‌ساز را تحلیل نماید.");
         setNewActionStepsList([
           "مرور قواعد بسط لورانت و باقی‌مانده‌ها",
           "یادداشت تله‌های رایج آزمون سالیان گذشته مهندسی برق",
@@ -208,7 +208,7 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
         setNewHours(48);
       } else {
         setNewTitle("کاهش اضطراب و استرس مفرط ممیزی قبل از آزمون جامع");
-        setNewNotes("توصیه روانشناختی میزان: موازنه ساعات مطالعه با زمان‌های ریکاوری ذهن. مقرر شد داوطلب فواصل هر پومودوروی درسی را با تمارین تفکر مثبت و تمرکز ذهن سپری کند و ساعات پایانی شب را به استراحت اختصاص دهد.");
+        setNewNotes("توصیه روانشناختی آزمونیار: موازنه ساعات مطالعه با زمان‌های ریکاوری ذهن. مقرر شد داوطلب فواصل هر پومودوروی درسی را با تمارین تفکر مثبت و تمرکز ذهن سپری کند و ساعات پایانی شب را به استراحت اختصاص دهد.");
         setNewActionStepsList([
           "پیاده‌روی صبگاهی قبل از شروع فاز مطالعه",
           "ایجاد بستر بدون صدا و حذف محرک‌های بیرونی تمرکز",
@@ -269,14 +269,14 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
         <div className="space-y-1">
           <div className="flex items-center gap-2 justify-start">
             <span className="px-2 py-0.5 bg-blue-50 text-blue-950 text-[10px] font-black rounded-lg border border-blue-100">
-              میزان • پورتال مربیگری کایزن درسی
+              آزمونیار • پورتال مربیگری کایزن درسی
             </span>
             <span className="text-slate-350 text-xs">•</span>
             <span className="text-[10px] text-slate-500 font-bold">پایش تحصیلی داوطلب کانون: {student.name}</span>
           </div>
           <h1 className="text-xl font-black text-slate-900 tracking-tight">پنل مشاوره ارشد و برنامه‌ریزی هدایت تحصیلی داوطلبان</h1>
           <p className="text-xs text-slate-500 leading-relaxed">
-            برنامه‌ریزی، عارضه‌یابی و تبادل نظر با مشاوران علمی میزان جهت دستیابی به ترازهای برتر تحصیلات تکمیلی.
+            برنامه‌ریزی، عارضه‌یابی و تبادل نظر با مشاوران علمی آزمونیار جهت دستیابی به ترازهای برتر تحصیلات تکمیلی.
           </p>
         </div>
 
@@ -366,7 +366,7 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
               <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-100 flex items-start gap-2.5">
                 <AlertCircle size={15} className="text-blue-900 flex-shrink-0 mt-0.5" />
                 <div className="text-[10px] text-blue-950 leading-relaxed font-semibold">
-                  مربی هوشمند میزان به تراز کارنامه مانیتورینگ متصل بوده و برنامه‌های درسی کایزن را به روز می‌نماید.
+                  مربی هوشمند آزمونیار به تراز کارنامه مانیتورینگ متصل بوده و برنامه‌های درسی کایزن را به روز می‌نماید.
                 </div>
               </div>
             </div>
@@ -382,8 +382,8 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
                     <span className="absolute -bottom-0.5 -left-0.5 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
                   </div>
                   <div>
-                    <span className="font-bold text-slate-800 text-sm block">دکتر رادان (مشاور علمی ارشد میزان)</span>
-                    <span className="text-[10px] text-emerald-600 font-bold block">برخط ● آماده پاسخ‌گویی به ابهامات حقوقی</span>
+                    <span className="font-bold text-slate-800 text-sm block">دکتر رادان (مشاور علمی ارشد آزمونیار)</span>
+                    <span className="text-[10px] text-emerald-600 font-bold block">برخط ● آماده پاسخ‌گویی به ابهامات علمی مهندسی</span>
                   </div>
                 </div>
                 <span className="text-[10px] font-bold text-blue-950 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-full">داوطلب علمی: {student.name}</span>
@@ -444,7 +444,7 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
                     type="text"
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
-                    placeholder="پرسش حقوقی، مبحث مورد نظر یا درصد تراز تستی خود را بنویسید..."
+                    placeholder="پرسش علمی، مبحث فنی مورد نظر یا درصد تراز تستی خود را بنویسید..."
                     className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-950 focus:bg-white text-slate-800 text-right"
                   />
                   <button
@@ -527,7 +527,7 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
                     required
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="مثال: رفع عیوب تله‌های آیین دادرسی مدنی"
+                    placeholder="مثال: رفع عیوب تله‌های مدارهای الکتریکی"
                     className="w-full bg-slate-50 border border-slate-205 focus:bg-white focus:ring-2 focus:ring-blue-950 rounded-xl px-3 py-2 text-xs font-black text-slate-800 text-right"
                   />
                 </div>
@@ -560,7 +560,7 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
                     value={newNotes}
                     onChange={(e) => setNewNotes(e.target.value)}
                     rows={4}
-                    placeholder="نکات تعیین شده علمی، قوانین خاص مورد استناد، شیوه خلاصه نویسی مواد مدنی و..."
+                    placeholder="نکات تعیین شده علمی، معادلات دیفرانسیل، شیوه خلاصه نویسی مباحث سیگنال و..."
                     className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-950 rounded-xl px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-700 text-right font-sans"
                   />
                 </div>
@@ -602,8 +602,8 @@ export default function CounselorView({ student, onNavigate }: CounselorViewProp
               {/* Saved Sessions Feed */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-black text-slate-700">تاریخچه ممیزی برنامه‌های درسی داوطلب میزان ({sessions.length})</span>
-                  <span className="text-[9px] text-slate-400">سرور کایزن آموزشی میزان</span>
+                  <span className="text-xs font-black text-slate-700">تاریخچه ممیزی برنامه‌های درسی داوطلب آزمونیار ({sessions.length})</span>
+                  <span className="text-[9px] text-slate-400">سرور کایزن آموزشی آزمونیار</span>
                 </div>
 
                 {sessions.map((session) => (

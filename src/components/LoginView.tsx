@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sparkles, Phone, Lock, Hash, ShieldCheck, UserCheck, Layers, BookOpen, Activity } from "lucide-react";
 import { motion } from "motion/react";
 import { Student } from "../types";
@@ -7,6 +7,8 @@ interface LoginViewProps {
   onLogin: (student: Student, role: "student" | "parent" | "admin") => void;
 }
 
+import { getAppName } from "../lib/appConfig";
+
 export default function LoginView({ onLogin }: LoginViewProps) {
   const [activeTab, setActiveTab] = useState<"student" | "parent" | "admin">("student");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -14,8 +16,15 @@ export default function LoginView({ onLogin }: LoginViewProps) {
   const [kanoonCode, setKanoonCode] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [appName, setAppName] = useState(getAppName());
 
-  // داوطلبان و لاین‌های فعال در سامانه میزان
+  useEffect(() => {
+    const handleNameChange = () => setAppName(getAppName());
+    window.addEventListener("app_name_changed", handleNameChange);
+    return () => window.removeEventListener("app_name_changed", handleNameChange);
+  }, []);
+
+  // داوطلبان و لاین‌های فعال در سامانه آزمونیار
   const mockStudents: Student[] = [
     { id: "1", name: "مهندس علیرضا رضایی (ارشد مهندسی برق - دانشگاه شریف)", code: "9812405", field: "elec_master", grade: "رتبه تخمینی ۱۲ کشوری - تراز ارشد ۹,۸۵۰" },
     { id: "2", name: "دکتر مریم جلالی (دکتری تخصصی مهندسی برق - سیستم)", code: "9786431", field: "elec_phd", grade: "رتبه تخمینی ۳ کشوری - تراز دکتری ۱۰,۷۲۰" },
@@ -72,8 +81,8 @@ export default function LoginView({ onLogin }: LoginViewProps) {
           <div className="mx-auto w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-4 backdrop-blur-md border border-white/20">
             <Sparkles size={36} className="text-amber-400" />
           </div>
-          <h1 className="text-2xl font-black tracking-tight mb-2">میزان</h1>
-          <p className="text-blue-200/90 text-xs">سامانه هوشمند مانیتورینگ تراز و مربیگری آزمون‌های کارشناسی ارشد و دکتری تخصصی</p>
+          <h1 className="text-2xl font-black tracking-tight mb-2">{appName}</h1>
+          <p className="text-blue-200/90 text-xs">سامانه هوشمند ارزیابی و مربیگری {appName}</p>
         </div>
 
         {/* Roles Tabs */}
@@ -242,7 +251,7 @@ export default function LoginView({ onLogin }: LoginViewProps) {
                 onClick={() => onLogin(mockStudents[0], "parent")}
                 className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-lg transition border border-amber-100 cursor-pointer"
               >
-                پورتال نظارتی والدین سامانه میزان
+                پورتال نظارتی والدین سامانه {appName}
               </button>
               <button 
                 type="button"

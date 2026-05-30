@@ -53,7 +53,7 @@ export default function ReportCardPrintModal({
     setTimeout(() => {
       setShareProgressMsg("در حال استخراج هشدارهای روانشناختی فرسودگی ذهنی...");
       setTimeout(() => {
-        setShareProgressMsg("در حال اتصال ایمن به سامانه مخابراتی پیامک میزان...");
+        setShareProgressMsg("در حال اتصال ایمن به سامانه مخابراتی پیامک آزمونیار...");
         setTimeout(() => {
           setIsSharing(false);
           setWasShared(true);
@@ -69,13 +69,13 @@ export default function ReportCardPrintModal({
   // Safe fallback to guarantee weaknesses are never empty in the printed PDF
   const activeWeaknesses = weaknesses.length > 0 ? weaknesses : (currentExam?.lessons || []).map(l => {
     let topic = "مباحث تحلیلی آزمون و تله‌های مفهومی پیشرفته";
-    let rec = "مرور مراجع علمی معتبر کشور و حل تست‌های ممیز کایزن میزان ارشد/دکتری.";
+    let rec = "مرور مراجع علمی معتبر کشور و حل تست‌های ممیز کایزن آزمونیار ارشد/دکتری.";
     if (l.lessonName.includes("هوش مصنوعی") || l.lessonName.includes("یادگیری ماشین")) {
       topic = "شبکه‌های عصبی کانولوشن پیشرفته و روش‌های تعلیق وزن";
       rec = "توصیه می‌شود پکیج مگا-کایزن بهینه‌سازی کانتور را مطالعه کرده و سپس تست‌های سراسری ۵ سال گذشته را تحلیل نمایید.";
     } else if (l.lessonName.includes("کنترل خطی") || l.lessonName.includes("فرآیندهای تصادفی")) {
       topic = "تخمین خطای ماندگار و فضای حالت فیدبک خروجی";
-      rec = "بررسی مراجع کنترل خطی ارشد/دکترا و تست‌های عیب‌یابی ممیز دپارتمان میزان.";
+      rec = "بررسی مراجع کنترل خطی ارشد/دکترا و تست‌های عیب‌یابی ممیز دپارتمان آزمونیار.";
     } else if (l.lessonName.includes("GMAT") || l.lessonName.includes("استعداد تحصیلی")) {
       topic = "آمادگی کفایت داده و درک مطلب پیشرفته متنی";
       rec = "پیشنهاد می‌شود تست‌های تمرینی شبیه‌ساز مهندسی کایزن را روزانه ۴ مقیاس پایش زمان‌دار اجرا کنید.";
@@ -310,7 +310,7 @@ export default function ReportCardPrintModal({
           <div className="w-full max-w-[800px] bg-amber-50 border border-amber-100 text-amber-900 p-3 rounded-2xl mb-4 text-xs font-semibold leading-relaxed flex items-start gap-2 text-right no-print">
             <AlertCircle className="text-amber-600 flex-shrink-0 mt-0.5" size={14} />
             <div>
-              <span>محیط پیش‌نمایش کارنامه نهایی میزان. برای دانلود واقعی فایل PDF، از دکمه «چاپ مستقیم / تولید نسخه PDF» استفاده کرده و در پنجره مرورگر باز شده، گزینه <b>«Save as PDF (ذخیره به عنوان PDF)»</b> را برگزینید.</span>
+              <span>محیط پیش‌نمایش کارنامه نهایی آزمونیار. برای دانلود واقعی فایل PDF، از دکمه «چاپ مستقیم / تولید نسخه PDF» استفاده کرده و در پنجره مرورگر باز شده، گزینه <b>«Save as PDF (ذخیره به عنوان PDF)»</b> را برگزینید.</span>
             </div>
           </div>
 
@@ -322,7 +322,7 @@ export default function ReportCardPrintModal({
             
             {/* Stamp Logo of Chatr-e Danesh (Circular Blue Stamp absolute positioned) */}
             <div className="absolute top-26 left-12 w-28 h-28 border-[3px] border-blue-600/35 rounded-full flex flex-col items-center justify-center opacity-70 rotate-[-12deg] select-none pointer-events-none text-center">
-              <div className="text-[7.5px] font-black leading-tight text-blue-600">میزان</div>
+              <div className="text-[7.5px] font-black leading-tight text-blue-600">آزمونیار</div>
               <div className="text-[10px] font-extrabold text-blue-800 tracking-wider">مورد تایید آموزش</div>
               <div className="text-[6.5px] font-bold text-blue-600 mt-0.5">شعبه مرکزی تهران</div>
               <div className="w-16 h-0.5 bg-blue-500/30 my-0.5"></div>
@@ -337,8 +337,8 @@ export default function ReportCardPrintModal({
                   <Shield className="text-amber-400" size={20} />
                 </div>
                 <div>
-                  <h1 className="text-xs font-black text-slate-950 block">دپارتمان بزرگ آموزش عالی میزان</h1>
-                  <span className="text-[9px] text-teal-700 font-extrabold block">سامانه مربی هوشمند و تحلیل کارنامه میزان</span>
+                  <h1 className="text-xs font-black text-slate-950 block">دپارتمان بزرگ آموزش عالی آزمونیار</h1>
+                  <span className="text-[9px] text-teal-700 font-extrabold block">سامانه مربی هوشمند و تحلیل کارنامه آزمونیار</span>
                 </div>
               </div>
 
@@ -551,7 +551,7 @@ export default function ReportCardPrintModal({
                     <MessageSquare className="text-teal-600 flex-shrink-0 mt-0.5" size={16} />
                     <div className="space-y-0.5">
                       <strong className="text-slate-950 font-black text-[11px] block">محدودسازی درگاه‌های حواس‌پرتی مجازی</strong>
-                      <span className="text-[10.5px] text-slate-650 leading-relaxed font-semibold block">فراهم‌سازی بستری برای کاهش ملموس وبگردی‌های ناخودآگاه با ترغیب به استفاده هوشمند از بسترهای خلاصه مواد صوتی سامانه میزان.</span>
+                      <span className="text-[10.5px] text-slate-650 leading-relaxed font-semibold block">فراهم‌سازی بستری برای کاهش ملموس وبگردی‌های ناخودآگاه با ترغیب به استفاده هوشمند از بسترهای خلاصه مواد صوتی سامانه آزمونیار.</span>
                     </div>
                   </div>
                 )}
@@ -579,14 +579,14 @@ export default function ReportCardPrintModal({
               </div>
               <div className="space-y-2 text-right flex flex-col justify-between h-full">
                 <div>
-                  <strong className="text-slate-950 font-black block">✓ تاییدیه و تایید مهر شعبه مرکزی دپارتمان میزان:</strong>
+                  <strong className="text-slate-950 font-black block">✓ تاییدیه و تایید مهر شعبه مرکزی دپارتمان آزمونیار:</strong>
                   <p className="text-[10px] text-slate-550 leading-relaxed leading-relaxed">
                     گواهی رتبه و تله‌یابی شناختی داوطلب فوق توسط مربی هوش مصنوعی صادر شده و معتبر است.
                   </p>
                 </div>
                 <div className="text-left select-none text-teal-800 italic font-bold">
-                  <div>مشاور ارشد سامانه میزان</div>
-                  <div className="text-[10px] text-slate-500 font-bold block">مهر دپارتمان آموزش عالی میزان</div>
+                  <div>مشاور ارشد سامانه آزمونیار</div>
+                  <div className="text-[10px] text-slate-500 font-bold block">مهر دپارتمان آموزش عالی آزمونیار</div>
                 </div>
               </div>
             </div>

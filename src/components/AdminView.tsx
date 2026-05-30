@@ -2,13 +2,32 @@ import React, { useState } from "react";
 import { 
   Users, BarChart, UploadCloud, Film, Activity, Search, Filter, ShieldCheck, HeartPulse, Check,
   Terminal, Lock, Key, Copy, Layers, Server, Globe, Cpu, AlertCircle, FileCode, CheckSquare, Database, TrendingUp, Sparkles,
-  ChevronRight, ArrowRight, Play, BookOpen, Clock, Zap, List, RefreshCw, Target, Plus
+  ChevronRight, ArrowRight, Play, BookOpen, Clock, Zap, List, RefreshCw, Target, Plus,
+  Settings as SettingsIcon, Save, Edit3
 } from "lucide-react";
 import { getSystemLogs, addSystemLog } from "../lib/syslogs";
 import { Student } from "../types";
 
+import { getAppName, setAppName } from "../lib/appConfig";
+
 export default function AdminView({ student }: { student: Student }) {
-  const [activeTab, setActiveTab] = useState<"students" | "analytics" | "uploads" | "content"| "sysdocs" | "roadmap" | "architecture" | "mockexam" | "syslogs">("roadmap");
+  const [activeTab, setActiveTab] = useState<"students" | "analytics" | "uploads" | "content"| "sysdocs" | "roadmap" | "architecture" | "mockexam" | "syslogs" | "settings">("roadmap");
+  const [appName, setAppNameState] = useState(getAppName());
+  const [currentAppName, setCurrentAppName] = useState(getAppName());
+
+  React.useEffect(() => {
+    const handleNameChange = () => {
+      setAppNameState(getAppName());
+      setCurrentAppName(getAppName());
+    };
+    window.addEventListener("app_name_changed", handleNameChange);
+    return () => window.removeEventListener("app_name_changed", handleNameChange);
+  }, []);
+
+  const handleSaveAppName = () => {
+    setAppName(currentAppName);
+    alert(`نام سامانه با موفقیت به "${currentAppName}" تغییر یافت.`);
+  };
   const [searchTerm, setSearchTerm] = useState("");
   const [filterField, setFilterField] = useState("all");
   const [selectedScenario, setSelectedScenario] = useState<"mvp" | "stable" | "enterprise">("stable");
@@ -67,7 +86,7 @@ export default function AdminView({ student }: { student: Student }) {
       description: "تبدیل پلتفرم فعلی به یک پرتال ابری پیشرفته (SaaS) جهت سرویس‌دهی به مراکز آموزشی فنی، پایش آنی و عارضه‌یابی عملکرد داوطلبان توسط مشاوران تراز اول ارشد برق.",
       tasks: [
         { id: "2-1", text: "مبنای ماژولار توزیع داده کانون‌ها (SaaS Multi-Tenancy Partitioning)", completed: true },
-        { id: "2-2", text: "داشبورد اختصاصی مشاوران حقوقی جهت پایش عیوب کارنامه", completed: true },
+        { id: "2-2", text: "داشبورد اختصاصی مشاوران علمی مهندسی جهت پایش عیوب کارنامه", completed: true },
         { id: "2-3", text: "سیستم بلادرنگ همگام‌سازی تله‌های داوطلب برای ارائه مشاوره صوتی", completed: false },
         { id: "2-4", text: "کاهش زمان پاسخ فرآیندهای محاسباتی با پایش بهینه پایگاه داده", completed: true }
       ],
@@ -88,7 +107,7 @@ export default function AdminView({ student }: { student: Student }) {
         { id: "3-3", text: "سیستم هوشمند انطباق سرفصل‌ها با سوالات تستی تولید شده توسط هوش مصنوعی", completed: false },
         { id: "3-4", text: "دستیار صوتی مشاور مجهز به سنتز سخن فنی جهت راهنمایی داوطلب", completed: false }
       ],
-      tags: ["Vector Embeddings", "Semantic Legal Search", "RAG Pipeline"],
+      tags: ["Vector Embeddings", "Technical Semantic Search", "RAG Pipeline"],
       color: "indigo"
     },
     {
@@ -104,7 +123,7 @@ export default function AdminView({ student }: { student: Student }) {
         { id: "4-2", text: "سیستم مانیتورینگ کارنامه بر اساس امتیاز توسعه متوازن (Balanced Scorecard)", completed: false },
         { id: "4-3", text: "ماژول استخدامی هوشمند متصل به پروفایل علمی و تستی داوطلبان", completed: false }
       ],
-      tags: ["Legal Career Hub", "Multi-Language Support", "MENA Integration"],
+      tags: ["Engineering Career Hub", "Multi-Language Support", "MENA Integration"],
       color: "purple"
     }
   ]);
@@ -221,7 +240,7 @@ export default function AdminView({ student }: { student: Student }) {
       tasks: [
         "یکپارچه‌سازی وب‌سرویس پترن‌بیس کانون مرکز برای ارسال پیامک کوتاه",
         "سیستم تنظیم دلخواه فرکانس گزارش (روزانه، هفتگی، بعد از آزمون بر اساس درخواست اولیا)",
-        "فرموله‌سازی خودکار نقاط قوت حقوقی داوطلبان جهت دلگرمی تفصیلی والدین"
+        "فرموله‌سازی خودکار نقاط قوت علمی داوطلبان جهت دلگرمی تفصیلی والدین"
       ],
       tags: ["SMS Push", "Kavenegar Integrations", "Parental Care"],
       color: "emerald",
@@ -244,7 +263,7 @@ export default function AdminView({ student }: { student: Student }) {
     },
     {
       id: "s_fintech",
-      title: "امنیت پرداخت خرد و اشتراک اقساطی دوره‌های شبیه‌سازی وکالت",
+      title: "امنیت پرداخت خرد و اشتراک اقساطی دوره‌های شبیه‌سازی ارشد برق",
       englishTitle: "SaaS Installment Framework & Student Finance",
       period: "سه ماهه دوم ۱۴۰۶",
       desc: "ماژول پرداخت امن چندمرحله‌ای برای تسهیل ثبت‌نام داوطلبان در سراسر کشور با قابلیت یادآوری هوشمند سررسید دوره‌ها و لغو دسترسی زمان معوق ماندن تعهدات.",
@@ -294,7 +313,7 @@ export default function AdminView({ student }: { student: Student }) {
   const [selectedModuleIdx, setSelectedModuleIdx] = useState<number>(0);
   
   // Interactive Exam Generator State
-  const [selectedLawSubject, setSelectedLawSubject] = useState<string>("مدنی");
+  const [selectedLawSubject, setSelectedLawSubject] = useState<string>("مدار");
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("سخت");
   const [generatedQuestion, setGeneratedQuestion] = useState<{
     text: string;
@@ -302,15 +321,15 @@ export default function AdminView({ student }: { student: Student }) {
     correctIdx: number;
     explanation: string;
   } | null>({
-    text: "هرگاه در عقد بیع، شرط شود که خریدار حق انتقال مبیع را به غیر ندارد، و با این حال مبیع را انتقال دهد، وضعیت معامله دوم چگونه است؟",
+    text: "در یک مدار مرتبه دوم RLC موازی، اگر مقاومت موازی افزایش یابد، ضریب میرایی (Damping Factor) چه تغییری می‌کند؟",
     options: [
-      "معامله دوم باطل است زیرا شرط عدم انتقال، سلب حق تمتع کرده است.",
-      "معامله دوم غیرنافذ بوده و صحت آن منوط به تنفیذ متعامل مشروط‌له است.",
-      "معامله دوم صحیح است اما برای مشروط‌له حق فسخ معامله اول ایجاد می‌شود.",
-      "معامله دوم منفسخ است و مبیع به صورت قهری به بایع منتقل می‌شود."
+      "ضریب میرایی افزایش یافته و پاسخ سریع‌تر میرا می‌شود.",
+      "ضریب میرایی کاهش یافته و سیستم به سمت حالت نوسانی (Under-damped) میل می‌کند.",
+      "ضریب میرایی تغییری نمی‌کند زیرا فقط به L و C بستگی دارد.",
+      "فرکانس نوسانات آزاد مدار دو برابر می‌شود."
     ],
-    correctIdx: 2,
-    explanation: "بنابر رای وحدت رویه و دکترین حقوقی مدنی (کتاب دکتر کاتوزیان)، شرط عدم انتقال مبیع سلب حق انتقال به طور مطلق و دائم نیست بلکه سلب حق انتقال به عنوان شرط فعل منفی یا نتیجه مقید است. لذا معامله ناقله بعدی بر خلاف شرط، صحیح بوده اما برای بایع اولیه (مشروط‌له) اختیار و حق فسخ معامله اول به استناد تخلف از شرط ایجاد خواهد شد."
+    correctIdx: 1,
+    explanation: "در مدار RLC موازی، ضریب میرایی برابر با alpha = 1/(2RC) است. بنابراین با افزایش مقاومت R، مخرج کسر بزرگتر شده و ضریب میرایی کاهش می‌یابد که منجر به نوسانی‌تر شدن پاسخ مدار می‌گردد."
   });
 
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -347,48 +366,48 @@ export default function AdminView({ student }: { student: Student }) {
     setShowExplanation(false);
     
     const questionsPool: Record<string, typeof generatedQuestion[]> = {
-      "مدنی": [
+      "مدار": [
         {
-          text: "اگر شخصی ملکی را وقف منافع عام کند ولی قبض موقوف‌علیهم رخ ندهد، عقد وقف چه وضعیتی دارد؟",
+          text: "در یک شبکه دوقطبی، اگر پارامترهای Z برابر با [10, 5; 5, 20] باشند، پارامتر Z21 نشان‌دهنده چیست؟",
           options: [
-            "وقف باطل است زیرا قبض در تمام انواع آن شرط صحت است.",
-            "وقف غیرنافذ است و حاکم شرع می‌تواند به نیابت از عامه آن را قبض کند.",
-            "وقف جریان یافته و قبض در موقوفات عامه اصلاً شرط لزوم یا صحت نیست.",
-            "وقف صحیح است و قبض توسط متولی منصوب یا خود حاکم صورت می‌پذیرد."
-          ],
-          correctIdx: 3,
-          explanation: "مطابق ماده ۶۲ قانون مدنی، در موقوفات عامه هرگاه موقوف‌علیهم غیرمحصور باشند یا وقف بر مصالح عامه باشد، قبض توسط متولی منصوب ملزم است و در صورت نبود متولی، حاکم (ولی فقیه یا دادرس منصوب) قبض می‌نماید تا وقف تمامیت یابد."
-        }
-      ],
-      "تجارت": [
-        {
-          text: "در صورتی که یک شرکت سهامی خاص ورشکسته شود، مسئولیت سهامداران در قبال دیون شرکت تا چه سقف مقرر است؟",
-          options: [
-            "سهامداران مسئولیت تضامنی نامحدود در قبال کلیه قروض دارند.",
-            "مسئولیت هر سهامدار محدود به ارزش اسمی سهامی است که تعهد کرده است.",
-            "مسئولیت سهامداران تا سقف دارایی شخصی آن‌ها به تساوی تقسیم می‌شود.",
-            "دارای مسئولیت نسبی بر مبنای کل سرمایه ثبت‌شده در اداره ثبت شرکت‌ها است."
-          ],
-          correctIdx: 1,
-          explanation: "بر اساس لایحه قانونی اصلاح قسمتی از قانون تجارت، در شرکت‌های سهامی (اعم از عام و خاص) مسئولیت صاحبان سهام محدود به مبلغ اسمی سهام آنهاست و بستانکاران شرکت حق رجوع به اموال شخصی سهامداران را برای وصول مطالبات خود ندارند."
-        }
-      ],
-      "جزا": [
-        {
-          text: "مجازات شروع به جرم در حقوق جزای عمومی ایران در جرایم مستوجب مجازات سلب حیات چگونه است؟",
-          options: [
-            "مجازاتی برای شروع به جرم پیش‌بینی نشده است.",
-            "حبس تعزیری درجه پنج (۲ تا ۵ سال).",
-            "حبس تعزیری درجه چهار (۵ تا ۱۰ سال).",
-            "حبس کانون اصلاح و تربیت بر اساس سن مداخله‌گر جرم."
+            "مقاومت ورودی زمانی که خروجی اتصال کوتاه است.",
+            "مقاومت خروجی زمانی که ورودی مدار باز است.",
+            "ولتاژ خروجی به ازای جریان واحد در ورودی در حالی که خروجی مدار باز است.",
+            "جریان خروجی به ازای ولتاژ واحد در ورودی."
           ],
           correctIdx: 2,
-          explanation: "طبق ماده ۱۲۲ قانون مجازات اسلامی مصوب ۱۳۹۲، در جرایمی که مجازات قانونی آن‌ها سلب حیات، حبس دائم یا قطع عضو است، شروع به جرم مستوجب حبس تعزیری درجه چهار (۵ تا ۱۰ سال) خواهد بود."
+          explanation: "پارامتر Z21 یا امپدانس انتقال مستقیم، طبق تعریف برابر است با ولتاژ پورت دوم تقسیم بر جریان پورت اول در صورتی که پورت دوم مدار باز (I2=0) باشد."
+        }
+      ],
+      "سیگنال": [
+        {
+          text: "پاسخ ضربه یک سیستم LTI برابر با h(t) = e^-2t u(t) است. تابع تبدیل این سیستم در حوزه S کدام است؟",
+          options: [
+            "H(s) = 1 / (s - 2)",
+            "H(s) = 1 / (s + 2)",
+            "H(s) = s / (s + 2)",
+            "H(s) = e^-2s"
+          ],
+          correctIdx: 1,
+          explanation: "تبدیل لاپلاس تابع نمایی یک‌طرفه e^-at u(t) برابر با 1/(s+a) است. اینجا a=2 است، پس تابع تبدیل 1/(s+2) با ناحیه همگرایی Re{s} > -2 می‌باشد."
+        }
+      ],
+      "کنترل": [
+        {
+          text: "در تحلیل پایداری به روش مکان هندسی ریشه‌ها (Root Locus)، ریشه‌ها با افزایش بهره K از کجا شروع و به کجا ختم می‌شوند؟",
+          options: [
+            "از قطب‌های حلقه‌بسته شروع و به صفرهای حلقه‌باز ختم می‌شوند.",
+            "از صفرهای حلقه‌باز شروع و به قطب‌های حلقه‌باز ختم می‌شوند.",
+            "از قطب‌های حلقه‌باز شروع و به صفرهای حلقه‌باز (یا بی‌نهایت) ختم می‌شوند.",
+            "همواره در مبدأ مختصات تجمع می‌کنند."
+          ],
+          correctIdx: 2,
+          explanation: "مکان هندسی ریشه‌ها از قطب‌های تابع تبدیل حلقه‌باز (در K=0) شروع شده و با افزایش K به سمت صفرهای حلقه‌باز (یا بی‌نهایت در جهت مجانب‌ها) حرکت می‌کند."
         }
       ]
     };
 
-    const subjectPool = questionsPool[selectedLawSubject] || questionsPool["مدنی"];
+    const subjectPool = questionsPool[selectedLawSubject] || questionsPool["مدار"];
     const randomQ = subjectPool[Math.floor(Math.random() * subjectPool.length)];
     setGeneratedQuestion(randomQ);
   };
@@ -436,21 +455,21 @@ export default function AdminView({ student }: { student: Student }) {
     },
     {
       name: "crm_leads",
-      desc: "خط لوله فروش و مشاوره علاقه مندان آزمون‌های حقوقی",
+      desc: "خط لوله فروش و مشاوره علاقه مندان کنکورهای ارشد و دکتری برق",
       columns: [
         { name: "id", type: "UUID", constraint: "PRIMARY KEY", note: "شناسه رهگیری لید بازاریابی" },
         { name: "phone", type: "VARCHAR(15)", constraint: "UNIQUE", note: "تلفن تماس لید متقاضی کنکور" },
-        { name: "intended_exam", type: "VARCHAR(50)", constraint: "NOT NULL", note: "کاندید آزمون هدف (وکالت، سردفتری، قضاوت)" },
+        { name: "intended_exam", type: "VARCHAR(50)", constraint: "NOT NULL", note: "گرایش آزمون هدف (قدرت، مخابرات، کنترل، الکترونیک)" },
         { name: "campaign_source", type: "VARCHAR(100)", constraint: "NULLABLE", note: "کانال جذب داوطلب (گوگل، پیامک، معرفی تلگرام)" },
         { name: "estimated_value", type: "DECIMAL(12, 2)", constraint: "DEFAULT 0.00", note: "ارزش احتمالی ثبت نام در دوره‌های VIP آزمونیار" }
       ]
     },
     {
       name: "courses",
-      desc: "داده‌های دوره‌ها، اساتید و بسته‌های آموزشی وکالت",
+      desc: "داده‌های دوره‌ها، اساتید و بسته‌های آموزشی مهندسی برق",
       columns: [
         { name: "id", type: "UUID", constraint: "PRIMARY KEY", note: "شناسه متمایز دوره آموزشی" },
-        { name: "title", type: "VARCHAR(200)", constraint: "NOT NULL", note: "عنوان دوره (مانند کارگاه تست زنی مدنی یا اصول فقه مکرر)" },
+        { name: "title", type: "VARCHAR(200)", constraint: "NOT NULL", note: "عنوان دوره (مانند کارگاه تست زنی مدار یا سیگنال مکرر)" },
         { name: "lecturer_name", type: "VARCHAR(150)", constraint: "NOT NULL", note: "استاد ارائه‌دهنده درس و طراح سوالات" },
         { name: "price", type: "DECIMAL(12, 2)", constraint: "NULLABLE", note: "هزینه بسته آموزشی" },
         { name: "sessions_count", type: "INT", constraint: "DEFAULT 24", note: "تعداد جلسات ویدیویی در وب‌کست بستر کلاود" }
@@ -499,12 +518,12 @@ export default function AdminView({ student }: { student: Student }) {
         <div>
           <span className="text-[10px] bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full border border-indigo-150 font-black inline-block mb-1 flex items-center gap-1 w-fit">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>سامانه ابری و میکروسرویسی آزمونیار فعال است</span>
+            <span>سامانه ابری و میکروسرویسی {appName} فعال است</span>
           </span>
-          <h2 className="text-xl font-black text-slate-900">مدیریت و آپلودر آزمونیار</h2>
+          <h2 className="text-xl font-black text-slate-900">مدیریت و آپلودر {appName}</h2>
           <span className="text-xs text-rose-600 font-extrabold block mt-0.5">دسترسی امن ادمین</span>
           <p className="text-slate-500 text-xs mt-1 font-bold">
-            پنل مدیریت ارشد موسسه آموزشی آزمونیار • مدیریت پرونده و تراز داوطلبان آزمونهای وکالت، سردفتری و قضاوت به همراه ابزار آپلود کارنامهها و نظارت بر مدلهای AI
+            پنل مدیریت ارشد موسسه آموزشی {appName} • مدیریت پرونده و تراز داوطلبان آزمونهای ارشد برق به همراه ابزار آپلود کارنامهها و نظارت بر مدلهای فنی AI
           </p>
         </div>
         <div className="bg-emerald-50 text-emerald-700 px-4 py-3 rounded-2xl border border-emerald-100 flex items-center gap-2 font-bold shrink-0">
@@ -541,7 +560,7 @@ export default function AdminView({ student }: { student: Student }) {
             }`}
           >
             <Sparkles size={16} className="text-emerald-600" />
-            <span className="font-extrabold text-slate-800">📝 طراح سوال و شبیه‌ساز آزمون وکالت</span>
+            <span className="font-extrabold text-slate-800">📝 طراح سوال و شبیه‌ساز آزمون ارشد برق</span>
           </button>
           <button
             onClick={() => setActiveTab("students")}
@@ -550,7 +569,7 @@ export default function AdminView({ student }: { student: Student }) {
             }`}
           >
             <Users size={16} />
-            <span>👥 مدیریت شناسنامه داوطلبان وکالت</span>
+            <span>👥 مدیریت شناسنامه داوطلبان ارشد برق</span>
           </button>
           <button
             onClick={() => setActiveTab("analytics")}
@@ -568,7 +587,7 @@ export default function AdminView({ student }: { student: Student }) {
             }`}
           >
             <UploadCloud size={16} />
-            <span>📤 آپلود دستهجمعی کارنامههای وکالت</span>
+            <span>📤 آپلود دستهجمعی کارنامههای ارشد برق</span>
           </button>
           <button
             onClick={() => setFilterRoadmapStatus("all")}
@@ -593,6 +612,15 @@ export default function AdminView({ student }: { student: Student }) {
           >
             <List size={16} className="text-amber-600" />
             <span className="font-black">📜 لاگ تغییرات سیستمی</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("settings")}
+            className={`flex items-center gap-2 py-3 px-4 text-xs font-black rounded-xl whitespace-nowrap transition cursor-pointer ${
+              activeTab === "settings" ? "bg-white text-indigo-950 shadow-sm border border-slate-100" : "text-slate-500 hover:text-slate-800"
+            }`}
+          >
+            <SettingsIcon size={16} className="text-indigo-600" />
+            <span>⚙️ تنظیمات برندینگ سامانه</span>
           </button>
         </div>
 
@@ -651,6 +679,60 @@ export default function AdminView({ student }: { student: Student }) {
               
               <div className="p-4 bg-blue-50 rounded-2xl border border-blue-150 text-[10px] text-blue-800 leading-relaxed font-bold">
                 💡 نکته امنیتی: لاگ‌های سیستمی آزمونیار غیرقابل ویرایش (Immutable) بوده و به صورت خودکار در فضای ابری آرشیو می‌گردند. هرگونه تلاش برای دسترسی غیرمجاز یا تغییر در فایل‌های ممیزی توسط سپر امنیتی DevOps شناسایی و ریپورت می‌شود.
+              </div>
+            </div>
+          )}
+
+          {activeTab === "settings" && (
+            <div className="space-y-6" id="admin-tab-settings" style={{ direction: "rtl" }}>
+              <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm space-y-6 text-right">
+                <div className="flex items-center gap-3 justify-end border-b border-slate-50 pb-4">
+                  <div className="text-right">
+                    <h3 className="font-black text-slate-900 text-lg">تنظیمات هویت بصری و برندینگ {appName}</h3>
+                    <p className="text-[10px] text-slate-500 font-bold">مدیریت نام تجاری و پیکربندی نمایش سراسری پلتفرم</p>
+                  </div>
+                  <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
+                    <Globe size={24} />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-slate-700 block">نام تجاری سامانه (App Name)</label>
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={currentAppName}
+                        onChange={(e) => setCurrentAppName(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 text-sm font-black text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-right"
+                        placeholder="مثلاً: آزمونیار"
+                      />
+                      <Edit3 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                    </div>
+                    <p className="text-[10px] text-slate-400 font-bold">این نام در تمام بخش‌های پلتفرم از جمله هدر، فوتر، صفحه لاگین و گزارشات ادمین اعمال می‌شود.</p>
+                  </div>
+
+                  <button 
+                    onClick={handleSaveAppName}
+                    className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 px-8 rounded-2xl transition-all shadow-lg shadow-indigo-200 cursor-pointer active:scale-95 shrink-0"
+                  >
+                    <Save size={18} />
+                    <span className="text-sm">ذخیره و بروزرسانی سراسری برند</span>
+                  </button>
+                </div>
+
+                <div className="mt-8 p-6 bg-amber-50 rounded-3xl border border-amber-100 flex items-start gap-4">
+                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shrink-0 border border-amber-200 shadow-sm">
+                    <AlertCircle className="text-amber-600" size={20} />
+                  </div>
+                  <div className="space-y-1">
+                    <strong className="text-xs font-black text-amber-900 block">نکته مهم در مورد تغییر نام آزمونیار</strong>
+                    <p className="text-[10px] text-amber-800 leading-relaxed font-bold">
+                      تغییر نام در این بخش، به عنوان یک پیکربندی لایه فرانت‌ند در <span className="font-mono">localStorage</span> مرورگر شما ذخیره می‌شود. 
+                      در معماری نهایی SaaS آزمونیار، این مقدار از دیتابیس مرکزی و بر اساس دامنه (Domain) موسسه فراخوانی خواهد شد.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -795,14 +877,14 @@ export default function AdminView({ student }: { student: Student }) {
                     <span>معماری SaaS و چندمستاجری (Multi-Tenancy Architecture)</span>
                   </h4>
                   <p className="text-[11px] text-slate-500 leading-normal font-bold">
-                    تفکیک ساختارمند داده‌ها و ماژول‌ها برای موسسات مختلف حقوقی در یک پلتفرم واحد
+                    تفکیک ساختارمند داده‌ها و ماژول‌ها برای موسسات آموزشی مهندسی در یک پلتفرم واحد
                   </p>
 
                   <div className="space-y-3.5 pt-2">
                     <div className="space-y-1 bg-slate-50 p-4 rounded-xl border border-slate-100">
                       <strong className="text-xs font-black text-slate-800 block">ساختار تفکیک داده (Isolate Schema)</strong>
                       <p className="text-[10px] text-slate-500 leading-normal font-semibold">
-                        پلتفرم میزان از مدل <strong>Logical Data Isolation</strong> استفاده می‌کند. هر موسسه (Tenant) دارای یک شناسنامه منحصر به فرد در ریشه دیتابیس است. قوانین امنیتی (Security Rules) به گونه‌ای تنظیم شده‌اند که هیچ موسسه‌ای قادر به مشاهده یا تغییر داده‌های موسسه رقیب نباشد.
+                        پلتفرم آزمونیار از مدل <strong>Logical Data Isolation</strong> استفاده می‌کند. هر موسسه (Tenant) دارای یک شناسنامه منحصر به فرد در ریشه دیتابیس است. قوانین امنیتی (Security Rules) به گونه‌ای تنظیم شده‌اند که هیچ موسسه‌ای قادر به مشاهده یا تغییر داده‌های موسسه رقیب نباشد.
                       </p>
                       <div className="flex flex-wrap gap-2 text-[9px] font-mono text-indigo-700 mt-2">
                         <span className="bg-white px-2 py-0.5 rounded border border-slate-200/80 font-bold">مسیر ریشه: /institutions/{"{instId}"}/*</span>
@@ -869,7 +951,7 @@ export default function AdminView({ student }: { student: Student }) {
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                           <span className="text-[8px] bg-emerald-50 text-emerald-700 px-1.5 rounded border font-bold">فعال</span>
                         </div>
-                        <p className="text-[9px] text-slate-500 leading-normal font-semibold">ایزولاسیون کامل داده‌های داوطلب برای هر کانون وکلا بر اساس Tenant Key.</p>
+                        <p className="text-[9px] text-slate-500 leading-normal font-semibold">ایزولاسیون کامل داده‌های داوطلب بر اساس Tenant Key منحصر به فرد موسسه.</p>
                         <p className="text-[8px] font-mono text-indigo-700 font-extrabold bg-white px-2 py-0.5 rounded border w-fit">LOG: امنیت سطح ۵ قواعد دسترسی و فیلترهای هوشمند روی Firestore.</p>
                       </div>
                       <span className="text-[9px] bg-red-50 text-red-700 border border-red-100 rounded px-1.5 py-1 font-bold shrink-0">بحرانی</span>
@@ -890,11 +972,11 @@ export default function AdminView({ student }: { student: Student }) {
                     <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between">
                       <div className="text-right space-y-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-black text-slate-850">موتور شبیه‌ساز آزمون وکالت</span>
+                          <span className="text-xs font-black text-slate-850">موتور شبیه‌ساز آزمون ارشد برق</span>
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                           <span className="text-[8px] bg-emerald-50 text-emerald-700 px-1.5 rounded border font-bold">فعال</span>
                         </div>
-                        <p className="text-[9px] text-slate-500 leading-normal font-semibold">تولید دینامیک سوالات تستی بر اساس آخرین تغییرات قوانین وکالت.</p>
+                        <p className="text-[9px] text-slate-500 leading-normal font-semibold">تولید دینامیک سوالات تستی بر اساس آخرین تغییرات سرفصل‌های ارشد برق.</p>
                       </div>
                       <span className="text-[9px] bg-blue-50 text-blue-700 border border-blue-100 rounded px-1.5 py-1 font-bold shrink-0">فعال</span>
                     </div>
@@ -914,11 +996,11 @@ export default function AdminView({ student }: { student: Student }) {
                     <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between">
                       <div className="text-right space-y-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-black text-slate-850">اطلس قوانین و تله‌های تستی (RAG)</span>
+                          <span className="text-xs font-black text-slate-850">اطلس مفاهیم و تله‌های تستی (RAG)</span>
                           <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                           <span className="text-[8px] bg-rose-50 text-rose-700 px-1.5 rounded border font-bold">بحرانی</span>
                         </div>
-                        <p className="text-[9px] text-slate-500 leading-normal font-semibold">ذخیره‌سازی و بازیابی معنایی آرای وحدت رویه برای تحلیل هوشمند عوارض آزمونی.</p>
+                        <p className="text-[9px] text-slate-500 leading-normal font-semibold">ذخیره‌سازی و بازیابی معنایی استانداردهای فنی برای تحلیل هوشمند عوارض آزمونی.</p>
                       </div>
                       <span className="text-[9px] bg-indigo-50 text-indigo-700 border border-indigo-100 rounded px-1.5 py-1 font-bold shrink-0">AI فعال</span>
                     </div>
@@ -930,7 +1012,7 @@ export default function AdminView({ student }: { student: Student }) {
                 <span className="text-[10px] bg-white/10 text-emerald-450 rounded border border-white/10 px-2.5 py-1 inline-block font-black uppercase">ساختار توسعه مستقل کلاود</span>
                 <h4 className="text-base font-black">چرا معماری میکروماژولار برای آزمونیار حیاتی بود؟</h4>
                 <p className="text-slate-350 text-xs leading-relaxed font-medium">
-                  پلتفرم آزمونیار با هدف میزبانی از موسسات مختلف حقوقی طراحی شده است. استفاده از معماری ماژولار به ما اجازه می‌دهد تا طبق مدل <strong>SaaS Core</strong>, قابلیت‌هایی مانند «تحلیل پیشرفته هوش مصنوعی» را به صورت مجزا برای هر موسسه روشن یا خاموش کنیم بدون آنکه پایداری کل سیستم تحت‌الشعاع قرار گیرد. این امر منجر به کاهش ۴۰ درصدی بار پردازشی سرور و افزایش ضریب اطمینان داده‌ها در لایه دسترسی (Authorization) شده است.
+                  پلتفرم آزمونیار با هدف میزبانی از موسسات آموزشی مهندسی طراحی شده است. استفاده از معماری ماژولار به ما اجازه می‌دهد تا طبق مدل <strong>SaaS Core</strong>, قابلیت‌هایی مانند «تحلیل پیشرفته هوش مصنوعی» را به صورت مجزا برای هر موسسه روشن یا خاموش کنیم بدون آنکه پایداری کل سیستم تحت‌الشعاع قرار گیرد. این امر منجر به کاهش ۴۰ درصدی بار پردازشی سرور و افزایش ضریب اطمینان داده‌ها در لایه دسترسی (Authorization) شده است.
                 </p>
                 <div className="flex flex-wrap gap-4 text-xs font-bold pt-2 text-indigo-200">
                   <div className="flex items-center gap-1.5"><Check size={16} className="text-emerald-500" /> <span>مقیاس‌پذیری عمودی (Scalability)</span></div>
@@ -1113,7 +1195,7 @@ export default function AdminView({ student }: { student: Student }) {
                   <div className="relative pr-8 space-y-1">
                     <div className="absolute right-2 top-1.5 w-3.5 h-3.5 rounded-full bg-blue-900 border-2 border-white ring-2 ring-blue-100" />
                     <strong className="text-xs font-black text-blue-950 block">فاز اول - MVP (پایه تجاری)</strong>
-                    <h5 className="text-[10px] text-slate-550 font-black">فرم ثبت‌نام پایه، درگاه، پنل داوطلب و مشاوره حقوقی مقدماتی</h5>
+                    <h5 className="text-[10px] text-slate-550 font-black">فرم ثبت‌نام پایه، درگاه، پنل داوطلب و مشاوره تحصیلی تخصصی</h5>
                     <p className="text-[10px] text-slate-500 leading-normal font-semibold">تمرکز بر خودکارسازی پذیرش لید، احراز هویت اولیه دو مرحله‌ای OTP، اتصال دیتابیس بومی کاربران، طراحی پنل اولیه داوطلبین جهت مشاهده ترازها و درگاه پرداخت آنلاین جهت رفاه حال دانشجویان آزمونیار.</p>
                   </div>
 
@@ -1121,7 +1203,7 @@ export default function AdminView({ student }: { student: Student }) {
                     <div className="absolute right-2 top-1.5 w-3.5 h-3.5 rounded-full bg-blue-900 border-2 border-white ring-2 ring-blue-100" />
                     <strong className="text-xs font-black text-blue-950 block">فاز دوم - نسخه اولیه (تعادل علمی)</strong>
                     <h5 className="text-[10px] text-slate-550 font-black">سامانه آزمون‌های تطبیقی هماهنگ، پنل مربیان ناظر و ماژول مالی پایه</h5>
-                    <p className="text-[10px] text-slate-500 leading-normal font-semibold">راه‌اندازی ماژول آزمون تعیین سطح آنلاین هوشمند مبتنی بر IRT، بخش برنامه‌ریزی تقویمی برای اساتید، سیستم ارسال نوتیفیکیشن همگام‌ساز پیامکی و ساخت دفتر کل مالی حقوق کادر علمی و داوطلبین اقساطی.</p>
+                    <p className="text-[10px] text-slate-500 leading-normal font-semibold">راه‌اندازی ماژول آزمون تعیین سطح آنلاین هوشمند مبتنی بر IRT، بخش برنامه‌ریزی تقویمی برای اساتید، سیستم ارسال نوتیفیکیشن همگام‌ساز پیامکی و ساخت دفتر کل مالی اساتید کادر علمی و داوطلبین اقساطی.</p>
                   </div>
 
                   <div className="relative pr-8 space-y-1">
@@ -1142,7 +1224,7 @@ export default function AdminView({ student }: { student: Student }) {
                     <div className="absolute right-2 top-1.5 w-3.5 h-3.5 rounded-full bg-teal-600 border-2 border-white ring-2 ring-teal-100" />
                     <strong className="text-xs font-black text-teal-800 block">فاز پنجم - توسعه آینده (مرزهای جدید)</strong>
                     <h5 className="text-[10px] text-teal-650 font-extrabold">بین‌المللی سازی سامانه، دادگستری شبیه‌ساز مجازی AR/VR و حضور فرامرزی</h5>
-                    <p className="text-[10px] text-slate-500 leading-normal font-semibold">پشتیبانی کامل از سایر زبان‌ها با تغییر قالب یونیکد ملل، شبیه‌سازی محاکم و دادگاه‌های نمایشی با فناوری‌های واقعیت مجازی/افزوده جهت تجربه کاملاً کاربردی و بی‌رقیب داوطلبان کنکور وکلای بین‌الملل.</p>
+                    <p className="text-[10px] text-slate-500 leading-normal font-semibold">پشتیبانی کامل از سایر زبان‌ها با تغییر قالب یونیکد ملل، شبیه‌سازی آزمایشگاه‌های مجازی و محیط‌های عملیاتی برقی با فناوری‌های واقعیت مجازی/افزوده جهت تجربه کاملاً کاربردی و بی‌رقیب داوطلبان کنکور مهندسی برق بین‌الملل.</p>
                   </div>
 
                 </div>
@@ -1165,7 +1247,7 @@ export default function AdminView({ student }: { student: Student }) {
                     <div>
                       <h3 className="text-lg font-black text-slate-850">پلتفرم استراتژیک نقشه راه تحول آزمونیار</h3>
                       <p className="text-slate-500 text-xs font-semibold leading-relaxed">
-                        ردیابی، برنامه‌ریزی زنده و فازهای توسعه پورتال Legal-Tech هوشمند کانون وکلا
+                        ردیابی، برنامه‌ریزی زنده و فازهای توسعه پورتال Ed-Tech هوشمند مهندسی برق
                       </p>
                     </div>
                   </div>
@@ -1250,7 +1332,7 @@ export default function AdminView({ student }: { student: Student }) {
                         <span className="text-[9px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">پیشنهادی</span>
                       </h4>
                       <p className="text-slate-400 text-[11px] font-semibold mt-1">
-                        ماژول‌های اولویت‌دار جهت ارتقای پورتال به سطح استانداردهای تراز اول سنجش حقوقی
+                        ماژول‌های اولویت‌دار جهت ارتقای پورتال به سطح استانداردهای تراز اول سنجش مهندسی
                       </p>
                     </div>
                   </div>
@@ -1661,10 +1743,10 @@ export default function AdminView({ student }: { student: Student }) {
               <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 p-6 rounded-3xl text-white text-center space-y-2 shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-30 animate-pulse" style={{ animationDuration: '6s' }} />
                 <p className="text-sm font-black italic relative z-10 leading-relaxed">
-                  "نقشه راه تحول میزان، تبلور همگرایی دانش عمیق حقوقی و تکنولوژی‌های طراز اول هوش مصنوعی کلاود در سطح ملّی است."
+                  "نقشه راه تحول آزمونیار، تبلور همگرایی دانش عمیق مهندسی و تکنولوژی‌های طراز اول هوش مصنوعی کلاود در سطح ملّی است."
                 </p>
                 <p className="text-[10px] text-indigo-300 font-bold relative z-10 uppercase tracking-widest leading-loose">
-                  — موسسه آموزش عالی آزاد میزان • دپارتمان استراتژی دیجیتال و هوش مصنوعی
+                  — موسسه آموزش عالی آزاد آزمونیار • دپارتمان استراتژی دیجیتال و هوش مصنوعی
                 </p>
               </div>
             </div>
@@ -1678,24 +1760,24 @@ export default function AdminView({ student }: { student: Student }) {
                   <span className="p-1.5 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200">
                     <Sparkles size={18} />
                   </span>
-                  <h3 className="text-base font-black text-slate-900">طراح سوال و شبیه‌ساز آزمون وکالت میزان</h3>
+                  <h3 className="text-base font-black text-slate-900">طراح سوال و شبیه‌ساز آزمون ارشد برق آزمونیار</h3>
                 </div>
-                <p className="text-slate-500 text-xs">تولید دینامیک پرسش‌های کانون وکلا، قوه قضائیه، سردفتری بر اساس استانداردهای حقوقی و آرای وحدت رویه</p>
+                <p className="text-slate-500 text-xs">تولید دینامیک پرسش‌های ارشد برق، دکتری برق، آزمون نظام مهندسی بر اساس استانداردهای علمی و سرفصل‌های مصوب</p>
               </div>
 
               {/* Parameter Settings */}
               <div className="bg-white p-5 rounded-3xl border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6 text-right">
                 
                 <div className="space-y-2">
-                  <label className="text-[11px] font-black text-slate-700 block">انتخاب ماده درسی حقوقی (Subject)</label>
+                  <label className="text-[11px] font-black text-slate-700 block">انتخاب ماده درسی تخصصی (Subject)</label>
                   <select
                     value={selectedLawSubject}
                     onChange={(e) => setSelectedLawSubject(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none"
                   >
-                    <option value="مدنی">⚖️ حقوق مدنی (قوانین تعهدات و اموال)</option>
-                    <option value="تجارت">💼 حقوق تجارت (شرکت‌ها و اسناد تجاری)</option>
-                    <option value="جزا">🛡️ حقوق جزا (عمومی و اختصاصی مجازات‌ها)</option>
+                    <option value="مدار">⚡ مدارهای الکتریکی (تحلیل شبکه و گذار)</option>
+                    <option value="سیگنال">📊 سیگنال و سیستم (فرکانس و فیلتر)</option>
+                    <option value="ماشین">⚙️ ماشین‌های الکتریکی (ترانس و موتور)</option>
                   </select>
                 </div>
 
@@ -1737,7 +1819,7 @@ export default function AdminView({ student }: { student: Student }) {
                   <div className="absolute top-0 right-0 left-0 h-1.5 bg-emerald-500" />
                   
                   <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold border-b border-slate-100 pb-3">
-                    <span>بودجه‌بندی آزمون کانون وکلا • مرکز مشاوران</span>
+                    <span>بودجه‌بندی آزمون ارشد برق • سازمان سنجش</span>
                     <span className="text-emerald-700">سطح: {selectedDifficulty} و تحلیلی</span>
                   </div>
 
@@ -1785,7 +1867,7 @@ export default function AdminView({ student }: { student: Student }) {
                     <div className="bg-blue-50/70 border border-blue-150 p-5 rounded-2xl space-y-2 animate-fadeIn">
                       <h5 className="text-xs font-black text-blue-955 flex items-center gap-1.5 leading-none">
                         <BookOpen size={14} />
-                        <span>تحلیل مستند قانونی و آرای وحدت رویه:</span>
+                        <span>تحلیل مستندات فنی و بررسی استانداردهای IEEE:</span>
                       </h5>
                       <p className="text-[11px] text-blue-900 leading-relaxed font-semibold">
                         {generatedQuestion.explanation}
@@ -1825,9 +1907,9 @@ export default function AdminView({ student }: { student: Student }) {
                     className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 focus:outline-none"
                   >
                     <option value="all">کلیه آزمون‌ها</option>
-                    <option value="آزمون وکالت">آزمون وکالت کانون</option>
-                    <option value="آزمون سردفتری">آزمون سردفتری قوه قضائیه</option>
-                    <option value="آزمون قضاوت">آزمون قضاوت و منصب قضا</option>
+                    <option value="ارشد برق">کنکور ارشد مهندسی برق</option>
+                    <option value="دکتری برق">آزمون دکتری تخصصی برق</option>
+                    <option value="نظام مهندسی">آزمون ورود به حرفه (نظام)</option>
                   </select>
                 </div>
               </div>
@@ -1838,9 +1920,9 @@ export default function AdminView({ student }: { student: Student }) {
                     <tr className="bg-slate-50 border-b border-slate-100 text-slate-600 font-bold">
                       <th className="py-4 px-6">نام کاربری داوطلب</th>
                       <th className="py-4 px-6">شناسه کارنامه کنکور</th>
-                      <th className="py-4 px-6">نوع آزمون حقوقی هدف</th>
+                      <th className="py-4 px-6">نوع آزمون مهندسی هدف</th>
                       <th className="py-4 px-6">تراز هوشمند تخمینی</th>
-                      <th className="py-4 px-6">استاد راهنما ناظر کانون</th>
+                      <th className="py-4 px-6">استاد راهنما ناظر ارشد</th>
                       <th className="py-4 px-6">وضعیت حضور پورتال</th>
                     </tr>
                   </thead>
@@ -1872,21 +1954,21 @@ export default function AdminView({ student }: { student: Student }) {
             <div className="space-y-6" id="admin-tab-analytics">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-2 text-right">
-                  <h4 className="text-slate-400 font-bold text-xs uppercase">متوسط تراز کل جامعه آماری میزان</h4>
+                  <h4 className="text-slate-400 font-bold text-xs uppercase">متوسط تراز کل جامعه آماری آزمونیار</h4>
                   <div className="text-2xl font-black text-slate-800 font-mono">۷,۳۲۰ تراز</div>
-                  <p className="text-[10px] text-emerald-600">▲ ۲.۸٪ بهبود میانگین درس تجارت و حقوق جزا</p>
+                  <p className="text-[10px] text-emerald-600">▲ ۲.۸٪ بهبود میانگین درس مدار و سیگنال</p>
                 </div>
 
                 <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-2 text-right">
                   <h4 className="text-slate-400 font-bold text-xs uppercase">گلوگاه تحلیلی ضعف بیشترین داوطلبان عمومی</h4>
-                  <div className="text-2xl font-black text-slate-805 font-sans">قوانین خاص ثبتی و تجارت الکترونیک</div>
+                  <div className="text-2xl font-black text-slate-805 font-sans">معادلات ماکسول و تحلیل مغناطیس</div>
                   <p className="text-[10px] text-red-500">نیاز مبرم به دوره‌های فشرده تست زدن</p>
                 </div>
 
                 <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-2 text-right">
                   <h4 className="text-slate-400 font-bold text-xs uppercase">تلرانس تخمین موفقیت تراز با AI</h4>
                   <div className="text-2xl font-black text-slate-800 font-mono">۲.۴٪</div>
-                  <p className="text-[10px] text-emerald-600">پایش دقیق در لایه فونداسیون RAG قوانین</p>
+                  <p className="text-[10px] text-emerald-600">پایش دقیق در لایه فونداسیون RAG فنی</p>
                 </div>
               </div>
 
@@ -1894,7 +1976,7 @@ export default function AdminView({ student }: { student: Student }) {
               <div className="flex items-center gap-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-right">
                 <HeartPulse className="text-emerald-700 animate-pulse flex-shrink-0" size={20} />
                 <div className="text-xs text-emerald-800 leading-relaxed font-semibold">
-                  سلامت سیستم پردازش میزان تایید شد. مدل `'gemini-2.5-flash'` به همراه مخزن وکتور قوانین وکالت بدون گلوگاه متصل است.
+                  سلامت سیستم پردازش آزمونیار تایید شد. مدل `'gemini-2.5-flash'` به همراه مخزن وکتور کتب مهندسی برق بدون گلوگاه متصل است.
                 </div>
               </div>
             </div>
@@ -1914,13 +1996,13 @@ export default function AdminView({ student }: { student: Student }) {
                   <UploadCloud size={32} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-850 text-base">اکسل تراز یا جزوات کنکور کانون وکلا را در این‌جا رها کنید</h4>
+                  <h4 className="font-bold text-slate-850 text-base">اکسل تراز یا جزوات کنکور ارشد برق را در این‌جا رها کنید</h4>
                   <p className="text-slate-400 text-xs mt-1">فرمت‌های مجاز: .pdf, .xlsx, .xls (حداکثر حجم فایل ۱۰ مگابایت)</p>
                 </div>
                 {isUploading && (
                   <div className="text-xs text-blue-900 flex justify-center items-center gap-2">
                     <span className="w-4 h-4 border-2 border-blue-955 border-t-transparent rounded-full animate-spin"></span>
-                    <span>اسکن اتصالات تراز و پایش آماری قوانین...</span>
+                    <span>اسکن اتصالات تراز و پایش آماری سرفصل‌ها...</span>
                   </div>
                 )}
               </div>
@@ -1947,28 +2029,28 @@ export default function AdminView({ student }: { student: Student }) {
           {activeTab === "content" && (
             <div className="p-8 text-center bg-slate-50 rounded-3xl border border-slate-100 space-y-4" id="admin-tab-content">
               <Film size={40} className="mx-auto text-slate-400" />
-              <h4 className="font-bold text-slate-800 text-sm">مخزن درسنامه‌ها و ویدیوهای کنکور میزان</h4>
-              <p className="text-slate-455 text-xs">در این بخش قادر خواهید بود ویدیوهای آموزشی تحلیل قوانین خاص و آرای وحدت رویه را آپلود نمایید تا با مدل به داوطلبین توصیه گردد.</p>
+              <h4 className="font-bold text-slate-800 text-sm">مخزن درسنامه‌ها و ویدیوهای کنکور آزمونیار</h4>
+              <p className="text-slate-455 text-xs">در این بخش قادر خواهید بود ویدیوهای آموزشی تحلیل مدار و استانداردهای IEEE را آپلود نمایید تا با مدل به داوطلبین توصیه گردد.</p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-3 text-right">
                 <div className="p-4 bg-white border border-slate-150 rounded-2xl space-y-2">
-                  <span className="text-[9px] text-amber-600 font-bold block">مجموعه مدنی</span>
-                  <h5 className="text-xs font-black text-slate-900">تحلیل مدنی دکتر کاتوزیان</h5>
+                  <span className="text-[9px] text-amber-600 font-bold block">مجموعه مدار</span>
+                  <h5 className="text-xs font-black text-slate-900">تحلیل مدارهای جبه‌دار</h5>
                   <p className="text-[9px] text-slate-400">۲۴ قسمت تصویری فشرده کلاود</p>
                 </div>
                 <div className="p-4 bg-white border border-slate-150 rounded-2xl space-y-2">
-                  <span className="text-[9px] text-indigo-600 font-bold block">مجموعه تجارت</span>
-                  <h5 className="text-xs font-black text-slate-900">مسئولیت شرکا و اسناد تجاری</h5>
+                  <span className="text-[9px] text-indigo-600 font-bold block">مجموعه سیگنال</span>
+                  <h5 className="text-xs font-black text-slate-900">پردازش سیگنال دیجیتال</h5>
                   <p className="text-[9px] text-slate-400">۱۲ جلسه رفع لول اشکال تستی</p>
                 </div>
                 <div className="p-4 bg-white border border-slate-150 rounded-2xl space-y-2">
-                  <span className="text-[9px] text-rose-500 font-bold block">قوانین خاص</span>
-                  <h5 className="text-xs font-black text-slate-900">شبیه‌ساز تندخوانی خاص ثبتی</h5>
+                  <span className="text-[9px] text-rose-500 font-bold block">کنترل خودکار</span>
+                  <h5 className="text-xs font-black text-slate-900">شبیه‌ساز سیستم‌های پس‌خور</h5>
                   <p className="text-[9px] text-slate-400">فول تراز ۱۰۰٪ صوتی و متنی</p>
                 </div>
                 <div className="p-4 bg-white border border-slate-150 rounded-2xl space-y-2">
-                  <span className="text-[9px] text-emerald-600 font-bold block">اصول فقه</span>
-                  <h5 className="text-xs font-black text-slate-900">بودجه‌بندی اصول فقه مظفر</h5>
+                  <span className="text-[9px] text-emerald-600 font-bold block">الکترونیک ۱ و ۲</span>
+                  <h5 className="text-xs font-black text-slate-900">بودجه‌بندی نیمه‌هادی میرعشقی</h5>
                   <p className="text-[9px] text-slate-400">۱۸ کارگاه مهارتی تست زنی</p>
                 </div>
               </div>
@@ -1998,7 +2080,7 @@ export default function AdminView({ student }: { student: Student }) {
                   </div>
 
                   <div className="space-y-1.5">
-                    <h3 className="font-black text-slate-100 text-base">کانال امن مستندات و DevOps میزان</h3>
+                    <h3 className="font-black text-slate-100 text-base">کانال امن مستندات و DevOps آزمونیار</h3>
                     <p className="text-[11px] text-slate-400 font-medium leading-relaxed px-2">
                       مستندات استقرار، بنچ‌مارک موازی، اسکریپت‌های کایزن ابری و ترازهای کلاود در این بخش گنجانده شده‌اند.
                     </p>
@@ -2047,7 +2129,7 @@ export default function AdminView({ student }: { student: Student }) {
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                         <span className="text-[9px] text-slate-400 font-bold">اتصال زنده به کانتینر Cloud Run</span>
                       </div>
-                      <h3 className="font-black text-slate-200 text-base">پایگاه مهندسی مستندات و اسکریپت‌های میزان</h3>
+                      <h3 className="font-black text-slate-200 text-base">پایگاه مهندسی مستندات و اسکریپت‌های آزمونیار</h3>
                       <p className="text-[10px] text-slate-400 leading-normal font-medium">
                         آموزش استقرار در کلاود ابری ابزار، داکر، وب‌سرویس Express لیسن شده روی پورت ۳۰۰۰ و هماهنگ با معاهدات آموزشی در این ترم جامع ذخیره شده است.
                       </p>
@@ -2080,7 +2162,7 @@ export default function AdminView({ student }: { student: Student }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="bg-slate-950 border border-indigo-500/20 p-4 rounded-2xl flex items-center justify-between">
                         <div className="space-y-1 text-right">
-                          <span className="text-[9px] font-black text-indigo-400">آدرس وب‌سرویس میزان در هلدینگ</span>
+                          <span className="text-[9px] font-black text-indigo-400">آدرس وب‌سرویس آزمونیار در هلدینگ</span>
                           <p className="font-mono text-xs text-slate-300">
                             http://localhost:3000/api/health
                           </p>
